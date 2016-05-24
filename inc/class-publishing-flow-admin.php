@@ -68,6 +68,11 @@ class Publishing_Flow_Admin {
 	 */
 	public function customize_controls_enqueue_scripts() {
 
+		// Bail if we don't have a valid post ID.
+		if ( empty( $_GET['post-id'] ) ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'publishing-flow-customizer',
 			PUBLISHING_FLOW_URL . 'js/publishing-flow-customizer.js',
@@ -75,6 +80,28 @@ class Publishing_Flow_Admin {
 			PUBLISHING_FLOW_VERSION,
 			true
 		);
+
+		// Grab the full post object.
+		$post_id = (int)$_GET['post-id'];
+		$post    = get_post( $post_id );
+
+		// Grab all post meta.
+		$meta = get_metadata( 'post', $post_id );
+
+		// Get all required primary keys.
+		$required_primary = $this->get_required_primary_keys();
+
+		// Get all required meta keys.
+		$required_meta = $this->get_required_meta_keys();
+
+		$data = array(
+			'post'             => $post,
+			'meta'             => $meta,
+			'required_primary' => $required_primary,
+			'required_meta'    => $required_meta,
+		);
+
+		wp_localize_script( 'publishing-flow-customizer', 'publishingFlowData', $data );
 	}
 
 	/**
@@ -106,6 +133,13 @@ class Publishing_Flow_Admin {
 		$url = add_query_arg(
 			'publishing-flow',
 			'true',
+			$url
+		);
+
+		// Pass the previewed post's ID.
+		$url = add_query_arg(
+			'post-id',
+			$post_id,
 			$url
 		);
 
@@ -157,5 +191,31 @@ class Publishing_Flow_Admin {
 		}
 
 		return $components;
+	}
+
+	/**
+	 * Return an array of all required primary keys.
+	 *
+	 * @return  array  The array of required primary keys.
+	 */
+	public function get_required_primary_keys() {
+
+		$primary_keys = array(
+			'post_title',
+		);
+
+		return apply_filters( 'publishing_flow_required_primary_keys', $primary_keys );
+	}
+
+	/**
+	 * Return an array of all required meta keys.
+	 *
+	 * @return  array  The array of required meta keys.
+	 */
+	public function get_required_meta_keys() {
+
+		$meta_keys = array();
+
+		return apply_filters( 'publishing_flow_required_meta_keys', $meta_keys );
 	}
 }
