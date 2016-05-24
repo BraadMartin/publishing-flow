@@ -17,12 +17,10 @@ define( 'PUBLISHING_FLOW_URL', plugin_dir_url( __FILE__ ) );
 // Include admin functionality.
 require_once PUBLISHING_FLOW_PATH . 'inc/class-publishing-flow-admin.php';
 
-add_action( 'plugins_loaded', 'publishing_flow_init' );
 /**
  * Start the party.
  */
-function publishing_flow_init() {
-
+if ( is_admin() ) {
 	$publishing_flow = new Publishing_Flow_Admin();
 	$publishing_flow->init();
 }

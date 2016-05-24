@@ -8,17 +8,10 @@
 class Publishing_Flow_Admin {
 
 	/**
-	 * Our Customizer sections.
-	 *
-	 * @var Array.
-	 */
-	private $customizer_sections;
-
-	/**
 	 * The constructor.
 	 */
 	public function __construct() {
-		$this->customizer_sections = array();
+		// Silence is golden.
 	}
 
 	/**
@@ -32,11 +25,11 @@ class Publishing_Flow_Admin {
 		// Enqueue Customizer scripts and styles.
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_controls_enqueue_scripts' ) );
 
-		// Filter in our Customizer controls.
-		//add_action( 'customize_control_active', array( $this, 'customize_control_active' ), 99, 2 );
-
-		// Register Customizer sections and controls.
+		// Modify Customizer sections and controls.
 		add_action( 'customize_register', array( $this, 'customize_register' ), 30 );
+
+		// Modify Customizer panels.
+		add_filter( 'customize_loaded_components', array( $this, 'customize_loaded_components' ), 30, 2 );
 	}
 
 	/**
@@ -120,64 +113,7 @@ class Publishing_Flow_Admin {
 	}
 
 	/**
-	 * Filter customizer active sections to only include ours when
-	 * the user is actively going through the publishing flow.
-	 *
-	 * @param   bool                  $active   Whether the Customizer control is active.
-	 * @param   WP_Customize_Control  $control  WP_Customize_Control instance.
-	 *
-	 * @return  bool                            Whether the Customizer control is active.
-	 */
-	public function customize_control_active( $active, $control ) {
-
-		// Bail if we're not serving Publishing Flow.
-		if ( empty( $_GET['publishing-flow'] ) ) {
-			return $active;
-		}
-
-		$sections = $this->get_customizer_sections();
-
-		if ( in_array( $control->section, $sections ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Return an array of our Customizer sections.
-	 *
-	 * We only need to run our filter once, so we'll store the results in
-	 * a class property the first time this function is called and then
-	 * return it from there on subsequent calls.
-	 *
-	 * @return  array  The array of Customizer sections.
-	 */
-	public function get_customizer_sections() {
-
-		if ( ! empty( $this->customizer_sections ) ) {
-			return $this->customizer_sections;
-		}
-
-		$sections = array(
-			'publishing_flow_date_section',
-			'publishing_flow_publish_section',
-		);
-
-		/**
-		 * Allow the array of Customizer sections to be customized.
-		 *
-		 * @param  array  The array of default Publishing Flow sections.
-		 */
-		$sections = apply_filters( 'publishing_flow_customizer_sections', $sections );
-
-		$this->customizer_sections = $sections;
-
-		return $sections;
-	}
-
-	/**
-	 * Register our Customizer sections and controls.
+	 * Modify Customizer sections and controls.
 	 *
 	 * @param  WP_Customize_Manager  $wp_customize  The Customizer Manager object.
 	 */
@@ -188,22 +124,38 @@ class Publishing_Flow_Admin {
 			return;
 		}
 
-		// Remove Core sections and panels.
-		$wp_customize->remove_section( 'colors' );
-		$wp_customize->remove_section( 'header_image' );
-		$wp_customize->remove_section( 'background_image' );
-		$wp_customize->remove_section( 'themes' );
-		$wp_customize->remove_section( 'title_tagline' );
-		$wp_customize->remove_section( 'static_front_page' );
-		$wp_customize->remove_panel( 'widgets' );
-		$wp_customize->remove_panel( 'nav_menus' );
-
 		/**
 		 * Sections.
 		 */
 
+		// Get all registered sections.
+		$sections = $wp_customize->sections();
+
+		// Remove all registered sections.
+		foreach( $sections as $section ) {
+			$wp_customize->remove_section( $section->id );
+		}
+
 		/**
 		 * Controls.
 		 */
+	}
+
+	/**
+	 * Modify Customizer panels.
+	 *
+	 * @param   array                 $components    The array of registered components.
+	 * @param   WP_Customize_Manager  $wp_customize  The Customizer Manager object.
+	 *
+	 * @return  array                                The modified array of components.
+	 */
+	public function customize_loaded_components( $components, $wp_customize ) {
+
+		// Only if we're serving Publishing Flow.
+		if ( ! empty( $_GET['publishing-flow'] ) ) {
+			$components = array_diff( $components, array( 'widgets', 'nav_menus' ) );
+		}
+
+		return $components;
 	}
 }
