@@ -94,6 +94,10 @@
 	border-bottom: 1px solid #ccc;
 }
 
+.pf-customizer .pf-section:last-child {
+	border-bottom: 0;
+}
+
 .pf-customizer .pf-section-label {
 	margin: 0 0 18px;
 }
