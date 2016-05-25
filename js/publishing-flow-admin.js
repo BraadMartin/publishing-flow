@@ -2,7 +2,7 @@
  * Publishing Flow Admin JS.
  */
 
-var PublishingFlow = ( function( $ ) {
+var PublishingFlow = ( function( $, data ) {
 
 	'use strict';
 
@@ -12,7 +12,7 @@ var PublishingFlow = ( function( $ ) {
 	var init = function() {
 
 		// Bail if our data isn't there.
-		if ( ! publishingFlowData ) {
+		if ( ! data ) {
 			return;
 		}
 
@@ -25,16 +25,25 @@ var PublishingFlow = ( function( $ ) {
 	 */
 	var redirectButtons = function() {
 
-		// Hide actual buttons.
-		$( '#publishing-action input[type="submit"]' ).remove();
+		var $publish = $( '#publishing-action #publish' );
 
-		var url = publishingFlowData.url
+		// Do nothing if there isn't a publish button.
+		if ( ! $publish.length ) {
+			return;
+		}
+
+		// Hide actual publish button.
+		$publish.remove();
+
+		// Grab our button URL and label from our data object.
+		var url   = data.buttonUrl;
+		var label = data.buttonLabel;
 
 		// Inject our button.
 		$( '#publishing-action' ).append(
 			$( '<a />' )
 				.addClass( 'button button-primary publishing-flow-trigger' )
-				.text( 'Preview & Publish' )
+				.text( label )
 				.attr( 'href', url )
 		);
 	}
@@ -43,7 +52,7 @@ var PublishingFlow = ( function( $ ) {
 		init: init,
 	};
 
-})( jQuery );
+})( jQuery, publishingFlowData );
 
 /**
  * Start the party.

@@ -4,6 +4,8 @@
 
 var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
+	'use strict';
+
 	/**
 	 * DOM references.
 	 */
@@ -57,7 +59,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$info.empty();
 
-		$ourInfo = $( '<div />' )
+		var $ourInfo = $( '<div />' )
 			.addClass( 'pf-info' )
 			.append(
 				$( '<h2 />' ).text( 'Welcome to Publishing Flow' )
@@ -73,7 +75,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 */
 	var injectNotifications = function() {
 
-		$reqNotifications = $( '<div />' )
+		var $reqNotifications = $( '<div />' )
 			.addClass( 'pf-notifications' )
 			.append(
 				$( '<p />' )
@@ -88,7 +90,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$controls.prepend( $reqNotifications );
 
-		$deviceNotifications = $( '<div />' )
+		var $deviceNotifications = $( '<div />' )
 			.addClass( 'pf-device-notifications' )
 			.append(
 				$( '<p />' )
@@ -213,9 +215,10 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$header.append( $button );
 
+		// Set up click action on the publish button.
 		$button.on( 'click', function() {
 
-			// Trigger a message about missing things if the user
+			// Trigger a message about required things when a user
 			// clicks on the button while it is disabled.
 			if ( $( this ).attr( 'disabled' ) ) {
 				if ( $controls.hasClass( 'pf-requirements-met' ) ) {
@@ -225,6 +228,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				}
 			}
 
+			// Everything must be good, so publish the post.
 			ajaxPublishPost();
 		});
 	}
@@ -248,7 +252,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 * Initialize our device preview events.
 	 */
 	var initDevicePreview = function() {
-		$deviceButtons = $footer.find( '.devices button' );
+		var $deviceButtons = $footer.find( '.devices button' );
 
 		$deviceButtons.on( 'click', function() {
 

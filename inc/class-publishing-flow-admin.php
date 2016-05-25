@@ -59,8 +59,11 @@ class Publishing_Flow_Admin {
 
 		$url = $this->build_customizer_url( $post->ID );
 
+		$label = apply_filters( 'publishing_flow_start_button_text', __( 'Publishing Flow', 'publishing-flow' ) );
+
 		$data = array(
-			'url' => $url,
+			'buttonUrl'   => $url,
+			'buttonLabel' => $label,
 		);
 
 		wp_localize_script( 'publishing-flow-admin', 'publishingFlowData', $data );
