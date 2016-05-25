@@ -50,10 +50,15 @@
 	padding: 2px 20px 16px;
 }
 
+.pf-notifications p {
+	max-width: calc( 100% - 22px );
+}
+
 .pf-notifications .dashicons {
-	float: right;
-	margin-top: -20px;
 	color: #E44848;
+	position: absolute;
+	top: 15px;
+	right: 20px;
 }
 
 .pf-notifications a:hover {

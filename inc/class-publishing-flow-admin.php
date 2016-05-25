@@ -33,6 +33,9 @@ class Publishing_Flow_Admin {
 
 		// Output our custom JS templates.
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ) );
+
+		// Ajax handler for the publish post action.
+		add_action( 'wp_ajax_pf_publish_post', array( $this, 'ajax_publish_post' ) );
 	}
 
 	/**
@@ -57,9 +60,21 @@ class Publishing_Flow_Admin {
 			true
 		);
 
-		$url = $this->build_customizer_url( $post->ID );
+		wp_enqueue_style(
+			'publishing-flow-admin',
+			PUBLISHING_FLOW_URL . 'css/publishing-flow-admin.css',
+			array(),
+			PUBLISHING_FLOW_VERSION
+		);
 
-		$label = apply_filters( 'publishing_flow_start_button_text', __( 'Publishing Flow', 'publishing-flow' ) );
+		$url       = $this->build_customizer_url( $post->ID );
+		$scheduled = $this->if_scheduled_post( $post->ID );
+
+		if ( $scheduled ) {
+			$label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
+		} else {
+			$label = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
+		}
 
 		$data = array(
 			'buttonUrl'   => $url,
@@ -99,6 +114,29 @@ class Publishing_Flow_Admin {
 		$data = $this->build_data_array( $post_id );
 
 		wp_localize_script( 'publishing-flow-customizer', 'publishingFlowData', $data );
+	}
+
+	/**
+	 * Determine if a post has a date in the future.
+	 *
+	 * @param   int|WP_Post  $post  The post object or ID.
+	 *
+	 * @return  bool                Whether the post has a date in the future.
+	 */
+	public function if_scheduled_post( $post ) {
+
+		if ( is_numeric( $post ) ) {
+			$post = get_post( $post );
+		}
+
+		// This logic is taken directly from /wp-includes/post.php
+		$time = strtotime( $post->post_date_gmt . ' GMT' );
+
+		if ( $time > time() ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -339,6 +377,11 @@ class Publishing_Flow_Admin {
 		 */
 		$device = apply_filters( 'publishing_flow_customizer_default_device', 'mobile' );
 
+		// Generate a nonce.
+		$publish_nonce = wp_create_nonce( 'pf-publish' );
+
+		$scheduled = $this->if_scheduled_post( $post );
+
 		$data = array(
 			'post'            => $post,
 			'meta'            => $meta,
@@ -351,6 +394,8 @@ class Publishing_Flow_Admin {
 			'editLink'        => $edit_link,
 			'requirementsMet' => $requirements_met,
 			'defaultDevice'   => $device,
+			'publishNonce'    => $publish_nonce,
+			'scheduled'       => $scheduled,
 		);
 
 		/**
@@ -419,6 +464,70 @@ class Publishing_Flow_Admin {
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
+	}
+
+	/**
+	 * Publish or Schedule a post from Publishing Flow.
+	 */
+	public function ajax_publish_post() {
+
+		// Bail if our nonce is not valid.
+		check_ajax_referer( 'pf-publish', 'pf_publish_nonce', true );
+
+		$user = wp_get_current_user();
+
+		// Bail if the current user isn't allowed to publish posts.
+		if ( ! $user || ! user_can( $user, 'publish_posts' ) ) {
+			_e( 'Sorry, the current user is not allowed to publish posts', 'publishing-flow' );
+			wp_die();
+		}
+
+		$post = get_post( $_POST['post_id'] );
+
+		// Bail if we don't have a post to publish.
+		if ( is_wp_error( $post ) ) {
+			_e( 'Sorry, no post to publish was found.', 'publishing-flow' );
+			wp_die();
+		}
+
+		// Bail if the post is already published or scheduled.
+		if ( 'publish' === $post->post_status || 'future' === $post->post_status ) {
+			_e( 'Looks like this post has already been published or scheduled', 'publishing-flow' );
+			wp_die();
+		}
+
+		$response = new stdClass();
+
+		/**
+		 * We'll either publish the post or schedule it, so first check the date
+		 * and compare to the current time, and if it's in the future then simply
+		 * set the status to 'future', otherwise publish it.
+		 */
+		$scheduled = $this->if_scheduled_post( $post );
+
+		if ( $scheduled ) {
+
+			$old_status        = $post->post_status;
+			$post->post_status = 'future';
+
+			wp_update_post( $post );
+
+			wp_transition_post_status( 'future', $old_status, $post );
+
+			$response->outcome = 'scheduled';
+
+		} else {
+
+			wp_publish_post( $post );
+
+			$response->outcome = 'published';
+		}
+
+		$response->status = 'success';
+
+		wp_send_json( $response );
+
+		wp_die();
 	}
 
 	/**

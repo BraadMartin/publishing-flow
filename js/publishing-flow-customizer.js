@@ -98,10 +98,9 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			.addClass( 'pf-notifications' )
 			.append(
 				$( '<p />' )
-					.text( "Woah there, looks like this post is still missing a required field!" )
-					.append(
-						$( '<span />' ).addClass( 'dashicons dashicons-warning' )
-					),
+					.text( "Woah there, looks like this post is still missing a required field!" ),
+				$( '<span />' )
+					.addClass( 'dashicons dashicons-warning' ),
 				$( '<a />' )
 					.attr( 'href', data.editLink )
 					.text( 'Visit the edit screen to fix this.' )
@@ -244,15 +243,18 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		$header.find( '.spinner' ).remove();
 
 		var $button = $( '<div />' );
+		var buttonText = ( data.scheduled ) ? 'Schedule' : 'Publish';
 
 		$button.addClass( 'button-primary pf-customizer-publish' )
 			.attr( 'disabled', true )
-			.text( 'Publish' );
+			.text( buttonText );
 
 		$header.append( $button );
 
 		// Set up click action on the publish button.
 		$button.on( 'click', function() {
+
+			console.log( 'button clicked' );
 
 			// Trigger a message about required things when a user
 			// clicks on the button while it is disabled.
@@ -262,6 +264,8 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				} else {
 					showReqNotification();
 				}
+
+				return;
 			}
 
 			// Everything must be good, so publish the post.
@@ -307,7 +311,25 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 * Make an Ajax call to publish the previewed post.
 	 */
 	var ajaxPublishPost = function() {
-		console.log( 'publishing the post' );
+
+		console.log( 'attempting to publish a post' );
+
+		var pubData = {
+			'action'           : 'pf_publish_post',
+			'post_id'          : data.post.ID,
+			'pf_publish_nonce' : data.publishNonce,
+		};
+
+		var publishPost = $.post( ajaxurl, pubData );
+
+		publishPost.done( function( response ) {
+			console.log( 'Ajax request to publish post has completed' );
+			console.log( response );
+		});
+
+		publishPost.fail( function() {
+			console.log( 'Whoops, something went wrong with the Ajax request to publish the post' );
+		})
 	}
 
 	return {
