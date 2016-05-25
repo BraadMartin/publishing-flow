@@ -253,47 +253,50 @@ class Publishing_Flow_Admin {
 				'showValue' => $show_value,
 			);
 		}
-
-		foreach ( $required_group as $i => $group ) {
+		foreach ( $required_group as $key => $group ) {
 
 			$label      = $group['label'];
 			$show_value = ( $group['show_value'] );
 			$has_value  = $group['has_value'] ?: '';
 			$no_value   = $group['no_value'] ?: '';
+			$meta_keys  = array_keys( $group['meta_keys'] );
 			$value      = array();
 
-			foreach ( $meta_keys as $key => $label ) {
-				if ( isset( $meta[ $key ] ) ) {
-					$value[] = $label;
+			foreach ( $group['meta_keys'] as $k => $l ) {
+				if ( isset( $meta[ $k ] ) ) {
+					$value[] = $l;
 				}
 			}
 			$value = implode( ', ', $value );
 
-			$req_group[ $i ] = array(
+			$req_group[ $key ] = array(
 				'label'     => $label,
+				'keys'      => $meta_keys,
 				'value'     => $value,
 				'hasValue'  => $has_value,
 				'noValue'   => $no_value,
 				'showValue' => $show_value,
 			);
 		}
-		foreach ( $optional_group as $i => $group ) {
+		foreach ( $optional_group as $key => $group ) {
 
 			$label      = $group['label'];
 			$show_value = ( $group['show_value'] );
 			$has_value  = $group['has_value'] ?: '';
 			$no_value   = $group['no_value'] ?: '';
+			$meta_keys  = array_keys( $group['meta_keys'] );
 			$value      = array();
 
-			foreach ( $meta_keys as $key => $label ) {
-				if ( isset( $meta[ $key ] ) ) {
-					$value[] = $label;
+			foreach ( $group['meta_keys'] as $k => $l ) {
+				if ( isset( $meta[ $k ] ) ) {
+					$value[] = $l;
 				}
 			}
 			$value = implode( ', ', $value );
 
-			$opt_group[ $i ] = array(
+			$opt_group[ $key ] = array(
 				'label'     => $label,
+				'keys'      => $meta_keys,
 				'value'     => $value,
 				'hasValue'  => $has_value,
 				'noValue'   => $no_value,
@@ -411,9 +414,11 @@ class Publishing_Flow_Admin {
 	public function customize_controls_print_footer_scripts() {
 
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-primary.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-primary.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
 	}
 
 	/**

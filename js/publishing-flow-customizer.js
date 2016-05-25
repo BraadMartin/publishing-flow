@@ -178,12 +178,13 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			);
 		});
 
-		var optPrimary = wp.template( 'pf-optional-primary' );
+		var reqGroup = wp.template( 'pf-required-group' );
 
-		_.each( data.optionalPrimary, function( value, key, list ) {
-			$sectionOptional.append(
-				optPrimary({
+		_.each( data.requiredGroup, function( value, key, list ) {
+			$sectionRequired.append(
+				reqGroup({
 					key:       key,
+					keys:      value.keys,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
@@ -199,6 +200,22 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			$sectionOptional.append(
 				optMeta({
 					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optGroup = wp.template( 'pf-optional-group' );
+
+		_.each( data.optionalGroup, function( value, key, list ) {
+			$sectionOptional.append(
+				optPrimary({
+					key:       key,
+					keys:      value.keys,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
