@@ -174,10 +174,16 @@ class Publishing_Flow_Admin {
 		$required_meta = $this->get_required_meta_keys( $post->post_type );
 		$optional_meta = $this->get_optional_meta_keys( $post->post_type );
 
+		// Get all required and optional meta key groups.
+		$required_group = $this->get_required_meta_key_groups( $post->post_type );
+		$optional_group = $this->get_optional_meta_key_groups( $post->post_type );
+
 		$req_primary = array();
 		$opt_primary = array();
 		$req_meta    = array();
 		$opt_meta    = array();
+		$req_group   = array();
+		$opt_group   = array();
 
 		// Build custom primary and meta objects that contain everything we need
 		// to render each key's control.
@@ -187,7 +193,7 @@ class Publishing_Flow_Admin {
 			$label      = $arr['label'] ?: $key;
 			$has_value  = $arr['has_value'] ?: '';
 			$no_value   = $arr['no_value'] ?: '';
-			$show_value = ( $arr['show_value'] ) ? 'true' : '';
+			$show_value = ( $arr['show_value'] );
 
 			$req_primary[ $key ] = array(
 				'label'     => $label,
@@ -203,7 +209,7 @@ class Publishing_Flow_Admin {
 			$label      = $arr['label'] ?: $key;
 			$has_value  = $arr['has_value'] ?: '';
 			$no_value   = $arr['no_value'] ?: '';
-			$show_value = ( $arr['show_value'] ) ? 'true' : '';
+			$show_value = ( $arr['show_value'] );
 
 			$opt_primary[ $key ] = array(
 				'label'     => $label,
@@ -220,7 +226,7 @@ class Publishing_Flow_Admin {
 			$label      = $arr['label'] ?: $key;
 			$has_value  = $arr['has_value'] ?: '';
 			$no_value   = $arr['no_value'] ?: '';
-			$show_value = ( $arr['show_value'] ) ? 'true' : '';
+			$show_value = ( $arr['show_value'] );
 
 			$req_meta[ $key ] = array(
 				'label'     => $label,
@@ -237,11 +243,72 @@ class Publishing_Flow_Admin {
 			$label      = $arr['label'] ?: $key;
 			$has_value  = $arr['has_value'] ?: '';
 			$no_value   = $arr['no_value'] ?: '';
-			$show_value = ( $arr['show_value'] ) ? 'true' : '';
+			$show_value = ( $arr['show_value'] );
 
 			$opt_meta[ $key ] = array(
 				'label'     => $label,
 				'value'     => $meta_value,
+				'hasValue'  => $has_value,
+				'noValue'   => $no_value,
+				'showValue' => $show_value,
+			);
+		}
+
+$group = array(
+	array(
+		'label'      => __( 'Funnel Stage', 'publishing-flow' ),
+		'meta_keys'  => array(
+			'_ef_editorial_meta_-core-king'    => __( 'Core / King', 'publishing-flow' ),
+			'_ef_editorial_meta_-core-support' => __( 'Core / Support', 'publishing-flow' ),
+			'_ef_editorial_meta_-non-core'     => __( 'Non Core', 'publishing-flow' ),
+		),
+		'show_value' => true,
+		'has_value'  => __( 'The post has a funnel stage', 'publishing-flow' ),
+		'no_value'   => __( 'The post is missing a funnel stage', 'publishing-flow' ),
+	)
+);
+
+		foreach ( $required_group as $i => $group ) {
+
+			$label      = $group['label'];
+			$show_value = ( $group['show_value'] );
+			$has_value  = $group['has_value'] ?: '';
+			$no_value   = $group['no_value'] ?: '';
+			$value      = array();
+
+			foreach ( $meta_keys as $key => $label ) {
+				if ( isset( $meta[ $key ] ) ) {
+					$value[] = $label;
+				}
+			}
+			$value = implode( ', ', $value );
+
+			$req_group[ $i ] = array(
+				'label'     => $label,
+				'value'     => $value,
+				'hasValue'  => $has_value,
+				'noValue'   => $no_value,
+				'showValue' => $show_value,
+			);
+		}
+		foreach ( $optional_group as $i => $group ) {
+
+			$label      = $group['label'];
+			$show_value = ( $group['show_value'] );
+			$has_value  = $group['has_value'] ?: '';
+			$no_value   = $group['no_value'] ?: '';
+			$value      = array();
+
+			foreach ( $meta_keys as $key => $label ) {
+				if ( isset( $meta[ $key ] ) ) {
+					$value[] = $label;
+				}
+			}
+			$value = implode( ', ', $value );
+
+			$opt_group[ $i ] = array(
+				'label'     => $label,
+				'value'     => $value,
 				'hasValue'  => $has_value,
 				'noValue'   => $no_value,
 				'showValue' => $show_value,
@@ -259,9 +326,16 @@ class Publishing_Flow_Admin {
 				break;
 			}
 		}
-
 		if ( $requirements_met ) {
 			foreach ( $req_meta as $key => $arr ) {
+				if ( empty( $arr['value'] ) ) {
+					$requirements_met = false;
+					break;
+				}
+			}
+		}
+		if ( $requirements_met ) {
+			foreach ( $req_group as $i => $arr ) {
 				if ( empty( $arr['value'] ) ) {
 					$requirements_met = false;
 					break;
@@ -283,6 +357,8 @@ class Publishing_Flow_Admin {
 			'optionalPrimary' => $opt_primary,
 			'requiredMeta'    => $req_meta,
 			'optionalMeta'    => $opt_meta,
+			'requiredGroup'   => $req_group,
+			'optionalGroup'   => $opt_group,
 			'editLink'        => $edit_link,
 			'requirementsMet' => $requirements_met,
 			'defaultDevice'   => $device,
@@ -415,5 +491,39 @@ class Publishing_Flow_Admin {
 		$meta_keys = array();
 
 		return apply_filters( 'publishing_flow_optional_meta_keys', $meta_keys, $post_type );
+	}
+
+	/**
+	 * Return an array of all required meta keys groups.
+	 *
+	 * A "group" represents multiple meta keys where at least one of them needs to have
+	 * a value for the group to be considered as having a value.
+	 *
+	 * @param   string  $post_type  The post type.
+	 *
+	 * @return  array               The array of required meta key groups.
+	 */
+	public function get_required_meta_key_groups( $post_type ) {
+
+		$meta_key_groups = array();
+
+		return apply_filters( 'publishing_flow_required_meta_key_groups', $meta_key_groups, $post_type );
+	}
+
+	/**
+	 * Return an array of all optional meta key groups.
+	 *
+	 * A "group" represents multiple meta keys where at least one of them needs to have
+	 * a value for the group to be considered as having a value.
+	 *
+	 * @param   string  $post_type  The post type.
+	 *
+	 * @return  array               The array of optional meta key groups.
+	 */
+	public function get_optional_meta_key_groups( $post_type ) {
+
+		$meta_key_groups = array();
+
+		return apply_filters( 'publishing_flow_optional_meta_key_groups', $meta_key_groups, $post_type );
 	}
 }
