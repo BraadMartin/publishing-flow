@@ -94,9 +94,65 @@ class Publishing_Flow_Admin {
 			PUBLISHING_FLOW_VERSION
 		);
 
-		// Grab the full post object.
 		$post_id = (int)$_GET['post-id'];
-		$post    = get_post( $post_id );
+
+		$data = $this->build_data_array( $post_id );
+
+		wp_localize_script( 'publishing-flow-customizer', 'publishingFlowData', $data );
+	}
+
+	/**
+	 * Build our Customizer URL.
+	 *
+	 * @param   int  $post_id  The post ID.
+	 *
+	 * @return  string         The URL.
+	 */
+	public function build_customizer_url( $post_id ) {
+
+		$url = admin_url( 'customize.php' );
+
+		// Open the Customizer to the post's preview URL.
+		$url = add_query_arg(
+			'url',
+			urlencode( get_preview_post_link( $post_id ) ),
+			$url
+		);
+
+		// Set the post's edit URL as the return URL.
+		$url = add_query_arg(
+			'return',
+			urlencode( get_edit_post_link( $post_id ) ),
+			$url
+		);
+
+		// Pass a flag that we'll use to scope our controls.
+		$url = add_query_arg(
+			'publishing-flow',
+			'true',
+			$url
+		);
+
+		// Pass the previewed post's ID.
+		$url = add_query_arg(
+			'post-id',
+			$post_id,
+			$url
+		);
+
+		return $url;
+	}
+
+	/**
+	 * Build the data array our JS will use.
+	 *
+	 * @param   integer  $post_id  The post ID to use.
+	 * @return  array              The data object.
+	 */
+	public function build_data_array( $post_id = 0 ) {
+
+		// Grab the full post object.
+		$post = get_post( $post_id );
 
 		// Grab all post meta.
 		$meta = get_metadata( 'post', $post_id );
@@ -213,6 +269,13 @@ class Publishing_Flow_Admin {
 			}
 		}
 
+		/**
+		 * Allow the default device the Customizer preview shows to be filtered.
+		 *
+		 * @param  string  The default Customizer preview device.
+		 */
+		$device = apply_filters( 'publishing_flow_customizer_default_device', 'mobile' );
+
 		$data = array(
 			'post'            => $post,
 			'meta'            => $meta,
@@ -222,51 +285,15 @@ class Publishing_Flow_Admin {
 			'optionalMeta'    => $opt_meta,
 			'editLink'        => $edit_link,
 			'requirementsMet' => $requirements_met,
+			'defaultDevice'   => $device,
 		);
 
-		wp_localize_script( 'publishing-flow-customizer', 'publishingFlowData', $data );
-	}
-
-	/**
-	 * Build our Customizer URL.
-	 *
-	 * @param   int  $post_id  The post ID.
-	 *
-	 * @return  string         The URL.
-	 */
-	public function build_customizer_url( $post_id ) {
-
-		$url = admin_url( 'customize.php' );
-
-		// Open the Customizer to the post's preview URL.
-		$url = add_query_arg(
-			'url',
-			urlencode( get_preview_post_link( $post_id ) ),
-			$url
-		);
-
-		// Set the post's edit URL as the return URL.
-		$url = add_query_arg(
-			'return',
-			urlencode( get_edit_post_link( $post_id ) ),
-			$url
-		);
-
-		// Pass a flag that we'll use to scope our controls.
-		$url = add_query_arg(
-			'publishing-flow',
-			'true',
-			$url
-		);
-
-		// Pass the previewed post's ID.
-		$url = add_query_arg(
-			'post-id',
-			$post_id,
-			$url
-		);
-
-		return $url;
+		/**
+		 * Allow the Customizer data array to be filtered.
+		 *
+		 * @param  array  $data  The Customizer data array.
+		 */
+		return apply_filters( 'publishing_flow_customizer_data_array', $data );
 	}
 
 	/**

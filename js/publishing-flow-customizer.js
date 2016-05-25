@@ -25,16 +25,11 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		$info     = $( '#customize-info' );
 		$footer   = $( '#customize-footer-actions' );
 
-		// Add a class to the controls wrapper to indicate Publishing Flow is active.
-		$controls.addClass( 'pf-customizer' );
+		// Add initial classes for styling purposes.
+		addInitialClasses();
 
-		// Add a class to the controls wrapper to indicate all required fields have a value.
-		if ( data.requirementsMet ) {
-			$controls.addClass( 'pf-requirements-met' );
-		}
-
-		// Set mobile as initial previewed device.
-		wp.customize.previewedDevice.set( 'mobile' );
+		// Set default initial preview device.
+		setDefaultDevice();
 
 		// Inject our info section.
 		injectInfo();
@@ -51,6 +46,30 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		// Initialize device preview events.
 		initDevicePreview();
 	};
+
+	/**
+	 * Add initial classes for styling purposes.
+	 */
+	var addInitialClasses = function() {
+
+		// Add a class to the controls wrapper to indicate Publishing Flow is active.
+		$controls.addClass( 'pf-customizer' );
+
+		// If all requirements have been met, add a class to the controls wrapper.
+		if ( data.requirementsMet ) {
+			$controls.addClass( 'pf-requirements-met' );
+		}
+	}
+
+	/**
+	 * Set the default Customizer preview device.
+	 */
+	var setDefaultDevice = function() {
+		wp.customize.previewedDevice.set( data.defaultDevice );
+
+		// Mark the device as having been clicked.
+		$footer.find( '.devices button[data-device="' + data.defaultDevice + '"]' ).addClass( 'pf-clicked' );
+	}
 
 	/**
 	 * Inject our info section.
