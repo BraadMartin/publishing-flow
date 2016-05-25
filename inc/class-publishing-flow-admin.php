@@ -254,20 +254,6 @@ class Publishing_Flow_Admin {
 			);
 		}
 
-$group = array(
-	array(
-		'label'      => __( 'Funnel Stage', 'publishing-flow' ),
-		'meta_keys'  => array(
-			'_ef_editorial_meta_-core-king'    => __( 'Core / King', 'publishing-flow' ),
-			'_ef_editorial_meta_-core-support' => __( 'Core / Support', 'publishing-flow' ),
-			'_ef_editorial_meta_-non-core'     => __( 'Non Core', 'publishing-flow' ),
-		),
-		'show_value' => true,
-		'has_value'  => __( 'The post has a funnel stage', 'publishing-flow' ),
-		'no_value'   => __( 'The post is missing a funnel stage', 'publishing-flow' ),
-	)
-);
-
 		foreach ( $required_group as $i => $group ) {
 
 			$label      = $group['label'];
