@@ -1,0 +1,151 @@
+/**
+ * Publishing Flow Customizer CSS.
+ */
+
+#customize-controls .customize-info {
+	background-color: #fff;
+	padding: 0 20px;
+	z-index: 10;
+}
+
+.pf-info h2 {
+	margin-bottom: 10px;
+}
+
+.pf-info p {
+	font-size: 12px;
+}
+
+.pf-customizer-publish.button-primary {
+	font-size: 16px;
+	padding: 2px 15px;
+	height: 31px;
+	margin-top: 7px !important;
+}
+
+.pf-customizer-publish[disabled].button-primary {
+	color: #ccc !important;
+	background: #f7f7f7 !important;
+	border-color: #ccc !important;
+	box-shadow: 0 1px 0 #ccc !important;
+	text-shadow: 0 0 0 white !important;
+}
+
+.pf-customizer-publish[disabled]:hover {
+	cursor: not-allowed;
+}
+
+.pf-notifications {
+	position: absolute;
+	left: 0;
+	top: -105px;
+	padding: 0 20px;
+	transition: top 0.3s;
+	border-bottom: 3px solid #FF6D6D;
+}
+
+.pf-notifications.visible {
+	top: -15px;
+	background-color: #fff;
+	padding: 2px 20px 16px;
+}
+
+.pf-notifications .dashicons {
+	float: right;
+	margin-top: -20px;
+	color: #FF6D6D;
+}
+
+.pf-notifications a:hover {
+	text-decoration: underline !important;
+}
+
+.pf-customizer {
+	padding: 4px 16px;
+	transition: padding 0.3s;
+}
+
+.pf-customizer.pf-notifications-open {
+	padding-top: 110px;
+}
+
+.pf-customizer div {
+	overflow: hidden;
+}
+
+.pf-customizer .pf-status .dashicons,
+.pf-customizer .pf-status .dashicons:before {
+	font-size: 30px;
+	width: 30px;
+	height: 30px;
+}
+
+.pf-customizer .pf-all-good {
+	color: green;
+}
+
+.pf-customizer .pf-no-good {
+	color: #FF6D6D;
+}
+
+.pf-customizer .pf-section {
+	padding: 0 0 10px 5px;
+	margin-bottom: 30px;
+	border-bottom: 1px solid #ccc;
+}
+
+.pf-customizer .pf-section-label {
+	margin: 0 0 18px;
+}
+
+.pf-customizer .pf-field {
+	margin-bottom: 10px;
+}
+
+.pf-customizer .pf-field:last-child {
+	margin-bottom: 0;
+}
+
+.pf-customizer .pf-label h3 {
+	float: left;
+	width: calc( 100% - 30px );
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.pf-customizer .pf-label .pf-status {
+	float: right;
+	width: 30px;
+	text-align: right;
+}
+
+.pf-customizer .pf-value {
+	max-width: calc( 100% - 30px );
+}
+
+.pf-customizer .pf-value p {
+	margin: 0 0 10px;
+	font-size: 12px;
+}
+
+.pf-device-notifications {
+	position: absolute;
+	bottom: -60px;
+	background-color: #fff;
+	padding: 0 20px;
+	border-top: 3px solid #FF6D6D;
+	transition: bottom 0.3s;
+}
+
+.pf-device-notifications.visible {
+	bottom: 45px;
+}
+
+#customize-footer-actions {
+	background-color: #eee;
+}
+
+.pf-device-notifications .dashicons {
+	margin-left: 30px;
+	transform: rotateZ( -40deg );
+}
