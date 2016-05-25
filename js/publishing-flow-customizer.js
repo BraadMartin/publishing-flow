@@ -257,6 +257,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			// If all buttons have been clicked and other requirements
 			// have been met, enable the Publish button.
 			if ( $deviceButtons.filter( '.pf-clicked' ).length === $deviceButtons.length && $controls.hasClass( 'pf-requirements-met' ) ) {
+				$( '.pf-device-notifications' ).removeClass( 'visible' );
 				$header.find( '.pf-customizer-publish' ).removeAttr( 'disabled' );
 			}
 		});
