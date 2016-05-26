@@ -2,18 +2,10 @@
  * Publishing Flow Customizer CSS.
  */
 
-#customize-controls .customize-info {
-	background-color: #fff;
-	padding: 0 20px;
-	z-index: 10;
-}
-
-.pf-info h2 {
-	margin-bottom: 10px;
-}
-
-.pf-info p {
-	font-size: 12px;
+#customize-header-actions .spinner {
+	float: none;
+	position: absolute;
+	right: 110px;
 }
 
 .pf-customizer-publish.button-primary {
@@ -33,6 +25,20 @@
 
 .pf-customizer-publish[disabled]:hover {
 	cursor: not-allowed;
+}
+
+#customize-controls .customize-info {
+	background-color: #fff;
+	padding: 0 20px;
+	z-index: 10;
+}
+
+.pf-info h2 {
+	margin-bottom: 10px;
+}
+
+.pf-info p {
+	font-size: 12px;
 }
 
 .pf-notifications {
@@ -163,4 +169,55 @@
 .preview-mobile .wp-full-overlay-main {
 	width: 320px;
 	height: 568px;
+}
+
+.featherlight .featherlight-content {
+	background-color: #eee;
+}
+
+.featherlight .featherlight-close-icon {
+	width: 50px;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: bold;
+	background: none;
+}
+
+.featherlight .featherlight-close-icon:hover {
+	background-color: #ddd;
+}
+
+.featherlight .featherlight-close-icon:active {
+	background-color: #ccc;
+}
+
+.pf-publish-success,
+.pf-schedule-success,
+.pf-publish-fail {
+	display: none;
+}
+
+.pf-lightbox {
+	text-align: center;
+	padding: 20px 30px;
+}
+
+.pf-lightbox h1 {
+	font-size: 3em;
+}
+
+.pf-lightbox h2 {
+	font-size: 1.6em;
+	margin-top: 35px;
+}
+
+.pf-lightbox p {
+	font-size: 16px;
+}
+
+.pf-button {
+	margin: 10px 4px 0 !important;
+	font-size: 18px !important;
+	height: auto !important;
+	padding: 6px 16px !important;
 }

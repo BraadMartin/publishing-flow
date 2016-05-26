@@ -128,8 +128,6 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 */
 	var injectControls = function() {
 
-		console.log( data );
-
 		// Define our sections.
 		var $sectionRequired = $( '<div />' )
 			.addClass( 'pf-section pf-required-section' )
@@ -234,13 +232,12 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	}
 
 	/**
-	 * Inject our publish button.
+	 * Inject our publish button and spinner.
 	 */
 	var injectButton = function() {
 
-		// Remove the default save button and spinner.
+		// Remove the default save button.
 		$header.find( 'input#save' ).remove();
-		$header.find( '.spinner' ).remove();
 
 		var $button = $( '<div />' );
 		var buttonText = ( data.scheduled ) ? 'Schedule' : 'Publish';
@@ -253,8 +250,6 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		// Set up click action on the publish button.
 		$button.on( 'click', function() {
-
-			console.log( 'button clicked' );
 
 			// Trigger a message about required things when a user
 			// clicks on the button while it is disabled.
@@ -314,21 +309,39 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		console.log( 'attempting to publish a post' );
 
+		// Show the spinner.
+		var $spinner = $header.find( '.spinner' );
+		$spinner.css( 'visibility', 'visible' );
+
 		var pubData = {
 			'action'           : 'pf_publish_post',
 			'post_id'          : data.post.ID,
 			'pf_publish_nonce' : data.publishNonce,
 		};
+		var options = {};
 
 		var publishPost = $.post( ajaxurl, pubData );
 
 		publishPost.done( function( response ) {
 			console.log( 'Ajax request to publish post has completed' );
 			console.log( response );
+
+			$spinner.css( 'visibility', 'hidden' );
+
+			if ( 'published' === response.outcome ) {
+				$.featherlight( $( '.pf-publish-success' ) );
+			} else if ( 'scheduled' === response.outcome ) {
+				$.featherlight( $( '.pf-schedule-success' ) );
+			} else {
+				$.featherlight( $( '.pf-publish-fail' ) );
+			}
+
+			$( '.pf-view-post' ).attr( 'href', response.postLink );
+			$( '.pf-edit-post' ).attr( 'href', data.editLink );
 		});
 
 		publishPost.fail( function() {
-			console.log( 'Whoops, something went wrong with the Ajax request to publish the post' );
+			$.featherlight( $( '.pf-publish-success' ), options );
 		})
 	}
 

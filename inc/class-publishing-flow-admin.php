@@ -86,6 +86,8 @@ class Publishing_Flow_Admin {
 
 	/**
 	 * Enqueue Customizer scripts and styles.
+	 *
+	 * @todo Switch to included version of Featherlight.
 	 */
 	public function customize_controls_enqueue_scripts() {
 
@@ -97,7 +99,7 @@ class Publishing_Flow_Admin {
 		wp_enqueue_script(
 			'publishing-flow-customizer',
 			PUBLISHING_FLOW_URL . 'js/publishing-flow-customizer.js',
-			array( 'jquery', 'wp-util', 'underscore' ),
+			array( 'jquery', 'wp-util', 'underscore', 'featherlight' ),
 			PUBLISHING_FLOW_VERSION,
 			true
 		);
@@ -105,7 +107,7 @@ class Publishing_Flow_Admin {
 		wp_enqueue_style(
 			'publishing-flow-customizer',
 			PUBLISHING_FLOW_URL . 'css/publishing-flow-customizer.css',
-			array(),
+			array( 'featherlight' ),
 			PUBLISHING_FLOW_VERSION
 		);
 
@@ -463,12 +465,103 @@ class Publishing_Flow_Admin {
 	 */
 	public function customize_controls_print_footer_scripts() {
 
+		$post_id = (int)$_GET['post-id'];
+
+		// Control templates.
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-primary.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-primary.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
+
+		// Confirmation templates.
+		echo $this->publish_success_template( $post_id );
+		echo $this->schedule_success_template( $post_id );
+		echo $this->publish_fail_template( $post_id );
+	}
+
+	/**
+	 * Build and return our Publish Success template;
+	 *
+	 * @param   int  $post_id  The current post ID.
+	 *
+	 * @return  string  The template.
+	 */
+	public function publish_success_template( $post_id ) {
+
+		ob_start();
+
+		?>
+		<div class="pf-publish-success pf-lightbox">
+			<h1 class="pf-heading">
+				<?php _e( 'Success!', 'publishing-flow' ); ?>
+			</h1>
+			<h2 class="pf-heading">
+				<?php _e( 'Your post has been published.', 'publishing-flow' ); ?>
+			</h2>
+			<p><?php _e( 'What do you want to do now?', 'publishing-flow' ); ?></p>
+			<a class="pf-button button pf-view-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'View Post', 'publishing-flow' ); ?></a>
+			<a class="pf-button button pf-edit-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'Keep Editing', 'publishing-flow' ); ?></a>
+		</div>
+		<?php
+
+		return apply_filters( 'publishing_flow_publish_success_template', ob_get_clean() );
+	}
+
+	/**
+	 * Build and return our Schedule Success template;
+	 *
+	 * @param   int  $post_id  The current post ID.
+	 *
+	 * @return  string  The template.
+	 */
+	public function schedule_success_template( $post_id ) {
+
+		ob_start();
+
+		?>
+		<div class="pf-schedule-success pf-lightbox">
+			<h1 class="pf-heading">
+				<?php _e( 'Success!', 'publishing-flow' ); ?>
+			</h1>
+			<h2 class="pf-heading">
+				<?php _e( 'Your post has been scheduled.', 'publishing-flow' ); ?>
+			</h2>
+			<p><?php _e( 'What do you want to do now?', 'publishing-flow' ); ?></p>
+			<a class="pf-button button pf-view-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'View Post', 'publishing-flow' ); ?></a>
+			<a class="pf-button button pf-edit-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'Keep Editing', 'publishing-flow' ); ?></a>
+		</div>
+		<?php
+
+		return apply_filters( 'publishing_flow_schedule_success_template', ob_get_clean() );
+	}
+
+	/**
+	 * Build and return our Publish Fail template;
+	 *
+	 * @param   int  $post_id  The current post ID.
+	 *
+	 * @return  string  The template.
+	 */
+	public function publish_fail_template( $post_id ) {
+
+		ob_start();
+
+		?>
+		<div class="pf-publish-fail pf-lightbox">
+			<h1 class="pf-heading">
+				<?php _e( 'Whoops, something went wrong...', 'publishing-flow' ); ?>
+			</h1>
+			<h2 class="pf-heading">
+				<?php _e( 'Your post could not be published or scheduled at this time.', 'publishing-flow' ); ?>
+			</h2>
+			<p><?php _e( 'Please go back to the edit screen and try again.', 'publishing-flow' ); ?></p>
+			<a class="pf-button button pf-edit-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'Return to Edit Screen', 'publishing-flow' ); ?></a>
+		</div>
+		<?php
+
+		return apply_filters( 'publishing_flow_publish_fail_template', ob_get_clean() );
 	}
 
 	/**
@@ -528,7 +621,8 @@ class Publishing_Flow_Admin {
 			$response->outcome = 'published';
 		}
 
-		$response->status = 'success';
+		$response->status   = 'success';
+		$response->postLink = get_permalink( $post->ID );
 
 		wp_send_json( $response );
 
@@ -550,7 +644,13 @@ class Publishing_Flow_Admin {
 				'show_value' => true,
 				'has_value'  => __( 'The post has a title', 'publishing-flow' ),
 				'no_value'   => __( 'The post is missing a title', 'publishing-flow' ),
-			)
+			),
+			'post_content' => array(
+				'label'      => __( 'Post Content', 'publishing-flow' ),
+				'show_value' => false,
+				'has_value'  => __( 'The post has content', 'publishing-flow' ),
+				'no_value'   => __( 'The post is missing content', 'publishing-flow' ),
+			),
 		);
 
 		return apply_filters( 'publishing_flow_required_primary_keys', $primary_keys, $post_type );
