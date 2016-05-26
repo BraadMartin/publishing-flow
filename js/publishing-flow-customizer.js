@@ -129,6 +129,13 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	var injectControls = function() {
 
 		// Define our sections.
+		var $sectionInfo = $( '<div />' )
+			.addClass( 'pf-section pf-info-section' )
+			/*.append(
+				$( '<h2 />' )
+					.addClass( 'pf-section-label' )
+					.text( 'Post Info' )
+			)*/;
 		var $sectionRequired = $( '<div />' )
 			.addClass( 'pf-section pf-required-section' )
 			.append(
@@ -143,6 +150,37 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 					.addClass( 'pf-section-label' )
 					.text( 'Optional' )
 			);
+
+		// Inject post info into our Post Info section.
+		if ( data.scheduled ) {
+			$sectionInfo.append(
+				$( '<h3 />' )
+					.text( 'Publish Date' ),
+				$( '<span />' )
+					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
+				$( '<p />' )
+					.addClass( 'pf-info-section pf-publish-date' )
+					.text( 'This post will be scheduled to publish on ' )
+					.append(
+						$( '<strong />' )
+							.text( data.postDate )
+					)
+			);
+		} else {
+			$sectionInfo.append(
+				$( '<h3 />' )
+					.text( 'Publish Date' ),
+				$( '<span />' )
+					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
+				$( '<p />' )
+					.addClass( 'pf-info-section pf-publish-date' )
+					.text( 'This post will be published ' )
+					.append(
+						$( '<strong />' )
+							.text( 'immediately' )
+					)
+			);
+		}
 
 		// Render each required and optional item into each section.
 		var reqPrimary = wp.template( 'pf-required-primary' );
@@ -223,6 +261,9 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		});
 
 		// If any of our sections have output, output them.
+		if ( $sectionInfo.children().length > 1 ) {
+			$controls.append( $sectionInfo );
+		}
 		if ( $sectionRequired.children().length > 1 ) {
 			$controls.append( $sectionRequired );
 		}

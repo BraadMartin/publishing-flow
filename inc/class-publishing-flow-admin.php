@@ -388,6 +388,7 @@ class Publishing_Flow_Admin {
 		$publish_nonce = wp_create_nonce( 'pf-publish' );
 
 		$scheduled = $this->if_scheduled_post( $post );
+		$post_date = get_the_date( 'F j, Y \a\t g:ia', $post->ID );
 
 		$data = array(
 			'post'            => $post,
@@ -403,6 +404,7 @@ class Publishing_Flow_Admin {
 			'defaultDevice'   => $device,
 			'publishNonce'    => $publish_nonce,
 			'scheduled'       => $scheduled,
+			'postDate'        => $post_date,
 		);
 
 		/**
