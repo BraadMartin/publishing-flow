@@ -158,3 +158,9 @@
 	margin-left: 30px;
 	transform: rotateZ( -40deg );
 }
+
+/* iPhone 5 size */
+.preview-mobile .wp-full-overlay-main {
+	width: 320px;
+	height: 568px;
+}
