@@ -178,7 +178,12 @@ class Publishing_Flow_Admin {
 			$url
 		);
 
-		return $url;
+		/**
+		 * Allow the Customizer URL to be filtered.
+		 *
+		 * @param  int  $post_id  The current post ID.
+		 */
+		return apply_filters( 'publishing_flow_customizer_url', $url, $post_id );
 	}
 
 	/**
