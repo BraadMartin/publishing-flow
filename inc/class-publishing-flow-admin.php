@@ -377,6 +377,13 @@ class Publishing_Flow_Admin {
 			}
 		}
 
+		// Check the domain to allow for overriding requirements in a development environment.
+		$dev_domain = $this->get_dev_domain();
+
+		if ( $dev_domain === $_SERVER['HTTP_HOST'] ) {
+			$requirements_met = true;
+		}
+
 		/**
 		 * Allow the default device the Customizer preview shows to be filtered.
 		 *
@@ -732,5 +739,21 @@ class Publishing_Flow_Admin {
 		$meta_key_groups = array();
 
 		return apply_filters( 'publishing_flow_optional_meta_key_groups', $meta_key_groups, $post_type );
+	}
+
+	/**
+	 * Return a domain for development environments.
+	 *
+	 * @return  string  The dev domain.
+	 */
+	public function get_dev_domain() {
+
+		/**
+		 * Allow a development domain to be specified that will bypass the requirements
+		 * check (allowing for easier publishing of test posts and pages).
+		 *
+		 * @param  string  The dev URL.
+		 */
+		return apply_filters( 'publishing_flow_dev_domain', '' );
 	}
 }
