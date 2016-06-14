@@ -229,6 +229,36 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			);
 		});
 
+		var reqTax = wp.template( 'pf-required-tax' );
+
+		_.each( data.requiredTax, function( value, key, list ) {
+			$sectionRequired.append(
+				reqTax({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optPrimary = wp.template( 'pf-optional-primary' );
+
+		_.each( data.optionalPrimary, function( value, key, list ) {
+			$sectionRequired.append(
+				optPrimary({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
 		var optMeta = wp.template( 'pf-optional-meta' );
 
 		_.each( data.optionalMeta, function( value, key, list ) {
@@ -251,6 +281,21 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				optPrimary({
 					key:       key,
 					keys:      value.keys,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optTax = wp.template( 'pf-optional-tax' );
+
+		_.each( data.optionalTax, function( value, key, list ) {
+			$sectionRequired.append(
+				optTax({
+					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,

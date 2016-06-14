@@ -564,6 +564,8 @@ class Publishing_Flow_Admin {
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php';
 
 		// Confirmation templates.
 		echo $this->publish_success_template( $post_id );
