@@ -211,6 +211,28 @@ class Publishing_Flow_Admin {
 			}
 		}
 
+		// Grab all taxonomies for the post type.
+		$taxonomies = get_object_taxonomies( $post->post_type, 'names' );
+
+		// Grab all post terms and convert into a simple array.
+		$terms = array();
+
+		foreach ( $taxonomies as $tax ) {
+			$tax_terms = get_the_terms( $post, $tax );
+
+			if ( empty( $tax_terms ) ) {
+				continue;
+			}
+
+			if ( ! isset( $terms[ $tax ] ) ) {
+				$terms[ $tax ] = array();
+			}
+
+			foreach ( $tax_terms as $term_obj ) {
+				$terms[ $tax ][ $term_obj->term_id ] = $term_obj->name;
+			}
+		}
+
 		// Get all required and optional primary keys.
 		$required_primary = $this->get_required_primary_keys( $post->post_type );
 		$optional_primary = $this->get_optional_primary_keys( $post->post_type );
@@ -223,12 +245,17 @@ class Publishing_Flow_Admin {
 		$required_group = $this->get_required_meta_key_groups( $post->post_type );
 		$optional_group = $this->get_optional_meta_key_groups( $post->post_type );
 
+		$required_tax = $this->get_required_taxonomies( $post->post_type );
+		$optional_tax = $this->get_optional_taxonomies( $post->post_type );
+
 		$req_primary = array();
 		$opt_primary = array();
 		$req_meta    = array();
 		$opt_meta    = array();
 		$req_group   = array();
 		$opt_group   = array();
+		$req_tax     = array();
+		$opt_tax     = array();
 
 		// Build custom primary and meta objects that contain everything we need
 		// to render each key's control.
@@ -348,6 +375,50 @@ class Publishing_Flow_Admin {
 				'showValue' => $show_value,
 			);
 		}
+		foreach ( $required_tax as $tax => $arr ) {
+
+			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
+
+			if ( ! empty( $tax_value ) ) {
+				$tax_value = implode( ', ', $tax_value );
+			}
+
+			// Handle missing values.
+			$label      = $arr['label'] ?: $tax;
+			$has_value  = $arr['has_value'] ?: '';
+			$no_value   = $arr['no_value'] ?: '';
+			$show_value = ( $arr['show_value'] );
+
+			$req_tax[ $tax ] = array(
+				'label'     => $label,
+				'value'     => $tax_value,
+				'hasValue'  => $has_value,
+				'noValue'   => $no_value,
+				'showValue' => $show_value,
+			);
+		}
+		foreach ( $optional_tax as $tax => $arr ) {
+
+			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
+
+			if ( ! empty( $tax_value ) ) {
+				$tax_value = implode( ', ', $tax_value );
+			}
+
+			// Handle missing values.
+			$label      = $arr['label'] ?: $tax;
+			$has_value  = $arr['has_value'] ?: '';
+			$no_value   = $arr['no_value'] ?: '';
+			$show_value = ( $arr['show_value'] );
+
+			$opt_tax[ $tax ] = array(
+				'label'     => $label,
+				'value'     => $tax_value,
+				'hasValue'  => $has_value,
+				'noValue'   => $no_value,
+				'showValue' => $show_value,
+			);
+		}
 
 		$edit_link = get_edit_post_link( $post->ID );
 
@@ -370,6 +441,14 @@ class Publishing_Flow_Admin {
 		}
 		if ( $requirements_met ) {
 			foreach ( $req_group as $i => $arr ) {
+				if ( empty( $arr['value'] ) ) {
+					$requirements_met = false;
+					break;
+				}
+			}
+		}
+		if ( $requirements_met ) {
+			foreach ( $req_tax as $i => $arr ) {
 				if ( empty( $arr['value'] ) ) {
 					$requirements_met = false;
 					break;
@@ -406,6 +485,8 @@ class Publishing_Flow_Admin {
 			'optionalMeta'    => $opt_meta,
 			'requiredGroup'   => $req_group,
 			'optionalGroup'   => $opt_group,
+			'requiredTax'     => $req_tax,
+			'optionalTax'     => $opt_tax,
 			'editLink'        => $edit_link,
 			'requirementsMet' => $requirements_met,
 			'defaultDevice'   => $device,
@@ -739,6 +820,34 @@ class Publishing_Flow_Admin {
 		$meta_key_groups = array();
 
 		return apply_filters( 'publishing_flow_optional_meta_key_groups', $meta_key_groups, $post_type );
+	}
+
+	/**
+	 * Return an array of all required taxonomies.
+	 *
+	 * @param   string  $post_type  The post type.
+	 *
+	 * @return  array               The array of required taxonomies.
+	 */
+	public function get_required_taxonomies( $post_type ) {
+
+		$taxonomies = array();
+
+		return apply_filters( 'publishing_flow_required_taxonomies', $taxonomies, $post_type );
+	}
+
+	/**
+	 * Return an array of all optional taxonomies.
+	 *
+	 * @param   string  $post_type  The post type.
+	 *
+	 * @return  array               The array of optional taxonomies.
+	 */
+	public function get_optional_taxonomies( $post_type ) {
+
+		$taxonomies = array();
+
+		return apply_filters( 'publishing_flow_optional_taxonomies', $taxonomies, $post_type );
 	}
 
 	/**
