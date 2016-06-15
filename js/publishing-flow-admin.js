@@ -27,9 +27,13 @@ var PublishingFlow = ( function( $, data ) {
 		// Hijack the publish and schedule buttons.
 		var hijacked = redirectButtons();
 
-		// Set up a mutation observer to detect when the publish button changes.
 		if ( hijacked ) {
+
+			// Set up a mutation observer to detect when the publish button changes.
 			setupButtonObserver();
+
+			// Click handler for the button.
+			setupButtonClick();
 		}
 	}
 
@@ -51,16 +55,16 @@ var PublishingFlow = ( function( $, data ) {
 		// Hide actual publish button.
 		$publish.addClass( 'pf-hidden' );
 
-		// Grab our button URL and label from our data object.
-		var url   = data.buttonUrl;
+		// Grab our button label from our data object.
 		var label = data.buttonLabel;
 
 		// Inject our button.
 		$( '#publishing-action' ).append(
-			$( '<a />' )
+			$( '<input />' )
 				.addClass( 'button button-primary publishing-flow-trigger' )
-				.text( label )
-				.attr( 'href', url )
+				.attr( 'value', label )
+				.attr( 'type', 'submit' )
+				.attr( 'name', 'save' )
 		);
 
 		return true;
@@ -103,6 +107,27 @@ var PublishingFlow = ( function( $, data ) {
 		}
 
 		$( '.publishing-flow-trigger' ).text( text );
+	}
+
+	/**
+	 * Click handler for the Publish Flow button.
+	 */
+	var setupButtonClick = function() {
+
+		// When the button is clicked, inject an extra hidden <input>
+		// that will allow us to do our redirect.
+		$( '.publishing-flow-trigger' ).on( 'click', function( e ) {
+			e.preventDefault();
+
+			$( '#publishing-action' ).append(
+				$( '<input />' )
+					.attr( 'type', 'hidden' )
+					.attr( 'name', 'pf-action' )
+					.attr( 'value', 'enter-publishing-flow' )
+			);
+
+			$( 'form#post' ).submit();
+		});
 	}
 
 	return {

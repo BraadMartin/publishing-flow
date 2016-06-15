@@ -22,6 +22,9 @@ class Publishing_Flow_Admin {
 		// Enqueue admin scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
+		// Handle redirect after clicking Publish Flow button.
+		add_filter( 'redirect_post_location', array( $this, 'customizer_redirect' ), 10, 2 );
+
 		// Enqueue Customizer scripts and styles.
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'customize_controls_enqueue_scripts' ) );
 
@@ -82,6 +85,23 @@ class Publishing_Flow_Admin {
 		);
 
 		wp_localize_script( 'publishing-flow-admin', 'publishingFlowData', $data );
+	}
+
+	/**
+	 * Redirect to the Customizer when the Publish Flow button is clicked.
+	 *
+	 * @param   string  $location  The redirect URL.
+	 * @param   int     $post_id   The post ID.
+	 *
+	 * @return  string             The updated redirect URL.
+	 */
+	public function customizer_redirect( $location, $post_id ) {
+
+		if ( isset( $_POST['pf-action'] ) && 'enter-publishing-flow' === $_POST['pf-action'] ) {
+			$location = $this->build_customizer_url( $post_id );
+		}
+
+		return $location;
 	}
 
 	/**
