@@ -119,6 +119,9 @@ var PublishingFlow = ( function( $, data ) {
 		$( '.publishing-flow-trigger' ).on( 'click', function( e ) {
 			e.preventDefault();
 
+			// Disable browser notices about unsaved form content.
+			$( window ).off( 'beforeunload.edit-post' );
+
 			$( '#publishing-action' ).append(
 				$( '<input />' )
 					.attr( 'type', 'hidden' )
