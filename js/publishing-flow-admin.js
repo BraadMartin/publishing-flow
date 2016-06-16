@@ -39,6 +39,9 @@ var PublishingFlow = ( function( $, data ) {
 
 	/**
 	 * Hijack the publish and schedule buttons.
+	 *
+	 * @todo  The check on "Update" being the button text here will fail on
+	 *        non-english sites.
 	 */
 	var redirectButtons = function() {
 
@@ -86,9 +89,7 @@ var PublishingFlow = ( function( $, data ) {
 		});
 
 		var config = {
-			attributes: true,
-			childList: true,
-			characterData: true
+			attributes: true
 		};
 
 		observer.observe( target, config );
@@ -96,6 +97,9 @@ var PublishingFlow = ( function( $, data ) {
 
 	/**
 	 * Update our button text.
+	 *
+	 * @todo  Make text here translatable, and figure out how to support
+	 *        non-english sites.
 	 */
 	var updateButtonText = function( text ) {
 
@@ -115,7 +119,7 @@ var PublishingFlow = ( function( $, data ) {
 	var setupButtonClick = function() {
 
 		// When the button is clicked, inject an extra hidden <input>
-		// that will allow us to do our redirect.
+		// that will allow us to do our redirect, then submit the form.
 		$( '.publishing-flow-trigger' ).on( 'click', function( e ) {
 			e.preventDefault();
 
