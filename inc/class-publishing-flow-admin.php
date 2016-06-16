@@ -535,10 +535,6 @@ class Publishing_Flow_Admin {
 			return;
 		}
 
-		/**
-		 * Sections.
-		 */
-
 		// Get all registered sections.
 		$sections = $wp_customize->sections();
 
@@ -546,10 +542,6 @@ class Publishing_Flow_Admin {
 		foreach( $sections as $section ) {
 			$wp_customize->remove_section( $section->id );
 		}
-
-		/**
-		 * Controls.
-		 */
 	}
 
 	/**
