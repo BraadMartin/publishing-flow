@@ -265,6 +265,7 @@ class Publishing_Flow_Admin {
 		$required_group = $this->get_required_meta_key_groups( $post->post_type );
 		$optional_group = $this->get_optional_meta_key_groups( $post->post_type );
 
+		// Get all required taxonomies.
 		$required_tax = $this->get_required_taxonomies( $post->post_type );
 		$optional_tax = $this->get_optional_taxonomies( $post->post_type );
 
@@ -442,39 +443,8 @@ class Publishing_Flow_Admin {
 
 		$edit_link = get_edit_post_link( $post->ID );
 
-		// Confirm that all of the required fields have a value, and if so set a flag.
-		$requirements_met = true;
-
-		foreach ( $req_primary as $key => $arr ) {
-			if ( empty( $arr['value'] ) ) {
-				$requirements_met = false;
-				break;
-			}
-		}
-		if ( $requirements_met ) {
-			foreach ( $req_meta as $key => $arr ) {
-				if ( empty( $arr['value'] ) ) {
-					$requirements_met = false;
-					break;
-				}
-			}
-		}
-		if ( $requirements_met ) {
-			foreach ( $req_group as $i => $arr ) {
-				if ( empty( $arr['value'] ) ) {
-					$requirements_met = false;
-					break;
-				}
-			}
-		}
-		if ( $requirements_met ) {
-			foreach ( $req_tax as $i => $arr ) {
-				if ( empty( $arr['value'] ) ) {
-					$requirements_met = false;
-					break;
-				}
-			}
-		}
+		// Confirm that all of the required fields have a value.
+		$requirements_met = $this->check_requirements_met( $req_primary, $req_meta, $req_group, $req_tax );
 
 		// Check the domain to allow for overriding requirements in a development environment.
 		$dev_domain = $this->get_dev_domain();
@@ -521,6 +491,54 @@ class Publishing_Flow_Admin {
 		 * @param  array  $data  The Customizer data array.
 		 */
 		return apply_filters( 'publishing_flow_customizer_data_array', $data );
+	}
+
+	/**
+	 * Check whether all the required fields have a value.
+	 *
+	 * @param   array  $req_primary  The array of required primary fields.
+	 * @param   array  $req_meta     The array of required meta fields.
+	 * @param   array  $req_group    The array of required meta field groups.
+	 * @param   array  $req_tax      The array of required taxonomies.
+	 *
+	 * @return  bool                 Whether or not all required fields have a value.
+	 */
+	public function check_requirements_met( $req_primary, $req_meta, $req_group, $req_tax ) {
+
+		$requirements_met = true;
+
+		foreach ( $req_primary as $key => $arr ) {
+			if ( empty( $arr['value'] ) ) {
+				$requirements_met = false;
+				break;
+			}
+		}
+		if ( $requirements_met ) {
+			foreach ( $req_meta as $key => $arr ) {
+				if ( empty( $arr['value'] ) ) {
+					$requirements_met = false;
+					break;
+				}
+			}
+		}
+		if ( $requirements_met ) {
+			foreach ( $req_group as $i => $arr ) {
+				if ( empty( $arr['value'] ) ) {
+					$requirements_met = false;
+					break;
+				}
+			}
+		}
+		if ( $requirements_met ) {
+			foreach ( $req_tax as $i => $arr ) {
+				if ( empty( $arr['value'] ) ) {
+					$requirements_met = false;
+					break;
+				}
+			}
+		}
+
+		return $requirements_met;
 	}
 
 	/**
