@@ -110,7 +110,7 @@ var PublishingFlow = ( function( $, data ) {
 			text = 'Schedule Flow';
 		}
 
-		$( '.publishing-flow-trigger' ).text( text );
+		$( '.publishing-flow-trigger' ).val( text );
 	}
 
 	/**
