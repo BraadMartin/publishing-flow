@@ -70,18 +70,16 @@ class Publishing_Flow_Admin {
 			PUBLISHING_FLOW_VERSION
 		);
 
-		$url       = $this->build_customizer_url( $post->ID );
-		$scheduled = $this->if_scheduled_post( $post->ID );
-
-		if ( $scheduled ) {
-			$label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
-		} else {
-			$label = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
-		}
+		$url            = $this->build_customizer_url( $post->ID );
+		$schedule_label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
+		$publish_label  = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
+		$publish_action = ( $this->if_scheduled_post( $post->ID ) ) ? 'schedule' : 'publish';
 
 		$data = array(
-			'buttonUrl'   => $url,
-			'buttonLabel' => $label,
+			'buttonUrl'           => $url,
+			'buttonPublishLabel'  => $publish_label,
+			'buttonScheduleLabel' => $schedule_label,
+			'publishAction'       => $publish_action,
 		);
 
 		wp_localize_script( 'publishing-flow-admin', 'publishingFlowData', $data );

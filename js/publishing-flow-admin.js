@@ -59,7 +59,11 @@ var PublishingFlow = ( function( $, data ) {
 		$publish.addClass( 'pf-hidden' );
 
 		// Grab our button label from our data object.
-		var label = data.buttonLabel;
+		if ( data.publishAction === 'schedule' ) {
+			var label = data.buttonScheduleLabel;
+		} else {
+			var label = data.buttonPublishLabel;
+		}
 
 		// Inject our button.
 		$( '#publishing-action' ).append(
@@ -98,16 +102,15 @@ var PublishingFlow = ( function( $, data ) {
 	/**
 	 * Update our button text.
 	 *
-	 * @todo  Make text here translatable, and figure out how to support
-	 *        non-english sites.
+	 * @todo  Figure out how to support non-english sites.
 	 */
 	var updateButtonText = function( text ) {
 
 		// Handle English button text gracefully.
 		if ( 'Publish' === text ) {
-			text = 'Publish Flow';
+			text = data.buttonPublishLabel;
 		} else if ( 'Schedule' === text ) {
-			text = 'Schedule Flow';
+			text = data.buttonScheduleLabel;
 		}
 
 		$( '.publishing-flow-trigger' ).val( text );
