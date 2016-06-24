@@ -47,8 +47,8 @@
 }
 
 .publishing-flow-requirements-wrap h2.pf-section-label {
-	font-size: 16px;
-	margin-bottom: 10px;
+	font-size: 16px !important;
+	margin-bottom: 10px !important;
 }
 
 .publishing-flow-requirements-wrap .pf-label {
@@ -65,7 +65,7 @@
 
 .publishing-flow-requirements-wrap .pf-status {
 	width: 25px;
-	float: right;
+	float: left;
 }
 
 .publishing-flow-requirements-wrap .pf-status .dashicons {
@@ -81,8 +81,10 @@
 .publishing-flow-requirements-wrap .pf-value {
 	clear: both;
 	margin-top: 2px;
+	width: calc( 100% - 25px );
 }
 
 .publishing-flow-requirements-wrap .pf-value p {
 	margin: 0;
+	padding-left: 2px;
 }
