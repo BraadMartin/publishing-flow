@@ -64,7 +64,7 @@ class Publishing_Flow_Admin {
 		wp_enqueue_script(
 			'publishing-flow-admin',
 			PUBLISHING_FLOW_URL . 'js/publishing-flow-admin.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wp-util', 'underscore' ),
 			PUBLISHING_FLOW_VERSION,
 			true
 		);
@@ -80,7 +80,7 @@ class Publishing_Flow_Admin {
 		$schedule_label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
 		$publish_label  = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
 		$publish_action = ( $this->if_scheduled_post( $post->ID ) ) ? 'schedule' : 'publish';
-		$data           = $this->build_data_array( $post );
+		$data           = $this->build_data_array( $post->ID );
 		$extra_data     = array(
 			'buttonUrl'           => $url,
 			'buttonPublishLabel'  => $publish_label,
@@ -123,7 +123,7 @@ class Publishing_Flow_Admin {
 	 */
 	public function include_requirements_box( $post ) {
 
-		$data = $this->build_data_array( $post );
+		$data = $this->build_data_array( $post->ID );
 
 		if ( $data['requirementsMet'] ) {
 			$output = sprintf(
@@ -275,15 +275,14 @@ class Publishing_Flow_Admin {
 	/**
 	 * Build the data array our JS will use.
 	 *
-	 * @param   WP_Post|integer  $post_id  The post object or ID to use.
-	 * @return  array                      The data object.
+	 * @param   int  $post_id  The post ID to use.
+	 *
+	 * @return  array          The data object.
 	 */
-	public function build_data_array( $post = 0 ) {
+	public function build_data_array( $post_id ) {
 
-		// Grab the full post object.
-		if ( is_numeric( $post ) ) {
-			$post = get_post( $post );
-		}
+		// Grab the full post object if an ID was passed.
+		$post = get_post( $post_id, 'object', 'display' );
 
 		// Grab all post meta.
 		$meta = get_metadata( 'post', $post->ID );
