@@ -22,6 +22,9 @@ class Publishing_Flow_Admin {
 		// Enqueue admin scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
+		// Include our custom requirements box in the Publish metabox.
+		add_action( 'post_submitbox_misc_actions', array( $this, 'include_requirements_box' ), 99 );
+
 		// Handle redirect after clicking Publish Flow button.
 		add_filter( 'redirect_post_location', array( $this, 'customizer_redirect' ), 10, 2 );
 
@@ -83,6 +86,20 @@ class Publishing_Flow_Admin {
 		);
 
 		wp_localize_script( 'publishing-flow-admin', 'publishingFlowData', $data );
+	}
+
+	/**
+	 * Include our custom requirements box in the Publish metabox.
+	 *
+	 * @param  WP_Post  $post  The current post object.
+	 */
+	public function include_requirements_box( $post ) {
+
+		$data = $this->build_data_array( $post );
+
+		//error_log( print_r( $data, true ) );
+
+		//echo 'working';
 	}
 
 	/**
@@ -209,16 +226,18 @@ class Publishing_Flow_Admin {
 	/**
 	 * Build the data array our JS will use.
 	 *
-	 * @param   integer  $post_id  The post ID to use.
-	 * @return  array              The data object.
+	 * @param   WP_Post|integer  $post_id  The post object or ID to use.
+	 * @return  array                      The data object.
 	 */
-	public function build_data_array( $post_id = 0 ) {
+	public function build_data_array( $post = 0 ) {
 
 		// Grab the full post object.
-		$post = get_post( $post_id );
+		if ( is_numeric( $post ) ) {
+			$post = get_post( $post );
+		}
 
 		// Grab all post meta.
-		$meta = get_metadata( 'post', $post_id );
+		$meta = get_metadata( 'post', $post->ID );
 
 		// Convert post meta into a simple array.
 		foreach ( $meta as $key => $value ) {
@@ -476,10 +495,10 @@ class Publishing_Flow_Admin {
 			'requiredTax'     => $req_tax,
 			'optionalTax'     => $opt_tax,
 			'editLink'        => $edit_link,
-			'requirementsMet' => $requirements_met,
+			'requirementsMet' => intval( $requirements_met ),
 			'defaultDevice'   => $device,
 			'publishNonce'    => $publish_nonce,
-			'scheduled'       => $scheduled,
+			'scheduled'       => intval( $scheduled ),
 			'postDate'        => $post_date,
 		);
 
@@ -499,7 +518,7 @@ class Publishing_Flow_Admin {
 	 * @param   array  $req_group    The array of required meta field groups.
 	 * @param   array  $req_tax      The array of required taxonomies.
 	 *
-	 * @return  bool                 Whether or not all required fields have a value.
+	 * @return  int                  Whether or not all required fields have a value.
 	 */
 	public function check_requirements_met( $req_primary, $req_meta, $req_group, $req_tax ) {
 
