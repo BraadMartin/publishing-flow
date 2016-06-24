@@ -22,18 +22,67 @@
     margin-right: 4px;
 }
 
-.publishing-flow-requirements-status .dashicons-yes {
+.publishing-flow-requirements-wrap .dashicons-yes {
 	color: green;
 }
 
-.publishing-flow-requirements-status .dashicons-no-alt {
+.publishing-flow-requirements-wrap .dashicons-no-alt {
 	color: red;
 }
 
-.pf-section {
+.publishing-flow-requirements-status .dashicons-arrow-down {
+	display: none;
+}
+
+.publishing-flow-requirements-status:hover .dashicons-arrow-down {
+	display: inline-block;
+}
+
+.publishing-flow-requirements-wrap .pf-section {
 	display: none;
 }
 
 .publishing-flow-requirements-wrap.active .pf-section {
 	display: block;
+}
+
+.publishing-flow-requirements-wrap h2.pf-section-label {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+.publishing-flow-requirements-wrap .pf-label {
+	overflow: hidden;
+}
+
+.publishing-flow-requirements-wrap .pf-label h3 {
+	width: calc( 100% - 27px );
+	float: left;
+	margin: 0;
+	padding-left: 2px;
+	font-size: 14px;
+}
+
+.publishing-flow-requirements-wrap .pf-status {
+	width: 25px;
+	float: right;
+}
+
+.publishing-flow-requirements-wrap .pf-status .dashicons {
+	font-size: 25px;
+	width: 25px;
+}
+
+.publishing-flow-requirements-wrap .pf-field {
+	padding: 0 10px;
+	margin-bottom: 16px;
+}
+
+.publishing-flow-requirements-wrap .pf-value {
+	clear: both;
+	margin-top: 2px;
+}
+
+.publishing-flow-requirements-wrap .pf-value p {
+	margin: 0;
 }
