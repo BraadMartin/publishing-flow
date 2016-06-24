@@ -35,6 +35,12 @@ var PublishingFlow = ( function( $, data ) {
 			// Click handler for the button.
 			setupButtonClick();
 		}
+
+		// Inject requirements section.
+		injectRequirementsSection();
+
+		// Setup expand/contract on requirements section.
+		setupRequirementsSection();
 	}
 
 	/**
@@ -137,6 +143,170 @@ var PublishingFlow = ( function( $, data ) {
 			);
 
 			$( 'form#post' ).submit();
+		});
+	}
+
+	/**
+	 * Inject the requirements section.
+	 */
+	var injectRequirementsSection = function() {
+
+		var $sectionWrap = $( '.publishing-flow-requirements-wrap' );
+
+		var $sectionRequired = $( '<div />' )
+			.addClass( 'pf-section pf-required-section' )
+			.append(
+				$( '<h2 />' )
+					.addClass( 'pf-section-label' )
+					.text( 'Required' )
+			);
+		var $sectionOptional = $( '<div />' )
+			.addClass( 'pf-section pf-optional-section' )
+			.append(
+				$( '<h2 />' )
+					.addClass( 'pf-section-label' )
+					.text( 'Optional' )
+			);
+
+		// Render each required and optional item into each section.
+		var reqPrimary = wp.template( 'pf-required-primary' );
+
+		_.each( data.requiredPrimary, function( value, key, list ) {
+			$sectionRequired.append(
+				reqPrimary({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var reqMeta = wp.template( 'pf-required-meta' );
+
+		_.each( data.requiredMeta, function( value, key, list ) {
+			$sectionRequired.append(
+				reqMeta({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var reqGroup = wp.template( 'pf-required-group' );
+
+		_.each( data.requiredGroup, function( value, key, list ) {
+			$sectionRequired.append(
+				reqGroup({
+					key:       key,
+					keys:      value.keys,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var reqTax = wp.template( 'pf-required-tax' );
+
+		_.each( data.requiredTax, function( value, key, list ) {
+			$sectionRequired.append(
+				reqTax({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optPrimary = wp.template( 'pf-optional-primary' );
+
+		_.each( data.optionalPrimary, function( value, key, list ) {
+			$sectionRequired.append(
+				optPrimary({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optMeta = wp.template( 'pf-optional-meta' );
+
+		_.each( data.optionalMeta, function( value, key, list ) {
+			$sectionOptional.append(
+				optMeta({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optGroup = wp.template( 'pf-optional-group' );
+
+		_.each( data.optionalGroup, function( value, key, list ) {
+			$sectionOptional.append(
+				optPrimary({
+					key:       key,
+					keys:      value.keys,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		var optTax = wp.template( 'pf-optional-tax' );
+
+		_.each( data.optionalTax, function( value, key, list ) {
+			$sectionRequired.append(
+				optTax({
+					key:       key,
+					label:     value.label,
+					value:     value.value,
+					hasValue:  value.hasValue,
+					noValue:   value.noValue,
+					showValue: value.showValue,
+				})
+			);
+		});
+
+		// If any of our sections have output, output them.
+		if ( $sectionRequired.children().length > 1 ) {
+			$sectionWrap.append( $sectionRequired );
+		}
+		if ( $sectionOptional.children().length > 1 ) {
+			$sectionWrap.append( $sectionOptional );
+		}
+	}
+
+	/**
+	 * Setup expand/contract on the requirements section.
+	 */
+	var setupRequirementsSection = function() {
+
+		$( '.publishing-flow-requirements-status' ).on( 'click', function() {
+			$( '.publishing-flow-requirements-wrap' ).toggleClass( 'active' );
 		});
 	}
 

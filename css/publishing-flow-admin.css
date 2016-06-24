@@ -5,3 +5,35 @@
 .pf-hidden {
 	display: none !important;
 }
+
+.publishing-flow-requirements-status {
+	padding: 6px 10px 8px;
+	line-height: 23px;
+	cursor: pointer;
+}
+
+.publishing-flow-requirements-status .dashicons-yes,
+.publishing-flow-requirements-status .dashicons-no-alt {
+	font-size: 25px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    margin-left: -4px;
+    margin-right: 4px;
+}
+
+.publishing-flow-requirements-status .dashicons-yes {
+	color: green;
+}
+
+.publishing-flow-requirements-status .dashicons-no-alt {
+	color: red;
+}
+
+.pf-section {
+	display: none;
+}
+
+.publishing-flow-requirements-wrap.active .pf-section {
+	display: block;
+}

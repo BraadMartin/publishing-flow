@@ -22,6 +22,9 @@ class Publishing_Flow_Admin {
 		// Enqueue admin scripts and styles.
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
+		// Output our custom JS templates on post edit screens.
+		add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
+
 		// Include our custom requirements box in the Publish metabox.
 		add_action( 'post_submitbox_misc_actions', array( $this, 'include_requirements_box' ), 99 );
 
@@ -37,7 +40,7 @@ class Publishing_Flow_Admin {
 		// Modify Customizer panels.
 		add_filter( 'customize_loaded_components', array( $this, 'customize_loaded_components' ), 30, 2 );
 
-		// Output our custom JS templates.
+		// Output our custom JS templates on our Customizer screen.
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ) );
 
 		// Ajax handler for the publish post action.
@@ -77,15 +80,40 @@ class Publishing_Flow_Admin {
 		$schedule_label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
 		$publish_label  = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
 		$publish_action = ( $this->if_scheduled_post( $post->ID ) ) ? 'schedule' : 'publish';
-
-		$data = array(
+		$data           = $this->build_data_array( $post );
+		$extra_data     = array(
 			'buttonUrl'           => $url,
 			'buttonPublishLabel'  => $publish_label,
 			'buttonScheduleLabel' => $schedule_label,
 			'publishAction'       => $publish_action,
 		);
 
+		$data = array_merge( $data, $extra_data );
+
 		wp_localize_script( 'publishing-flow-admin', 'publishingFlowData', $data );
+	}
+
+	/**
+	 * Output our custom JS templates on post edit screens.
+	 */
+	function admin_print_footer_scripts() {
+
+		$screen = get_current_screen();
+
+		// Only on post edit screens.
+		if ( $screen->base !== 'post' ) {
+			return;
+		}
+
+		// Control templates.
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-primary.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-primary.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-meta.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php';
 	}
 
 	/**
@@ -97,9 +125,30 @@ class Publishing_Flow_Admin {
 
 		$data = $this->build_data_array( $post );
 
-		//error_log( print_r( $data, true ) );
+		if ( $data['requirementsMet'] ) {
+			$output = sprintf(
+				'<span class="%s"></span>%s<span class="%s"></span>',
+				'dashicons dashicons-yes',
+				__( 'All required fields have a value', 'publishing-flow' ),
+				'dashicons dashicons-arrow-down'
+			);
+		} else {
+			$output = sprintf(
+				'<span class="%s"></span>%s<span class="%s"></span>',
+				'dashicons dashicons-no-alt',
+				__( 'Required fields are missing values', 'publishing-flow' ),
+				'dashicons dashicons-arrow-down'
+			);
+		}
 
-		//echo 'working';
+		$output = sprintf(
+			'<div class="%s"><div class="%s">%s</div></div>',
+			'publishing-flow-requirements-wrap',
+			'publishing-flow-requirements-status',
+			$output
+		);
+
+		echo $output;
 	}
 
 	/**
