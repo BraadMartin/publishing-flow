@@ -170,14 +170,32 @@ class Publishing_Flow_Admin {
 
 	/**
 	 * Enqueue Customizer scripts and styles.
-	 *
-	 * @todo Switch to included version of Featherlight.
 	 */
 	public function customize_controls_enqueue_scripts() {
 
 		// Bail if we're not serving Publishing Flow or don't have a valid post ID.
 		if ( empty( $_GET['publishing-flow'] ) || empty( $_GET['post-id'] ) ) {
 			return;
+		}
+
+		// Check for an already registered version of featherlight,
+		// and register ours if none is found.
+		if ( ! wp_script_is( 'featherlight', 'registered' ) ) {
+			wp_register_script(
+				'featherlight',
+				PUBLISHING_FLOW_URL . 'vendor/featherlight/featherlight.min.js',
+				array( 'jquery' ),
+				'1.4.0',
+				true
+			);
+		}
+		if ( ! wp_style_is( 'featherlight', 'registered' ) ) {
+			wp_register_style(
+				'featherlight',
+				PUBLISHING_FLOW_URL . 'vendor/featherlight/featherlight.min.css',
+				array(),
+				'1.4.0'
+			);
 		}
 
 		wp_enqueue_script(
