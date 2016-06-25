@@ -3,19 +3,23 @@
  */
 
 #customize-header-actions .spinner {
-	float: none;
-	position: absolute;
-	right: 110px;
+	display: none;
+}
+
+.pf-customizer-publish-wrap {
+	float: right;
+	margin-top: 5px;
+	padding-top: 2px;
 }
 
 .pf-customizer-publish.button-primary {
 	font-size: 16px;
 	padding: 2px 15px;
 	height: 31px;
-	margin-top: 7px !important;
+	margin-top: 0px !important;
 }
 
-.pf-customizer-publish[disabled].button-primary {
+.pf-customizer-publish.button-primary.pf-disabled {
 	color: #ccc !important;
 	background: #f7f7f7 !important;
 	border-color: #ccc !important;
@@ -23,8 +27,14 @@
 	text-shadow: 0 0 0 white !important;
 }
 
-.pf-customizer-publish[disabled]:hover {
+.pf-customizer-publish.pf-disabled:hover {
 	cursor: not-allowed;
+}
+
+.pf-customizer-publish-wrap .pf-spinner {
+	display: inline-block !important;
+	margin-top: 7px !important;
+	margin-right: 7px !important;
 }
 
 #customize-controls .customize-info {

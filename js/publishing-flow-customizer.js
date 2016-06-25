@@ -325,21 +325,29 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		// Remove the default save button.
 		$header.find( 'input#save' ).remove();
 
-		var $button = $( '<div />' );
 		var buttonText = ( data.scheduled ) ? data.doScheduleLabel : data.doPublishLabel;
 
-		$button.addClass( 'button-primary pf-customizer-publish' )
-			.attr( 'disabled', true )
+		var $spinner = $( '<span />' )
+			.addClass( 'pf-spinner spinner' );
+
+		var $publishWrap = $( '<div />' )
+			.addClass( 'pf-customizer-publish-wrap' );
+
+		var $button = $( '<button />' )
+			.addClass( 'button-primary pf-customizer-publish pf-disabled' )
+			.attr( 'type', 'button' )
 			.text( buttonText );
 
-		$header.append( $button );
+		// Inject our button and spinner.
+		$publishWrap.append( $button, $spinner );
+		$header.append( $publishWrap );
 
-		// Set up click action on the publish button.
+		// Set up click action on the publish/schedule button.
 		$button.on( 'click', function() {
 
 			// Trigger a message about required things when a user
 			// clicks on the button while it is disabled.
-			if ( $( this ).attr( 'disabled' ) ) {
+			if ( $( this ).hasClass( 'pf-disabled' ) ) {
 				if ( $controls.hasClass( 'pf-requirements-met' ) ) {
 					showDeviceNotification();
 				} else {
@@ -383,7 +391,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			// have been met, enable the Publish button.
 			if ( $deviceButtons.filter( '.pf-clicked' ).length === $deviceButtons.length && $controls.hasClass( 'pf-requirements-met' ) ) {
 				$( '.pf-device-notifications' ).removeClass( 'visible' );
-				$header.find( '.pf-customizer-publish' ).removeAttr( 'disabled' );
+				$header.find( '.pf-customizer-publish' ).removeClass( 'pf-disabled' );
 			}
 		});
 	}
@@ -396,7 +404,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		console.log( 'attempting to publish a post' );
 
 		// Show the spinner.
-		var $spinner = $header.find( '.spinner' );
+		var $spinner = $header.find( '.pf-spinner' );
 		$spinner.css( 'visibility', 'visible' );
 
 		var pubData = {
