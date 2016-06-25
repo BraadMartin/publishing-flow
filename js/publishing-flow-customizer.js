@@ -56,7 +56,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		$controls.addClass( 'pf-customizer' );
 
 		// If all requirements have been met, add a class to the controls wrapper.
-		if ( data.requirementsMet ) {
+		if ( "1" === data.requirementsMet ) {
 			$controls.addClass( 'pf-requirements-met' );
 		}
 	}
@@ -152,7 +152,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			);
 
 		// Inject post info into our Post Info section.
-		if ( data.scheduled ) {
+		if ( "1" === data.scheduled ) {
 			$sectionInfo.append(
 				$( '<h3 />' )
 					.text( 'Publish Date' ),
@@ -325,7 +325,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		// Remove the default save button.
 		$header.find( 'input#save' ).remove();
 
-		var buttonText = ( data.scheduled ) ? data.doScheduleLabel : data.doPublishLabel;
+		var buttonText = ( "1" === data.scheduled ) ? data.doScheduleLabel : data.doPublishLabel;
 
 		var $spinner = $( '<span />' )
 			.addClass( 'pf-spinner spinner' );
