@@ -326,7 +326,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		$header.find( 'input#save' ).remove();
 
 		var $button = $( '<div />' );
-		var buttonText = ( data.scheduled ) ? 'Schedule' : 'Publish';
+		var buttonText = ( data.scheduled ) ? data.doScheduleLabel : data.doPublishLabel;
 
 		$button.addClass( 'button-primary pf-customizer-publish' )
 			.attr( 'disabled', true )

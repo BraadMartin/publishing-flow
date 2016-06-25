@@ -66,9 +66,9 @@ var PublishingFlow = ( function( $, data ) {
 
 		// Grab our button label from our data object.
 		if ( data.publishAction === 'schedule' ) {
-			var label = data.buttonScheduleLabel;
+			var label = data.scheduleLabel;
 		} else {
-			var label = data.buttonPublishLabel;
+			var label = data.publishLabel;
 		}
 
 		// Inject our button.

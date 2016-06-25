@@ -77,15 +77,12 @@ class Publishing_Flow_Admin {
 		);
 
 		$url            = $this->build_customizer_url( $post->ID );
-		$schedule_label = apply_filters( 'publishing_flow_schedule_button_text', __( 'Schedule Flow', 'publishing-flow' ) );
-		$publish_label  = apply_filters( 'publishing_flow_publish_button_text', __( 'Publish Flow', 'publishing-flow' ) );
+
 		$publish_action = ( $this->if_scheduled_post( $post->ID ) ) ? 'schedule' : 'publish';
 		$data           = $this->build_data_array( $post->ID );
 		$extra_data     = array(
-			'buttonUrl'           => $url,
-			'buttonPublishLabel'  => $publish_label,
-			'buttonScheduleLabel' => $schedule_label,
-			'publishAction'       => $publish_action,
+			'buttonUrl'     => $url,
+			'publishAction' => $publish_action,
 		);
 
 		$data = array_merge( $data, $extra_data );
@@ -299,7 +296,10 @@ class Publishing_Flow_Admin {
 	 */
 	public function build_data_array( $post_id ) {
 
-		// Grab the full post object if an ID was passed.
+		// Set up the post object.
+		// Note: In some cases we could pass the $post object into this function, and this
+		// function used to support that, but in those situations we don't always have the
+		// post fields filtered for display, so re-querying for the post here is necessary.
 		$post = get_post( $post_id, 'object', 'display' );
 
 		// Grab all post meta.
@@ -362,7 +362,7 @@ class Publishing_Flow_Admin {
 		$opt_tax     = array();
 
 		// Build custom primary and meta objects that contain everything we need
-		// to render each key's control.
+		// to render the control for each field.
 		foreach ( $required_primary as $key => $arr ) {
 
 			// Handle missing values.
@@ -524,29 +524,25 @@ class Publishing_Flow_Admin {
 			);
 		}
 
-		$edit_link = get_edit_post_link( $post->ID );
-
 		// Confirm that all of the required fields have a value.
 		$requirements_met = $this->check_requirements_met( $req_primary, $req_meta, $req_group, $req_tax );
 
+		// Get the edit link.
+		$edit_link = get_edit_post_link( $post->ID );
+
 		// Check the domain to allow for overriding requirements in a development environment.
 		$dev_domain = $this->get_dev_domain();
-
 		if ( $dev_domain === $_SERVER['HTTP_HOST'] ) {
 			$requirements_met = true;
 		}
 
-		/**
-		 * Allow the default device the Customizer preview shows to be filtered.
-		 *
-		 * @param  string  The default Customizer preview device.
-		 */
-		$device = apply_filters( 'publishing_flow_customizer_default_device', 'mobile' );
-
 		// Generate a nonce.
 		$publish_nonce = wp_create_nonce( 'pf-publish' );
 
+		// Determine whether the post should be scheduled.
 		$scheduled = $this->if_scheduled_post( $post );
+
+		// Format the publish date for display.
 		$post_date = get_the_date( 'F j, Y \a\t g:ia', $post->ID );
 
 		$data = array(
@@ -562,18 +558,22 @@ class Publishing_Flow_Admin {
 			'optionalTax'     => $opt_tax,
 			'editLink'        => $edit_link,
 			'requirementsMet' => intval( $requirements_met ),
-			'defaultDevice'   => $device,
+			'defaultDevice'   => 'mobile',
 			'publishNonce'    => $publish_nonce,
 			'scheduled'       => intval( $scheduled ),
 			'postDate'        => $post_date,
+			'publishLabel'    => __( 'Publish Flow', 'publishing-flow' ),
+			'scheduleLabel'   => __( 'Schedule Flow', 'publishing-flow' ),
+			'doPublishLabel'  => __( 'Publish', 'publishing-flow' ),
+			'doScheduleLabel' => __( 'Schedule', 'publishing-flow' ),
 		);
 
 		/**
-		 * Allow the Customizer data array to be filtered.
+		 * Allow the data array to be filtered.
 		 *
-		 * @param  array  $data  The Customizer data array.
+		 * @param  array  $data  The data array.
 		 */
-		return apply_filters( 'publishing_flow_customizer_data_array', $data );
+		return apply_filters( 'publishing_flow_data_array', $data );
 	}
 
 	/**
