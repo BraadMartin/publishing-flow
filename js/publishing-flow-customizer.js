@@ -152,12 +152,12 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		if ( "1" === data.scheduled ) {
 			$sectionInfo.append(
 				$( '<h3 />' )
-					.text( 'Publish Date' ),
+					.text( data.publishDateLabel ),
 				$( '<span />' )
 					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
 				$( '<p />' )
 					.addClass( 'pf-info-section pf-publish-date' )
-					.text( 'This post will be scheduled to publish on ' )
+					.text( data.scheduledOnLabel )
 					.append(
 						$( '<strong />' )
 							.text( data.postDate )
@@ -166,15 +166,15 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		} else {
 			$sectionInfo.append(
 				$( '<h3 />' )
-					.text( 'Publish Date' ),
+					.text( data.publishDateLabel ),
 				$( '<span />' )
 					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
 				$( '<p />' )
 					.addClass( 'pf-info-section pf-publish-date' )
-					.text( 'This post will be published ' )
+					.text( data.publishedOnLabel )
 					.append(
 						$( '<strong />' )
-							.text( 'immediately' )
+							.text( data.publishNowLabel )
 					)
 			);
 		}

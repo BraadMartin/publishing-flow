@@ -114,12 +114,12 @@ var PublishingFlow = ( function( $, data ) {
 
 		// Handle English button text gracefully.
 		if ( 'Publish' === text ) {
-			text = data.buttonPublishLabel;
+			var newText = data.publishLabel;
 		} else if ( 'Schedule' === text ) {
-			text = data.buttonScheduleLabel;
+			var newText = data.scheduleLabel;
 		}
 
-		$( '.publishing-flow-trigger' ).val( text );
+		$( '.publishing-flow-trigger' ).val( newText );
 	}
 
 	/**

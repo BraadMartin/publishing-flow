@@ -133,6 +133,10 @@
 	margin-top: -5px;
 }
 
+.pf-customizer .pf-publish-date strong {
+	margin-left: 4px;
+}
+
 .pf-customizer .pf-section-label {
 	margin: 0 0 18px;
 }
