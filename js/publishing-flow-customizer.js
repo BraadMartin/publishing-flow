@@ -247,7 +247,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		var optPrimary = wp.template( 'pf-optional-primary' );
 
 		_.each( data.optionalPrimary, function( value, key, list ) {
-			$sectionRequired.append(
+			$sectionOptional.append(
 				optPrimary({
 					key:       key,
 					label:     value.label,
@@ -293,7 +293,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		var optTax = wp.template( 'pf-optional-tax' );
 
 		_.each( data.optionalTax, function( value, key, list ) {
-			$sectionRequired.append(
+			$sectionOptional.append(
 				optTax({
 					key:       key,
 					label:     value.label,
