@@ -153,20 +153,23 @@ var PublishingFlow = ( function( $, data ) {
 
 		var $sectionWrap = $( '.publishing-flow-requirements-wrap' );
 
+		// Define our sections.
 		var $sectionRequired = $( '<div />' )
-			.addClass( 'pf-section pf-required-section' )
-			.append(
-				$( '<h2 />' )
-					.addClass( 'pf-section-label' )
-					.text( 'Required' )
-			);
+			.addClass( 'pf-section pf-required-section' );
 		var $sectionOptional = $( '<div />' )
-			.addClass( 'pf-section pf-optional-section' )
-			.append(
-				$( '<h2 />' )
-					.addClass( 'pf-section-label' )
-					.text( 'Optional' )
-			);
+			.addClass( 'pf-section pf-optional-section' );
+
+		// Define section labels.
+		var $sectionRequiredLabel = $( '<h2 />' )
+			.addClass( 'pf-section-label' )
+			.text( 'Required' );
+		var $sectionOptionalLabel = $( '<h2 />' )
+			.addClass( 'pf-section-label' )
+			.text( 'Optional' );
+
+		// Inject labels.
+		$sectionRequired.append( $sectionRequiredLabel );
+		$sectionOptional.append( $sectionOptionalLabel );
 
 		// Render each required and optional item into each section.
 		var reqPrimary = wp.template( 'pf-required-primary' );

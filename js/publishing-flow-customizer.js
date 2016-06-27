@@ -130,26 +130,23 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		// Define our sections.
 		var $sectionInfo = $( '<div />' )
-			.addClass( 'pf-section pf-info-section' )
-			/*.append(
-				$( '<h2 />' )
-					.addClass( 'pf-section-label' )
-					.text( 'Post Info' )
-			)*/;
+			.addClass( 'pf-section pf-info-section' );
 		var $sectionRequired = $( '<div />' )
-			.addClass( 'pf-section pf-required-section' )
-			.append(
-				$( '<h2 />' )
-					.addClass( 'pf-section-label' )
-					.text( 'Required' )
-			);
+			.addClass( 'pf-section pf-required-section' );
 		var $sectionOptional = $( '<div />' )
-			.addClass( 'pf-section pf-optional-section' )
-			.append(
-				$( '<h2 />' )
-					.addClass( 'pf-section-label' )
-					.text( 'Optional' )
-			);
+			.addClass( 'pf-section pf-optional-section' );
+
+		// Define section labels.
+		var $sectionRequiredLabel = $( '<h2 />' )
+			.addClass( 'pf-section-label' )
+			.text( 'Required' );
+		var $sectionOptionalLabel = $( '<h2 />' )
+			.addClass( 'pf-section-label' )
+			.text( 'Optional' );
+
+		// Inject labels.
+		$sectionRequired.append( $sectionRequiredLabel );
+		$sectionOptional.append( $sectionOptionalLabel );
 
 		// Inject post info into our Post Info section.
 		if ( "1" === data.scheduled ) {
@@ -401,8 +398,6 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 */
 	var ajaxPublishPost = function() {
 
-		console.log( 'attempting to publish a post' );
-
 		// Show the spinner.
 		var $spinner = $header.find( '.pf-spinner' );
 		$spinner.css( 'visibility', 'visible' );
@@ -417,9 +412,6 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		var publishPost = $.post( ajaxurl, pubData );
 
 		publishPost.done( function( response ) {
-			console.log( 'Ajax request to publish post has completed' );
-			console.log( response );
-
 			$spinner.css( 'visibility', 'hidden' );
 
 			if ( 'published' === response.outcome ) {
