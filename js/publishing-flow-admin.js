@@ -162,10 +162,10 @@ var PublishingFlow = ( function( $, data ) {
 		// Define section labels.
 		var $sectionRequiredLabel = $( '<h2 />' )
 			.addClass( 'pf-section-label' )
-			.text( 'Required' );
+			.text( data.requiredLabel );
 		var $sectionOptionalLabel = $( '<h2 />' )
 			.addClass( 'pf-section-label' )
-			.text( 'Optional' );
+			.text( data.optionalLabel );
 
 		// Inject labels.
 		$sectionRequired.append( $sectionRequiredLabel );

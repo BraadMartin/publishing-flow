@@ -566,6 +566,8 @@ class Publishing_Flow_Admin {
 			'scheduleLabel'   => __( 'Schedule Flow', 'publishing-flow' ),
 			'doPublishLabel'  => __( 'Publish', 'publishing-flow' ),
 			'doScheduleLabel' => __( 'Schedule', 'publishing-flow' ),
+			'requiredLabel'   => __( 'Required', 'publishing-flow' ),
+			'optionalLabel'   => __( 'Optional', 'publishing-flow' ),
 		);
 
 		/**
