@@ -92,33 +92,24 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 */
 	var injectNotifications = function() {
 
-		var $reqNotifications = $( '<div />' )
-			.addClass( 'pf-notifications' )
-			.append(
-				$( '<p />' )
-					.text( "Woah there, looks like this post is still missing a required field!" ),
-				$( '<span />' )
-					.addClass( 'dashicons dashicons-warning' ),
-				$( '<a />' )
-					.attr( 'href', data.editLink )
-					.text( 'Visit the edit screen to fix this.' )
-			);
+		var $reqNotification = $( '<div />' ).addClass( 'pf-notifications' );
+		var $reqNotifLabel   = $( '<p />' ).text( data.reqNotificationLabel );
+		var $reqNotifIcon    = $( '<span />' ).addClass( 'dashicons dashicons-warning' );
+		var $reqNotifLink    = $( '<a />' ).attr( 'href', data.editLink ).text( data.reqNotificationLink );
 
-		$controls.prepend( $reqNotifications );
+		$reqNotification.append( $reqNotifLabel, $reqNotifIcon, $reqNotifLink );
 
-		var $deviceNotifications = $( '<div />' )
-			.addClass( 'pf-device-notifications' )
-			.append(
-				$( '<p />' )
-					.text( "Woah there, looks like you haven't yet previewed this post on all screen sizes." ),
-				$( '<p />' )
-					.text( "Click through each device" )
-					.append(
-						$( '<span />' ).addClass( 'dashicons dashicons-arrow-down-alt' )
-					)
-			);
+		$controls.prepend( $reqNotification );
 
-		$footer.before( $deviceNotifications );
+		var $deviceNotification = $( '<div />' ).addClass( 'pf-device-notifications' );
+		var $deviceNotif        = $( '<p />' ).text( data.deviceNotification );
+		var $deviceNotifAction  = $( '<p />' ).text( data.deviceNotificationAction );
+		var $deviceNotifIcon    = $( '<span />' ).addClass( 'dashicons dashicons-arrow-down-alt' );
+
+		$deviceNotifAction.append( $deviceNotifIcon );
+		$deviceNotification.append( $deviceNotif, $deviceNotifAction );
+
+		$footer.before( $deviceNotification );
 	}
 
 	/**
