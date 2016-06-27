@@ -78,15 +78,13 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$info.empty();
 
-		var $ourInfo = $( '<div />' )
-			.addClass( 'pf-info' )
-			.append(
-				$( '<h2 />' ).text( 'Welcome to Publishing Flow' )
-			).append(
-				$( '<p />' ).text( "Before you can publish you'll need to click through each of the device preview icons on the bottom of this panel" )
-			);
+		var $infoWrap    = $( '<div />' ).addClass( 'pf-info' );
+		var $infoLabel   = $( '<h2 />' ).text( data.infoSectionLabel );
+		var $infoContent = $( '<p />' ).text( data.infoSectionContent );
 
-		$info.append( $ourInfo );
+		$infoWrap.append( $infoLabel, $infoContent );
+
+		$info.append( $infoWrap );
 	}
 
 	/**
