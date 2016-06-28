@@ -846,8 +846,9 @@ class Publishing_Flow_Admin {
 		 * Fire an action to allow post-publish integrations.
 		 *
 		 * @param  WP_Post  The post object being published.
+		 * @param  string   The publishing outcome (scheduled or published).
 		 */
-		do_action( 'publishing_flow_post_published', $post );
+		do_action( 'publishing_flow_post_published', $post, $response->outcome );
 
 		wp_send_json( $response );
 
