@@ -842,6 +842,13 @@ class Publishing_Flow_Admin {
 		$response->status   = 'success';
 		$response->postLink = get_permalink( $post->ID );
 
+		/**
+		 * Fire an action to allow post-publish integrations.
+		 *
+		 * @param  WP_Post  The post object being published.
+		 */
+		do_action( 'publishing_flow_post_published', $post );
+
 		wp_send_json( $response );
 
 		wp_die();
