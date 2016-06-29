@@ -326,6 +326,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			// Trigger a message about required things when a user
 			// clicks on the button while it is disabled.
 			if ( $( this ).hasClass( 'pf-disabled' ) ) {
+
 				if ( $controls.hasClass( 'pf-requirements-met' ) ) {
 					showDeviceNotification();
 				} else {
@@ -394,6 +395,13 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		publishPost.done( function( response ) {
 			$spinner.css( 'visibility', 'hidden' );
+
+			// If the request succeeded but we have an error,
+			// log it in the console and proceed (our fail template
+			// will show in the lightbox).
+			if ( 'error' === response.status ) {
+				console.log( response.error );
+			}
 
 			if ( 'published' === response.outcome ) {
 				$.featherlight( $( '.pf-publish-success' ) );

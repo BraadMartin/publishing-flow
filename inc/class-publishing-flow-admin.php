@@ -317,9 +317,9 @@ class Publishing_Flow_Admin {
 		// Grab all taxonomies for the post type.
 		$taxonomies = get_object_taxonomies( $post->post_type, 'names' );
 
-		// Grab all post terms and convert into a simple array.
 		$terms = array();
 
+		// Grab all post terms and convert into a simple array.
 		foreach ( $taxonomies as $tax ) {
 			$tax_terms = get_the_terms( $post, $tax );
 
@@ -816,7 +816,13 @@ class Publishing_Flow_Admin {
 
 		// Bail if the current user isn't allowed to publish posts.
 		if ( ! $user || ! user_can( $user, 'publish_posts' ) ) {
-			_e( 'Sorry, the current user is not allowed to publish posts', 'publishing-flow' );
+
+			$response = new stdClass();
+			$response->outcome = 'error';
+			$response->error   = __( 'Sorry, the current user is not allowed to publish posts', 'publishing-flow' );
+
+			wp_send_json( $response );
+
 			wp_die();
 		}
 
@@ -824,17 +830,27 @@ class Publishing_Flow_Admin {
 
 		// Bail if we don't have a post to publish.
 		if ( is_wp_error( $post ) ) {
-			_e( 'Sorry, no post to publish was found.', 'publishing-flow' );
+
+			$response = new stdClass();
+			$response->status = 'error';
+			$response->error  = __( 'Sorry, no post to publish was found.', 'publishing-flow' );
+
+			wp_send_json( $response );
+
 			wp_die();
 		}
 
 		// Bail if the post is already published or scheduled.
 		if ( 'publish' === $post->post_status || 'future' === $post->post_status ) {
-			_e( 'Looks like this post has already been published or scheduled', 'publishing-flow' );
+
+			$response = new stdClass();
+			$response->status = 'error';
+			$response->error  = __( 'Looks like this post has already been published or scheduled', 'publishing-flow' );
+
+			wp_send_json( $response );
+
 			wp_die();
 		}
-
-		$response = new stdClass();
 
 		/**
 		 * We'll either publish the post or schedule it, so first check the date
@@ -852,15 +868,17 @@ class Publishing_Flow_Admin {
 
 			wp_transition_post_status( 'future', $old_status, $post );
 
-			$response->outcome = 'scheduled';
+			$outcome = 'scheduled';
 
 		} else {
 
 			wp_publish_post( $post );
 
-			$response->outcome = 'published';
+			$outcome = 'published';
 		}
 
+		$response = new stdClass();
+		$response->outcome  = $outcome;
 		$response->status   = 'success';
 		$response->postLink = get_permalink( $post->ID );
 
