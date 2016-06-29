@@ -693,6 +693,9 @@ class Publishing_Flow_Admin {
 		include_once PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php';
 		include_once PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php';
 
+		// Additional templates.
+		include_once PUBLISHING_FLOW_PATH . 'templates/info-section.php';
+
 		// Confirmation templates.
 		echo $this->publish_success_template( $post_id );
 		echo $this->schedule_success_template( $post_id );

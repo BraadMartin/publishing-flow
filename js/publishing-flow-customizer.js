@@ -78,13 +78,14 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$info.empty();
 
-		var $infoWrap    = $( '<div />' ).addClass( 'pf-info' );
-		var $infoLabel   = $( '<h2 />' ).text( data.infoSectionLabel );
-		var $infoContent = $( '<p />' ).text( data.infoSectionContent );
+		var infoTemplate = wp.template( 'pf-info' );
 
-		$infoWrap.append( $infoLabel, $infoContent );
-
-		$info.append( $infoWrap );
+		$info.append(
+			infoTemplate({
+				label:   data.infoSectionLabel,
+				content: data.infoSectionContent,
+			})
+		);
 	}
 
 	/**
