@@ -41,6 +41,7 @@
 	background-color: #fff;
 	padding: 0 20px;
 	z-index: 10;
+	margin-bottom: 10px;
 }
 
 .pf-welcome h2 {
@@ -121,7 +122,7 @@
 
 .pf-customizer .pf-section {
 	padding: 0 0 10px 5px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	border-bottom: 1px solid #ccc;
 }
 
@@ -131,6 +132,10 @@
 
 .pf-customizer .pf-post-info-section {
 	margin-top: -5px;
+}
+
+.pf-customizer .pf-publish-date {
+	margin: -3px 0 8px;
 }
 
 .pf-customizer .pf-publish-date strong {
