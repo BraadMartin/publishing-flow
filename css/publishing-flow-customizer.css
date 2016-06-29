@@ -51,7 +51,7 @@
 	font-size: 12px;
 }
 
-.pf-notifications {
+.pf-required-notifications {
 	position: absolute;
 	left: 0;
 	top: -105px;
@@ -60,24 +60,24 @@
 	border-bottom: 3px solid #FF6D6D;
 }
 
-.pf-notifications.visible {
+.pf-required-notifications.visible {
 	top: -15px;
 	background-color: #fff;
 	padding: 2px 20px 16px;
 }
 
-.pf-notifications p {
+.pf-required-notifications p {
 	max-width: calc( 100% - 22px );
 }
 
-.pf-notifications .dashicons {
+.pf-required-notifications .dashicons {
 	color: #E44848;
 	position: absolute;
 	top: 15px;
 	right: 20px;
 }
 
-.pf-notifications a:hover {
+.pf-required-notifications a:hover {
 	text-decoration: underline !important;
 }
 
@@ -86,7 +86,7 @@
 	transition: padding 0.3s;
 }
 
-.pf-customizer.pf-notifications-open {
+.pf-customizer.pf-required-notifications-open {
 	padding-top: 102px;
 }
 

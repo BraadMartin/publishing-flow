@@ -695,6 +695,7 @@ class Publishing_Flow_Admin {
 
 		// Additional templates.
 		include_once PUBLISHING_FLOW_PATH . 'templates/info-section.php';
+		include_once PUBLISHING_FLOW_PATH . 'templates/required-notifications.php';
 
 		// Confirmation templates.
 		echo $this->publish_success_template( $post_id );

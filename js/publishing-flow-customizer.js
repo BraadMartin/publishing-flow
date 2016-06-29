@@ -93,14 +93,15 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 */
 	var injectNotifications = function() {
 
-		var $reqNotification = $( '<div />' ).addClass( 'pf-notifications' );
-		var $reqNotifLabel   = $( '<p />' ).text( data.reqNotificationLabel );
-		var $reqNotifIcon    = $( '<span />' ).addClass( 'dashicons dashicons-warning' );
-		var $reqNotifLink    = $( '<a />' ).attr( 'href', data.editLink ).text( data.reqNotificationLink );
+		var reqNotifications = wp.template( 'pf-required-notifications' );
 
-		$reqNotification.append( $reqNotifLabel, $reqNotifIcon, $reqNotifLink );
-
-		$controls.prepend( $reqNotification );
+		$controls.prepend(
+			reqNotifications({
+				label:    data.reqNotification,
+				editLink: data.editLink,
+				linkText: data.reqNotificationLink,
+			})
+		);
 
 		var $deviceNotification = $( '<div />' ).addClass( 'pf-device-notifications' );
 		var $deviceNotif        = $( '<p />' ).text( data.deviceNotification );
@@ -353,8 +354,8 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 * Show the required field notification.
 	 */
 	var showReqNotification = function() {
-		$( '.pf-notifications' ).addClass( 'visible' );
-		$controls.addClass( 'pf-notifications-open' );
+		$( '.pf-required-notifications' ).addClass( 'visible' );
+		$controls.addClass( 'pf-required-notifications-open' );
 	}
 
 	/**
