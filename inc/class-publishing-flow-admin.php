@@ -683,19 +683,35 @@ class Publishing_Flow_Admin {
 
 		$post_id = (int)$_GET['post-id'];
 
-		// Control templates.
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-primary.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/optional-primary.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-meta.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/optional-meta.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-group.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/optional-group.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php';
+		// Templates.
+		$templates = array(
+			PUBLISHING_FLOW_PATH . 'templates/required-primary.php',
+			PUBLISHING_FLOW_PATH . 'templates/optional-primary.php',
+			PUBLISHING_FLOW_PATH . 'templates/required-meta.php',
+			PUBLISHING_FLOW_PATH . 'templates/optional-meta.php',
+			PUBLISHING_FLOW_PATH . 'templates/required-group.php',
+			PUBLISHING_FLOW_PATH . 'templates/optional-group.php',
+			PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php',
+			PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php',
+			PUBLISHING_FLOW_PATH . 'templates/info-section.php',
+			PUBLISHING_FLOW_PATH . 'templates/required-notifications.php',
+		);
 
-		// Additional templates.
-		include_once PUBLISHING_FLOW_PATH . 'templates/info-section.php';
-		include_once PUBLISHING_FLOW_PATH . 'templates/required-notifications.php';
+		// Loop over each template and include it.
+		foreach ( $templates as $template ) {
+
+			/**
+			 * Allow the template paths to be filtered.
+			 *
+			 * This filter makes it possible for outside code to swap our templates
+			 * for custom templates, and as long as the template ID and data object
+			 * keys are kept the same everything should still work.
+			 *
+			 * @param  string  $template  The template path.
+			 * @param  int     $post_id   The current post ID.
+			 */
+			include_once apply_filters( 'publishing_flow_js_templates', $template, $post_id );
+		}
 
 		// Confirmation templates.
 		echo $this->publish_success_template( $post_id );
