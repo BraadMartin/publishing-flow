@@ -32,7 +32,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		setDefaultDevice();
 
 		// Inject our info section.
-		injectInfo();
+		injectWelcome();
 
 		// Inject our notifications section.
 		injectNotifications();
@@ -72,18 +72,18 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	}
 
 	/**
-	 * Inject our info section.
+	 * Inject our welcome section.
 	 */
-	var injectInfo = function() {
+	var injectWelcome = function() {
 
 		$info.empty();
 
-		var infoTemplate = wp.template( 'pf-info' );
+		var welcome = wp.template( 'pf-welcome' );
 
 		$info.append(
-			infoTemplate({
-				label:   data.infoSectionLabel,
-				content: data.infoSectionContent,
+			welcome({
+				label:   data.welcomeLabel,
+				content: data.welcomeContent,
 			})
 		);
 	}
