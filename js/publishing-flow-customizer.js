@@ -97,21 +97,20 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		$controls.prepend(
 			reqNotifications({
-				label:    data.reqNotification,
-				editLink: data.editLink,
-				linkText: data.reqNotificationLink,
+				notification: data.reqNotification,
+				editLink:     data.editLink,
+				linkText:     data.reqNotificationLink,
 			})
 		);
 
-		var $deviceNotification = $( '<div />' ).addClass( 'pf-device-notifications' );
-		var $deviceNotif        = $( '<p />' ).text( data.deviceNotification );
-		var $deviceNotifAction  = $( '<p />' ).text( data.deviceNotificationAction );
-		var $deviceNotifIcon    = $( '<span />' ).addClass( 'dashicons dashicons-arrow-down-alt' );
+		var deviceNotifications = wp.template( 'pf-device-notifications' );
 
-		$deviceNotifAction.append( $deviceNotifIcon );
-		$deviceNotification.append( $deviceNotif, $deviceNotifAction );
-
-		$footer.before( $deviceNotification );
+		$footer.before(
+			deviceNotifications({
+				notification: data.deviceNotification,
+				action:       data.deviceNotificationAction,
+			})
+		);
 	}
 
 	/**

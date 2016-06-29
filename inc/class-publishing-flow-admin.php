@@ -695,6 +695,7 @@ class Publishing_Flow_Admin {
 			PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php',
 			PUBLISHING_FLOW_PATH . 'templates/info-section.php',
 			PUBLISHING_FLOW_PATH . 'templates/required-notifications.php',
+			PUBLISHING_FLOW_PATH . 'templates/device-notifications.php',
 		);
 
 		// Loop over each template and include it.
