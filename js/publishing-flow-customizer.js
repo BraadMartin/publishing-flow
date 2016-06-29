@@ -403,10 +403,12 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				console.log( response.error );
 			}
 
-			if ( 'published' === response.outcome ) {
-				$.featherlight( $( '.pf-publish-success' ) );
-			} else if ( 'scheduled' === response.outcome ) {
-				$.featherlight( $( '.pf-schedule-success' ) );
+			if ( 'success' === response.status ) {
+				if ( 'published' === response.outcome ) {
+					$.featherlight( $( '.pf-publish-success' ) );
+				} else if ( 'scheduled' === response.outcome ) {
+					$.featherlight( $( '.pf-schedule-success' ) );
+				}
 			} else {
 				$.featherlight( $( '.pf-publish-fail' ) );
 			}
@@ -417,7 +419,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		publishPost.fail( function() {
 			$.featherlight( $( '.pf-publish-success' ), options );
-		})
+		});
 	}
 
 	return {
