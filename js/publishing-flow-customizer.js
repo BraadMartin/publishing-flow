@@ -138,36 +138,27 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		$sectionRequired.append( $sectionRequiredLabel );
 		$sectionOptional.append( $sectionOptionalLabel );
 
-		// Inject post info into our Post Info section.
+		var postInfo = wp.template( 'pf-post-info' );
+
 		if ( "1" === data.scheduled ) {
-			$sectionInfo.append(
-				$( '<h3 />' )
-					.text( data.publishDateLabel ),
-				$( '<span />' )
-					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
-				$( '<p />' )
-					.addClass( 'pf-info-section pf-publish-date' )
-					.text( data.scheduledOnLabel )
-					.append(
-						$( '<strong />' )
-							.text( data.postDate )
-					)
-			);
+
+			var postInfoData = {
+				label:        data.publishDateLabel,
+				publishLabel: data.scheduledOnLabel,
+				dateLabel:    data.postDate,
+			};
+
 		} else {
-			$sectionInfo.append(
-				$( '<h3 />' )
-					.text( data.publishDateLabel ),
-				$( '<span />' )
-					.addClass( 'dashicons dashicons-calendar-alt pf-calendar-icon' ),
-				$( '<p />' )
-					.addClass( 'pf-info-section pf-publish-date' )
-					.text( data.publishedOnLabel )
-					.append(
-						$( '<strong />' )
-							.text( data.publishNowLabel )
-					)
-			);
+
+			var postInfoData = {
+				label:        data.publishDateLabel,
+				publishLabel: data.publishedOnLabel,
+				dateLabel:    data.publishNowLabel,
+			};
 		}
+
+		// Inject post info into our post info section.
+		$sectionInfo.append( postInfo( postInfoData ) );
 
 		// Render each required and optional item into each section.
 		var reqPrimary = wp.template( 'pf-required-primary' );
@@ -292,10 +283,10 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			);
 		});
 
-		// If any of our sections have output, output them.
-		if ( $sectionInfo.children().length > 1 ) {
-			$controls.append( $sectionInfo );
-		}
+		// Inject our sections.
+		$controls.append( $sectionInfo );
+
+		// Only output our control sections if they have output.
 		if ( $sectionRequired.children().length > 1 ) {
 			$controls.append( $sectionRequired );
 		}

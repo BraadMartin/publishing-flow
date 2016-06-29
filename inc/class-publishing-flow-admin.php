@@ -693,7 +693,8 @@ class Publishing_Flow_Admin {
 			PUBLISHING_FLOW_PATH . 'templates/optional-group.php',
 			PUBLISHING_FLOW_PATH . 'templates/required-taxonomy.php',
 			PUBLISHING_FLOW_PATH . 'templates/optional-taxonomy.php',
-			PUBLISHING_FLOW_PATH . 'templates/welcome-section.php',
+			PUBLISHING_FLOW_PATH . 'templates/welcome.php',
+			PUBLISHING_FLOW_PATH . 'templates/post-info.php',
 			PUBLISHING_FLOW_PATH . 'templates/required-notifications.php',
 			PUBLISHING_FLOW_PATH . 'templates/device-notifications.php',
 		);
