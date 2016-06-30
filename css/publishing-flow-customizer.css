@@ -139,7 +139,7 @@
 }
 
 .pf-customizer .pf-publish-date strong {
-	margin-left: 4px;
+	margin-left: 2px;
 }
 
 .pf-customizer .pf-section-label {
@@ -242,6 +242,7 @@
 .pf-lightbox h2 {
 	font-size: 1.6em;
 	margin-top: 35px;
+	line-height: 1.8;
 }
 
 .pf-lightbox p {
