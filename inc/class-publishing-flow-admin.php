@@ -760,13 +760,19 @@ class Publishing_Flow_Admin {
 
 		ob_start();
 
+		$scheduled_date = get_the_date( 'F j, Y \a\t g:ia', $post_id );
+
 		?>
 		<div class="pf-schedule-success pf-lightbox">
 			<h1 class="pf-heading">
 				<?php _e( 'Success!', 'publishing-flow' ); ?>
 			</h1>
 			<h2 class="pf-heading">
-				<?php _e( 'Your post has been scheduled.', 'publishing-flow' ); ?>
+				<?php printf(
+					'%s<br />%s',
+					__( 'Your post has been scheduled to publish on', 'publishing-flow' ),
+					$scheduled_date
+				); ?>
 			</h2>
 			<p><?php _e( 'What do you want to do now?', 'publishing-flow' ); ?></p>
 			<a class="pf-button button pf-view-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'View Post', 'publishing-flow' ); ?></a>
