@@ -61,6 +61,11 @@ class Publishing_Flow_Admin {
 
 		global $post;
 
+		// Only if the post type has Publishing Flow enabled.
+		if ( ! $this->is_supported_post_type( $post->post_type ) ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'publishing-flow-admin',
 			PUBLISHING_FLOW_URL . 'js/publishing-flow-admin.js',
@@ -77,7 +82,6 @@ class Publishing_Flow_Admin {
 		);
 
 		$url            = $this->build_customizer_url( $post->ID );
-
 		$publish_action = ( $this->if_scheduled_post( $post->ID ) ) ? 'schedule' : 'publish';
 		$data           = $this->build_data_array( $post->ID );
 		$extra_data     = array(
@@ -119,6 +123,11 @@ class Publishing_Flow_Admin {
 	 * @param  WP_Post  $post  The current post object.
 	 */
 	public function include_requirements_box( $post ) {
+
+		// Only if the post type has Publishing Flow enabled.
+		if ( ! $this->is_supported_post_type( $post->post_type ) ) {
+			return;
+		}
 
 		$data = $this->build_data_array( $post->ID );
 
@@ -1046,5 +1055,22 @@ class Publishing_Flow_Admin {
 		 * @param  string  The dev URL.
 		 */
 		return apply_filters( 'publishing_flow_dev_domain', '' );
+	}
+
+	/**
+	 * Return an array of supported post types.
+	 *
+	 * @param  string  $post_type  The post type to check.
+	 */
+	public function is_supported_post_type( $post_type ) {
+
+		/**
+		 * Allow the supported post types to be filtered.
+		 *
+		 * @param  array  Supported post types.
+		 */
+		$post_types = apply_filters( 'publishing_flow_post_types', array( 'post', 'page' ) );
+
+		return in_array( $post_type, $post_types );
 	}
 }
