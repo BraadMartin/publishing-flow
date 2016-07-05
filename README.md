@@ -1,16 +1,16 @@
-=== Publishing Flow ===
-Contributors: Braad
-Donate link: http://braadmartin.com/
-Tags: publishing, flow, required, fields, preview
-Requires at least: 4.5
-Tested up to: 4.6
-Stable tag: 4.5
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# Publishing Flow #
+**Contributors:** Braad  
+**Donate link:** http://braadmartin.com/  
+**Tags:** publishing, flow, required, fields, preview  
+**Requires at least:** 4.5  
+**Tested up to:** 4.6  
+**Stable tag:** 4.5  
+**License:** GPLv2 or later  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 Adds a Customizer-based publishing flow for ensuring posts are complete before publishing.
 
-== Description ==
+## Description ##
 
 Have you ever wanted to ensure that certain fields always have a value before allowing a post to be published? Publishing Flow is for you.
 
@@ -166,21 +166,21 @@ function xxx_dev_domain( $domain ) {
 }
 ```
 
-== Installation ==
+## Installation ##
 
-= Manual Installation =
+### Manual Installation ###
 
 1. Upload the entire `/publishing-flow` directory to the `/wp-content/plugins/` directory.
 1. Activate Publishing Flow through the 'Plugins' menu in WordPress.
 
-= Better Installation =
+### Better Installation ###
 
 1. Go to Plugins > Add New in your WordPress admin and search for Publishing Flow.
 1. Click Install.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions ##
 
-= Can I specify a different default device than mobile? =
+### Can I specify a different default device than mobile? ###
 
 Yes! The array of config data that gets passed into the Customizer has a filter on it when it is generated, and this filter can be used to change any of the config options. Here's an example of using this filter to change the default preview device to tablet:
 
@@ -201,12 +201,12 @@ function xxx_data_array( $data ) {
 }
 ```
 
-== Changelog ==
+## Changelog ##
 
-= 1.0 =
+### 1.0 ###
 * Initial release.
 
-== Upgrade Notice ==
+## Upgrade Notice ##
 
-= 1.0 =
+### 1.0 ###
 * Initial release.
