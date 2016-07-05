@@ -4,7 +4,7 @@ Donate link: http://braadmartin.com/
 Tags: publishing, flow, required, fields, preview
 Requires at least: 4.5
 Tested up to: 4.6
-Stable tag: 4.5
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -164,6 +164,25 @@ function xxx_dev_domain( $domain ) {
 
 	return $domain;
 }
+```
+
+There are many more hooks available throughout this plugin to customize all the things. Here is a quick list:
+
+```
+publishing_flow_customizer_url
+publishing_flow_data_array
+publishing_flow_js_templates
+publishing_flow_publish_success_template
+publishing_flow_schedule_success_template
+publishing_flow_publish_fail_template
+publishing_flow_required_primary_keys
+publishing_flow_optional_primary_keys
+publishing_flow_required_meta_keys
+publishing_flow_optional_meta_keys
+publishing_flow_required_meta_key_groups
+publishing_flow_optional_meta_key_groups
+publishing_flow_required_taxonomies
+publishing_flow_optional_taxonomies
 ```
 
 == Installation ==

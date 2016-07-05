@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Publishing Flow
- * Version:     0.1-alpha
+ * Version:     1.0.0
  * Description: Adds a Customizer-based publishing flow for ensuring posts are complete before publishing
- * Author:      NerdWallet
- * Author URI:  https://www.nerdwallet.com
- * Plugin URI:  https://www.nerdwallet.com
+ * Author:      Braad Martin
+ * Author URI:  http://braadmartin.com
+ * Plugin URI:  http://braadmartin.com
  * Text Domain: publishing-flow
  * Domain Path: /languages
  */
