@@ -311,6 +311,12 @@ class Publishing_Flow_Admin {
 		// post fields filtered for display, so re-querying for the post here is necessary.
 		$post = get_post( $post_id, 'object', 'display' );
 
+		// Clear out "Auto Draft" as a post title to avoid this field getting
+		// recognized as having a value on new posts.
+		if ( ! empty( $post->post_title ) && 'Auto Draft' === $post->post_title ) {
+			$post->post_title = '';
+		}
+
 		// Grab all post meta.
 		$meta = get_metadata( 'post', $post->ID );
 
