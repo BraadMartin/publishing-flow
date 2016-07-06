@@ -47,7 +47,7 @@ function xxx_required_primary_fields( $fields, $post_type ) {
 }
 ```
 
-^You can see that there are 4 possible config values you can pass for each required field. The `label` key defines the field display label, the `has_value` and 'no_value` keys define a bit of text to show if the field has or is missing a field value, and the `show_value` boolean will control whether the `has_value` label should show or the actual value of the field should show (useful for shorter fields like the excerpt, defaults to false).
+^You can see that there are 4 possible config values you can pass for each required field. The `label` key defines the field display label, the `has_value` and `no_value` keys define a bit of text to show if the field has or is missing a field value, and the `show_value` boolean will control whether the `has_value` label should show or the actual value of the field should show (useful for shorter fields like the excerpt, defaults to false).
 
 Meta fields can be similarly defined as being required:
 
