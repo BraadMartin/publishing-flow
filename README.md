@@ -47,7 +47,7 @@ function xxx_required_primary_fields( $fields, $post_type ) {
 }
 ```
 
-^You can see that there are 4 possible config values you can pass for each required field. The 'label' key defines the field display label, the 'has_value' and 'no_value' keys define a bit of text to show if the field has or is missing a field value, and the 'show_value' boolean will control whether the `has_value` label should show or the actual value of the field should show (useful for shorter fields like the excerpt, defaults to false).
+^You can see that there are 4 possible config values you can pass for each required field. The `label` key defines the field display label, the `has_value` and 'no_value` keys define a bit of text to show if the field has or is missing a field value, and the `show_value` boolean will control whether the `has_value` label should show or the actual value of the field should show (useful for shorter fields like the excerpt, defaults to false).
 
 Meta fields can be similarly defined as being required:
 
@@ -121,14 +121,14 @@ function xxx_required_meta_field_groups( $groups, $post_type ) {
 
 	// Only on posts and pages.
 	if ( 'post' === $post_type || 'page' === $post_type ) {
-		$groups['funnel_stage'] = array(
-			'label'      => __( 'Funnel Stage', 'xxx' ),
+		$groups['content_type'] = array(
+			'label'      => __( 'Content Type', 'xxx' ),
 			'meta_keys'  => array(
-				'_meta_checkbox_navigate'     => __( 'Navigate', 'xxx' ),
-				'_meta_checkbox_learn'        => __( 'Learn', 'xxx' ),
-				'_meta_checkbox_decide'       => __( 'Decide', 'xxx' ),
+				'_meta_checkbox_navigate' => __( 'Navigate', 'xxx' ),
+				'_meta_checkbox_learn'    => __( 'Learn', 'xxx' ),
+				'_meta_checkbox_decide'   => __( 'Decide', 'xxx' ),
 			),
-			'no_value'   => __( 'The post is missing a funnel stage', 'xxx' ),
+			'no_value'   => __( 'The post is missing a content type', 'xxx' ),
 			'show_value' => true,
 		);
 		// Other required meta key groups can be defined here...
@@ -138,7 +138,7 @@ function xxx_required_meta_field_groups( $groups, $post_type ) {
 }
 ```
 
-All of these filters have counterparts that allow you to define optional fields, which will show among the list of required fields in a separate section but will not block publishing the way the required fields will. The optional filters take an identical definition to the required fields but use different filter names:
+All of these filters for defining required fields have counterparts that allow you to define optional fields, which will show among the list of required fields in a separate section but will not block publishing. The optional filters take an identical definition to the required fields but use different filter names:
 
 ```
 publishing_flow_optional_primary_fields
@@ -147,7 +147,7 @@ publishing_flow_optional_meta_field_groups
 publishing_flow_optional_taxonomies
 ```
 
-When working locally you might wish to bypass the requirement checks in order to publish test posts. This plugin supports defining a "development domain" that, when detected, will bypass the requirement checks, but otherwise show the same UI:
+When working locally you might wish to bypass the requirement checks in order to more easily publish test posts. This plugin supports defining a "development domain" that, when detected, will bypass the requirement checks, but otherwise show the same UI:
 
 ```
 add_filter( 'publishing_flow_dev_domain', 'xxx_dev_domain' );
