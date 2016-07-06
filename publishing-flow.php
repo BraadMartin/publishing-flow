@@ -14,6 +14,19 @@ define( 'PUBLISHING_FLOW_VERSION', '1.0.0' );
 define( 'PUBLISHING_FLOW_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PUBLISHING_FLOW_URL', plugin_dir_url( __FILE__ ) );
 
+add_action( 'plugins_loaded', 'publishing_flow_load_translation_files' );
+/**
+ * Load translation files.
+ */
+function publishing_flow_load_translation_files() {
+
+	load_plugin_textdomain(
+		'publishing-flow',
+		false,
+		PUBLISHING_FLOW_PATH . 'languages/'
+	);
+}
+
 // Include admin functionality.
 require_once PUBLISHING_FLOW_PATH . 'inc/class-publishing-flow-admin.php';
 

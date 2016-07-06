@@ -1,0 +1,199 @@
+# Copyright (C) 2016 Braad Martin
+# This file is distributed under the same license as the Publishing Flow package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Publishing Flow 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/publishing-flow\n"
+"POT-Creation-Date: 2016-07-06 00:41:48+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: inc/class-publishing-flow-admin.php:138
+msgid "All required fields have a value"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:145
+msgid "Required fields are missing values"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:580
+msgid "Publish Flow"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:581
+msgid "Schedule Flow"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:582
+msgid "Publish"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:583
+msgid "Schedule"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:584
+msgid "Required"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:585
+msgid "Optional"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:586
+msgid "Publish Date"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:587
+msgid "This post will be published"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:588
+msgid "This post will be scheduled to publish on"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:589
+msgid "immediately"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:590
+msgid "Welcome to Publishing Flow"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:591
+msgid ""
+"Before you can publish you'll need to click through each of the device "
+"preview icons on the bottom of this panel"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:592
+msgid "Woah there, looks like this post is still missing a required field!"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:593
+msgid "Visit the edit screen to fix this."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:594
+msgid ""
+"Woah there, looks like you haven't yet previewed this post on all screen "
+"sizes."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:595
+msgid "Click through each device"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:753
+#: inc/class-publishing-flow-admin.php:783
+msgid "Success!"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:756
+msgid "Your post has been published."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:758
+#: inc/class-publishing-flow-admin.php:792
+msgid "What do you want to do now?"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:759
+#: inc/class-publishing-flow-admin.php:793
+msgid "View Post"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:760
+#: inc/class-publishing-flow-admin.php:794
+msgid "Keep Editing"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:788
+msgid "Your post has been scheduled to publish on"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:815
+msgid "Whoops, something went wrong..."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:818
+msgid "Your post could not be published or scheduled at this time."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:820
+msgid "Please go back to the edit screen and try again."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:821
+msgid "Return to Edit Screen"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:843
+msgid "Sorry, the current user is not allowed to publish posts"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:857
+msgid "Sorry, no post to publish was found."
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:869
+msgid "Looks like this post has already been published or scheduled"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:930
+msgid "Post Title"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:932
+msgid "The post has a title"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:933
+msgid "The post is missing a title"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:936
+msgid "Post Content"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:938
+msgid "The post has content"
+msgstr ""
+
+#: inc/class-publishing-flow-admin.php:939
+msgid "The post is missing content"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Publishing Flow"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://braadmartin.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Adds a Customizer-based publishing flow for ensuring posts are complete "
+"before publishing"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Braad Martin"
+msgstr ""
