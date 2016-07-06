@@ -21,20 +21,20 @@ By default only post title and content are required fields, but the plugin inclu
 Example of defining required primary fields:
 
 ```
-add_filter( 'publishing_flow_required_primary_keys', 'xxx_required_primary_keys', 10, 2 );
+add_filter( 'publishing_flow_required_primary_fields', 'xxx_required_primary_fields', 10, 2 );
 /**
- * Define required primary keys.
+ * Define required primary fields.
  *
- * @param   array   $keys       The array of primary keys.
+ * @param   array   $fields     The array of primary fields.
  * @param   string  $post_type  The post type.
  *
- * @return  array               The updated array of primary keys.
+ * @return  array               The updated array of primary fields.
  */
-function xxx_required_primary_keys( $keys, $post_type ) {
+function xxx_required_primary_fields( $fields, $post_type ) {
 
 	// Require an excerpt on posts and pages.
 	if ( 'post' === $post_type || 'page' === $post_type ) {
-		$keys['post_excerpt'] = array(
+		$fields['post_excerpt'] = array(
 			'label'      => __( 'Post Excerpt', 'xxx' ),
 			'has_value'  => __( 'The post has an excerpt', 'xxx' ),
 			'no_value'   => __( 'The post is missing an excerpt', 'xxx' ),
@@ -43,7 +43,7 @@ function xxx_required_primary_keys( $keys, $post_type ) {
 		// Other required primary fields can be defined here...
 	}
 
-	return $keys;
+	return $fields;
 }
 ```
 
@@ -52,20 +52,20 @@ function xxx_required_primary_keys( $keys, $post_type ) {
 Meta fields can be similarly defined as being required:
 
 ```
-add_filter( 'publishing_flow_required_meta_keys', 'xxx_required_meta_keys', 10, 2 );
+add_filter( 'publishing_flow_required_meta_fields', 'xxx_required_meta_fields', 10, 2 );
 /**
- * Define required meta keys.
+ * Define required meta fields.
  *
- * @param   array   $keys       The array of meta keys.
+ * @param   array   $fields     The array of meta fields.
  * @param   string  $post_type  The post type.
  *
- * @return  array               The updated array of meta keys.
+ * @return  array               The updated array of meta fields.
  */
-function xxx_required_meta_keys( $keys, $post_type ) {
+function xxx_required_meta_fields( $fields, $post_type ) {
 
 	// Only on posts and pages.
 	if ( 'post' === $post_type || 'page' === $post_type ) {
-		$keys['_thumbnail_id'] = array(
+		$fields['_thumbnail_id'] = array(
 			'label'     => __( 'Featured Image', 'xxx' ),
 			'has_value' => __( 'The post has a featured image', 'xxx' ),
 			'no_value'  => __( 'The post is missing a featured image', 'xxx' ),
@@ -73,7 +73,7 @@ function xxx_required_meta_keys( $keys, $post_type ) {
 		// Other required meta fields can be defined here...
 	}
 
-	return $keys;
+	return $fields;
 }
 ```
 
@@ -84,16 +84,16 @@ add_filter( 'publishing_flow_required_taxonomies', 'xxx_required_taxonomies', 10
 /**
  * Define required taxonomies.
  *
- * @param   array   $keys       The array of taxonomies.
- * @param   string  $post_type  The post type.
+ * @param   array   $taxonomies  The array of taxonomies.
+ * @param   string  $post_type   The post type.
  *
- * @return  array               The updated array of taxonomies.
+ * @return  array                The updated array of taxonomies.
  */
-function xxx_required_taxonomies( $keys, $post_type ) {
+function xxx_required_taxonomies( $taxonomies, $post_type ) {
 
 	// Only on posts and pages.
 	if ( 'post' === $post_type || 'page' === $post_type ) {
-		$keys['category'] = array(
+		$taxonomies['category'] = array(
 			'label'      => __( 'Category', 'xxx' ),
 			'no_value'   => __( 'The post is missing a category', 'xxx' ),
 			'show_value' => true,
@@ -101,23 +101,23 @@ function xxx_required_taxonomies( $keys, $post_type ) {
 		// Other required taxonomies can be defined here...
 	}
 
-	return $keys;
+	return $taxonomies;
 }
 ```
 
 Sometimes you might have a group of meta fields where you want to require that at least one of them has a value. Publishing Flow supports this with nearly the same syntax as defining required/optional fields.
 
 ```
-add_filter( 'publishing_flow_required_meta_key_groups', 'xxx_required_meta_key_groups', 10, 2 );
+add_filter( 'publishing_flow_required_meta_field_groups', 'xxx_required_meta_field_groups', 10, 2 );
 /**
- * Define required meta key groups.
+ * Define required meta field groups.
  *
- * @param   array   $keys       The array of meta key groups.
+ * @param   array   $groups     The array of meta field groups.
  * @param   string  $post_type  The post type.
  *
- * @return  array               The updated array of meta key groups.
+ * @return  array               The updated array of meta field groups.
  */
-function xxx_required_meta_key_groups( $groups, $post_type ) {
+function xxx_required_meta_field_groups( $groups, $post_type ) {
 
 	// Only on posts and pages.
 	if ( 'post' === $post_type || 'page' === $post_type ) {
@@ -141,9 +141,9 @@ function xxx_required_meta_key_groups( $groups, $post_type ) {
 All of these filters have counterparts that allow you to define optional fields, which will show among the list of required fields in a separate section but will not block publishing the way the required fields will. The optional filters take an identical definition to the required fields but use different filter names:
 
 ```
-publishing_flow_optional_primary_keys
-publishing_flow_optional_meta_keys
-publishing_flow_optional_meta_key_groups
+publishing_flow_optional_primary_fields
+publishing_flow_optional_meta_fields
+publishing_flow_optional_meta_field_groups
 publishing_flow_optional_taxonomies
 ```
 
@@ -175,12 +175,12 @@ publishing_flow_js_templates
 publishing_flow_publish_success_template
 publishing_flow_schedule_success_template
 publishing_flow_publish_fail_template
-publishing_flow_required_primary_keys
-publishing_flow_optional_primary_keys
-publishing_flow_required_meta_keys
-publishing_flow_optional_meta_keys
-publishing_flow_required_meta_key_groups
-publishing_flow_optional_meta_key_groups
+publishing_flow_required_primary_fields
+publishing_flow_optional_primary_fields
+publishing_flow_required_meta_fields
+publishing_flow_optional_meta_fields
+publishing_flow_required_meta_field_groups
+publishing_flow_optional_meta_field_groups
 publishing_flow_required_taxonomies
 publishing_flow_optional_taxonomies
 ```

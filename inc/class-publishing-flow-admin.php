@@ -351,17 +351,17 @@ class Publishing_Flow_Admin {
 			}
 		}
 
-		// Get all required and optional primary keys.
-		$required_primary = $this->get_required_primary_keys( $post->post_type );
-		$optional_primary = $this->get_optional_primary_keys( $post->post_type );
+		// Get all required and optional primary fields.
+		$required_primary = $this->get_required_primary_fields( $post->post_type );
+		$optional_primary = $this->get_optional_primary_fields( $post->post_type );
 
-		// Get all required and optional meta keys.
-		$required_meta = $this->get_required_meta_keys( $post->post_type );
-		$optional_meta = $this->get_optional_meta_keys( $post->post_type );
+		// Get all required and optional meta fields.
+		$required_meta = $this->get_required_meta_fields( $post->post_type );
+		$optional_meta = $this->get_optional_meta_fields( $post->post_type );
 
-		// Get all required and optional meta key groups.
-		$required_group = $this->get_required_meta_key_groups( $post->post_type );
-		$optional_group = $this->get_optional_meta_key_groups( $post->post_type );
+		// Get all required and optional meta field groups.
+		$required_group = $this->get_required_meta_field_groups( $post->post_type );
+		$optional_group = $this->get_optional_meta_field_groups( $post->post_type );
 
 		// Get all required taxonomies.
 		$required_tax = $this->get_required_taxonomies( $post->post_type );
@@ -917,15 +917,15 @@ class Publishing_Flow_Admin {
 	}
 
 	/**
-	 * Return an array of all required primary keys.
+	 * Return an array of all required primary fields.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of required primary keys.
+	 * @return  array               The array of required primary fields.
 	 */
-	public function get_required_primary_keys( $post_type ) {
+	public function get_required_primary_fields( $post_type ) {
 
-		$primary_keys = array(
+		$primary_fields = array(
 			'post_title' => array(
 				'label'      => __( 'Post Title', 'publishing-flow' ),
 				'show_value' => true,
@@ -940,83 +940,83 @@ class Publishing_Flow_Admin {
 			),
 		);
 
-		return apply_filters( 'publishing_flow_required_primary_keys', $primary_keys, $post_type );
+		return apply_filters( 'publishing_flow_required_primary_fields', $primary_fields, $post_type );
 	}
 
 	/**
-	 * Return an array of all optional primary keys.
+	 * Return an array of all optional primary fields.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of optional primary keys.
+	 * @return  array               The array of optional primary fields.
 	 */
-	public function get_optional_primary_keys( $post_type ) {
+	public function get_optional_primary_fields( $post_type ) {
 
-		$primary_keys = array();
+		$primary_fields = array();
 
-		return apply_filters( 'publishing_flow_optional_primary_keys', $primary_keys, $post_type );
+		return apply_filters( 'publishing_flow_optional_primary_fields', $primary_fields, $post_type );
 	}
 
 	/**
-	 * Return an array of all required meta keys.
+	 * Return an array of all required meta fields.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of required meta keys.
+	 * @return  array               The array of required meta fields.
 	 */
-	public function get_required_meta_keys( $post_type ) {
+	public function get_required_meta_fields( $post_type ) {
 
-		$meta_keys = array();
+		$meta_fields = array();
 
-		return apply_filters( 'publishing_flow_required_meta_keys', $meta_keys, $post_type );
+		return apply_filters( 'publishing_flow_required_meta_fields', $meta_fields, $post_type );
 	}
 
 	/**
-	 * Return an array of all optional meta keys.
+	 * Return an array of all optional meta fields.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of optional meta keys.
+	 * @return  array               The array of optional meta fields.
 	 */
-	public function get_optional_meta_keys( $post_type ) {
+	public function get_optional_meta_fields( $post_type ) {
 
-		$meta_keys = array();
+		$meta_fields = array();
 
-		return apply_filters( 'publishing_flow_optional_meta_keys', $meta_keys, $post_type );
+		return apply_filters( 'publishing_flow_optional_meta_fields', $meta_fields, $post_type );
 	}
 
 	/**
-	 * Return an array of all required meta keys groups.
+	 * Return an array of all required meta field groups.
 	 *
-	 * A "group" represents multiple meta keys where at least one of them needs to have
+	 * A "group" represents multiple meta fields where at least one of them needs to have
 	 * a value for the group to be considered as having a value.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of required meta key groups.
+	 * @return  array               The array of required meta field groups.
 	 */
-	public function get_required_meta_key_groups( $post_type ) {
+	public function get_required_meta_field_groups( $post_type ) {
 
-		$meta_key_groups = array();
+		$meta_field_groups = array();
 
-		return apply_filters( 'publishing_flow_required_meta_key_groups', $meta_key_groups, $post_type );
+		return apply_filters( 'publishing_flow_required_meta_field_groups', $meta_field_groups, $post_type );
 	}
 
 	/**
-	 * Return an array of all optional meta key groups.
+	 * Return an array of all optional meta field groups.
 	 *
-	 * A "group" represents multiple meta keys where at least one of them needs to have
+	 * A "group" represents multiple meta fields where at least one of them needs to have
 	 * a value for the group to be considered as having a value.
 	 *
 	 * @param   string  $post_type  The post type.
 	 *
-	 * @return  array               The array of optional meta key groups.
+	 * @return  array               The array of optional meta field groups.
 	 */
-	public function get_optional_meta_key_groups( $post_type ) {
+	public function get_optional_meta_field_groups( $post_type ) {
 
-		$meta_key_groups = array();
+		$meta_field_groups = array();
 
-		return apply_filters( 'publishing_flow_optional_meta_key_groups', $meta_key_groups, $post_type );
+		return apply_filters( 'publishing_flow_optional_meta_field_groups', $meta_field_groups, $post_type );
 	}
 
 	/**
