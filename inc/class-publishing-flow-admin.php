@@ -168,6 +168,15 @@ class Publishing_Flow_Admin {
 	public function customizer_redirect( $location, $post_id ) {
 
 		if ( isset( $_POST['pf-action'] ) && 'enter-publishing-flow' === $_POST['pf-action'] ) {
+
+			$post = get_post( $post_id );
+
+			// Bump the publish date on the post if it is set to be published immediately.
+			if ( empty( $post->post_date_gmt ) || '0000-00-00 00:00:00' == $post->post_date_gmt ) {
+				$post->post_date = current_time( 'mysql' );
+				wp_update_post( $post );
+			}
+
 			$location = $this->build_customizer_url( $post_id );
 		}
 
