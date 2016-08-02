@@ -222,10 +222,20 @@ function xxx_data_array( $data ) {
 
 == Changelog ==
 
+= 1.1.0 =
+* Bugfix for incorrect publish date displaying in the preview
+* Bugfix for sometimes incorrect publish date persisting after publishing
+* Bugfix for posts with a publish date in the past showing as publishing "immediately"
+
 = 1.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* Bugfix for incorrect publish date displaying in the preview
+* Bugfix for sometimes incorrect publish date persisting after publishing
+* Bugfix for posts with a publish date in the past showing as publishing "immediately"
 
 = 1.0 =
 * Initial release.
