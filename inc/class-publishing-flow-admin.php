@@ -557,6 +557,18 @@ class Publishing_Flow_Admin {
 		// Determine whether the post should be scheduled.
 		$scheduled = $this->if_scheduled_post( $post );
 
+		// Determine whether the post will be published with a date in the past.
+		if ( ! $scheduled && '0000-00-00 00:00:00' !== $post->post_date_gmt ) {
+
+			// The post has a date in the past.
+			$post_date_past = "1";
+
+		} else {
+
+			// The post will be published immediately.
+			$post_date_past = "0";
+		}
+
 		// Format the publish date for display.
 		$post_date = get_the_date( 'F j, Y \a\t g:ia', $post->ID );
 
@@ -577,6 +589,7 @@ class Publishing_Flow_Admin {
 			'publishNonce'             => $publish_nonce,
 			'scheduled'                => intval( $scheduled ),
 			'postDate'                 => $post_date,
+			'postDatePast'             => $post_date_past,
 			'publishLabel'             => __( 'Publish Flow', 'publishing-flow' ),
 			'scheduleLabel'            => __( 'Schedule Flow', 'publishing-flow' ),
 			'doPublishLabel'           => __( 'Publish', 'publishing-flow' ),
@@ -586,6 +599,7 @@ class Publishing_Flow_Admin {
 			'publishDateLabel'         => __( 'Publish Date', 'publishing-flow' ),
 			'publishedOnLabel'         => __( 'This post will be published', 'publishing-flow' ),
 			'scheduledOnLabel'         => __( 'This post will be scheduled to publish on', 'publishing-flow' ),
+			'publishPastLabel'         => __( 'This post will be published with a date in the past on', 'publishing-flow' ),
 			'publishNowLabel'          => __( 'immediately', 'publishing-flow' ),
 			'welcomeLabel'             => __( 'Welcome to Publishing Flow', 'publishing-flow' ),
 			'welcomeContent'           => __( "Before you can publish you'll need to click through each of the device preview icons on the bottom of this panel", 'publishing-flow' ),
