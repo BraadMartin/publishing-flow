@@ -893,6 +893,21 @@ class Publishing_Flow_Admin {
 
 		} else {
 
+			// If the post has a GMT time set, then at some point it was set to be
+			// published at a specific time. If we're in this else clause then we know
+			// the GMT wasn't set to a time in the future, so we need to distinguish
+			// between posts with a set date in the past (that have a GMT set) and posts
+			// that should be published immediately (and do not have GMT set).
+			if ( empty( $post->post_date_gmt ) || '0000-00-00 00:00:00' == $post->post_date_gmt ) {
+
+				// The post should be published immediately, so update the post date to the
+				// current time before publishing. This logic was taken from wp_insert_post().
+				$post->post_date     = current_time( 'mysql' );
+				$post->post_date_gmt = current_time( 'mysql', 1 );
+
+				wp_update_post( $post );
+			}
+
 			wp_publish_post( $post );
 
 			$outcome = 'published';
