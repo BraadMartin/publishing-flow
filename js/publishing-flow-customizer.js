@@ -148,6 +148,14 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				dateLabel:    data.postDate,
 			};
 
+		} else if ( "1" === data.postDatePast ) {
+
+			var postInfoData = {
+				label:        data.publishDateLabel,
+				publishLabel: data.publishPastLabel,
+				dateLabel:    data.postDate,
+			};
+
 		} else {
 
 			var postInfoData = {

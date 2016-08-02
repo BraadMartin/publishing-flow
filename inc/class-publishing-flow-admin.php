@@ -168,6 +168,15 @@ class Publishing_Flow_Admin {
 	public function customizer_redirect( $location, $post_id ) {
 
 		if ( isset( $_POST['pf-action'] ) && 'enter-publishing-flow' === $_POST['pf-action'] ) {
+
+			$post = get_post( $post_id );
+
+			// Bump the publish date on the post if it is set to be published immediately.
+			if ( empty( $post->post_date_gmt ) || '0000-00-00 00:00:00' == $post->post_date_gmt ) {
+				$post->post_date = current_time( 'mysql' );
+				wp_update_post( $post );
+			}
+
 			$location = $this->build_customizer_url( $post_id );
 		}
 
@@ -557,6 +566,18 @@ class Publishing_Flow_Admin {
 		// Determine whether the post should be scheduled.
 		$scheduled = $this->if_scheduled_post( $post );
 
+		// Determine whether the post will be published with a date in the past.
+		if ( ! $scheduled && '0000-00-00 00:00:00' !== $post->post_date_gmt ) {
+
+			// The post has a date in the past.
+			$post_date_past = "1";
+
+		} else {
+
+			// The post will be published immediately.
+			$post_date_past = "0";
+		}
+
 		// Format the publish date for display.
 		$post_date = get_the_date( 'F j, Y \a\t g:ia', $post->ID );
 
@@ -577,6 +598,7 @@ class Publishing_Flow_Admin {
 			'publishNonce'             => $publish_nonce,
 			'scheduled'                => intval( $scheduled ),
 			'postDate'                 => $post_date,
+			'postDatePast'             => $post_date_past,
 			'publishLabel'             => __( 'Publish Flow', 'publishing-flow' ),
 			'scheduleLabel'            => __( 'Schedule Flow', 'publishing-flow' ),
 			'doPublishLabel'           => __( 'Publish', 'publishing-flow' ),
@@ -586,6 +608,7 @@ class Publishing_Flow_Admin {
 			'publishDateLabel'         => __( 'Publish Date', 'publishing-flow' ),
 			'publishedOnLabel'         => __( 'This post will be published', 'publishing-flow' ),
 			'scheduledOnLabel'         => __( 'This post will be scheduled to publish on', 'publishing-flow' ),
+			'publishPastLabel'         => __( 'This post will be published with a date in the past on', 'publishing-flow' ),
 			'publishNowLabel'          => __( 'immediately', 'publishing-flow' ),
 			'welcomeLabel'             => __( 'Welcome to Publishing Flow', 'publishing-flow' ),
 			'welcomeContent'           => __( "Before you can publish you'll need to click through each of the device preview icons on the bottom of this panel", 'publishing-flow' ),
@@ -892,6 +915,21 @@ class Publishing_Flow_Admin {
 			$outcome = 'scheduled';
 
 		} else {
+
+			// If the post has a GMT time set, then at some point it was set to be
+			// published at a specific time. If we're in this else clause then we know
+			// the GMT wasn't set to a time in the future, so we need to distinguish
+			// between posts with a set date in the past (that have a GMT set) and posts
+			// that should be published immediately (and do not have GMT set).
+			if ( empty( $post->post_date_gmt ) || '0000-00-00 00:00:00' == $post->post_date_gmt ) {
+
+				// The post should be published immediately, so update the post date to the
+				// current time before publishing. This logic was taken from wp_insert_post().
+				$post->post_date     = current_time( 'mysql' );
+				$post->post_date_gmt = current_time( 'mysql', 1 );
+
+				wp_update_post( $post );
+			}
 
 			wp_publish_post( $post );
 
