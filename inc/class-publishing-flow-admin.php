@@ -928,6 +928,12 @@ class Publishing_Flow_Admin {
 				$post->post_date     = current_time( 'mysql' );
 				$post->post_date_gmt = current_time( 'mysql', 1 );
 
+				// Some plugins expect that the post is being saved from the edit screen (like Edit Flow),
+				// and look for extra date data in $_POST, so we need to fake this here to avoid issues.
+				$_POST['mm'] = substr( $post->post_date, 5, 2 );
+				$_POST['jj'] = substr( $post->post_date, 8, 2 );
+				$_POST['aa'] = substr( $post->post_date, 0, 4 );
+
 				wp_update_post( $post );
 			}
 
