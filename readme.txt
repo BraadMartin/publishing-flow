@@ -4,7 +4,7 @@ Donate link: http://braadmartin.com/
 Tags: publishing, flow, required, fields, preview
 Requires at least: 4.5
 Tested up to: 4.6
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -222,6 +222,9 @@ function xxx_data_array( $data ) {
 
 == Changelog ==
 
+= 1.1.1 =
+* Fix for compatibility issue with Edit Flow version 0.8.1 and older
+
 = 1.1.0 =
 * Bugfix for incorrect publish date displaying in the preview
 * Bugfix for sometimes incorrect publish date persisting after publishing
@@ -231,6 +234,9 @@ function xxx_data_array( $data ) {
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+* Fix for compatibility issue with Edit Flow version 0.8.1 and older
 
 = 1.1.0 =
 * Bugfix for incorrect publish date displaying in the preview
