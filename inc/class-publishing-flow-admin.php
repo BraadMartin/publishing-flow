@@ -766,7 +766,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  string  The template.
 	 */
-	public function publish_success_template( $post_id ) {
+	public static function publish_success_template( $post_id ) {
 
 		ob_start();
 
@@ -794,7 +794,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  string  The template.
 	 */
-	public function schedule_success_template( $post_id ) {
+	public static function schedule_success_template( $post_id ) {
 
 		ob_start();
 
@@ -828,7 +828,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  string  The template.
 	 */
-	public function publish_fail_template( $post_id ) {
+	public static function publish_fail_template( $post_id ) {
 
 		ob_start();
 
@@ -967,7 +967,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of required primary fields.
 	 */
-	public function get_required_primary_fields( $post_type ) {
+	public static function get_required_primary_fields( $post_type ) {
 
 		$primary_fields = array(
 			'post_title' => array(
@@ -994,7 +994,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of optional primary fields.
 	 */
-	public function get_optional_primary_fields( $post_type ) {
+	public static function get_optional_primary_fields( $post_type ) {
 
 		$primary_fields = array();
 
@@ -1008,7 +1008,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of required meta fields.
 	 */
-	public function get_required_meta_fields( $post_type ) {
+	public static function get_required_meta_fields( $post_type ) {
 
 		$meta_fields = array();
 
@@ -1022,7 +1022,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of optional meta fields.
 	 */
-	public function get_optional_meta_fields( $post_type ) {
+	public static function get_optional_meta_fields( $post_type ) {
 
 		$meta_fields = array();
 
@@ -1039,7 +1039,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of required meta field groups.
 	 */
-	public function get_required_meta_field_groups( $post_type ) {
+	public static function get_required_meta_field_groups( $post_type ) {
 
 		$meta_field_groups = array();
 
@@ -1056,7 +1056,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of optional meta field groups.
 	 */
-	public function get_optional_meta_field_groups( $post_type ) {
+	public static function get_optional_meta_field_groups( $post_type ) {
 
 		$meta_field_groups = array();
 
@@ -1070,7 +1070,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of required taxonomies.
 	 */
-	public function get_required_taxonomies( $post_type ) {
+	public static function get_required_taxonomies( $post_type ) {
 
 		$taxonomies = array();
 
@@ -1084,7 +1084,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  array               The array of optional taxonomies.
 	 */
-	public function get_optional_taxonomies( $post_type ) {
+	public static function get_optional_taxonomies( $post_type ) {
 
 		$taxonomies = array();
 
@@ -1096,7 +1096,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @return  string  The dev domain.
 	 */
-	public function get_dev_domain() {
+	public static function get_dev_domain() {
 
 		/**
 		 * Allow a development domain to be specified that will bypass the requirements
@@ -1112,7 +1112,7 @@ class Publishing_Flow_Admin {
 	 *
 	 * @param  string  $post_type  The post type to check.
 	 */
-	public function is_supported_post_type( $post_type ) {
+	public static function is_supported_post_type( $post_type ) {
 
 		/**
 		 * Allow the supported post types to be filtered.
