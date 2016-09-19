@@ -719,7 +719,13 @@ class Publishing_Flow_Admin {
 	 */
 	public function customize_controls_print_footer_scripts() {
 
-		$post_id = (int)$_GET['post-id'];
+		$post_id         = ( isset( $_GET['post-id'] ) ) ? (int)$_GET['post-id'] : 0;
+		$publishing_flow = ( isset( $_GET['publishing-flow'] ) && 'true' === $_GET['publishing-flow'] );
+
+		// Bail if we're not serving Publishing Flow.
+		if ( empty( $post_id ) || empty( $publishing_flow ) ) {
+			return;
+		}
 
 		// Templates.
 		$templates = array(
