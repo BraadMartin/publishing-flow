@@ -198,7 +198,7 @@ class Publishing_Flow_Admin {
 		if ( ! wp_script_is( 'featherlight', 'registered' ) ) {
 			wp_register_script(
 				'featherlight',
-				PUBLISHING_FLOW_URL . 'vendor/featherlight/featherlight.min.js',
+				PUBLISHING_FLOW_URL . 'assets/featherlight/featherlight.min.js',
 				array( 'jquery' ),
 				'1.4.0',
 				true
@@ -207,7 +207,7 @@ class Publishing_Flow_Admin {
 		if ( ! wp_style_is( 'featherlight', 'registered' ) ) {
 			wp_register_style(
 				'featherlight',
-				PUBLISHING_FLOW_URL . 'vendor/featherlight/featherlight.min.css',
+				PUBLISHING_FLOW_URL . 'assets/featherlight/featherlight.min.css',
 				array(),
 				'1.4.0'
 			);
