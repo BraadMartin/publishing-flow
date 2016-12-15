@@ -1,0 +1,7 @@
+{
+    "name": "braadmartin/publishing-flow",
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    }
+}
