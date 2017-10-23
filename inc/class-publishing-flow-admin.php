@@ -131,21 +131,24 @@ class Publishing_Flow_Admin {
 
 		$data = $this->build_data_array( $post->ID );
 
+		$icon_down = '<span class="dashicons dashicons-arrow-down"></span>';
+		$icon_up = '<span class="dashicons dashicons-arrow-up"></span>';
+
 		if ( $data['requirementsMet'] ) {
 			$output = sprintf(
-				'<span class="%s"></span>%s<span class="%s"></span>',
+				'<span class="%s"></span>%s',
 				'dashicons dashicons-yes',
-				__( 'All required fields have a value', 'publishing-flow' ),
-				'dashicons dashicons-arrow-down'
+				__( 'All required fields have a value', 'publishing-flow' )
 			);
 		} else {
 			$output = sprintf(
-				'<span class="%s"></span>%s<span class="%s"></span>',
+				'<span class="%s"></span>%s',
 				'dashicons dashicons-no-alt',
-				__( 'Required fields are missing values', 'publishing-flow' ),
-				'dashicons dashicons-arrow-down'
+				__( 'Required fields are missing values', 'publishing-flow' )
 			);
 		}
+
+		$output .= $icon_down . $icon_up;
 
 		$output = sprintf(
 			'<div class="%s"><div class="%s">%s</div></div>',

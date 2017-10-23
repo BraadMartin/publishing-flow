@@ -30,12 +30,25 @@
 	color: red;
 }
 
-.publishing-flow-requirements-status .dashicons-arrow-down {
+.publishing-flow-requirements-status .dashicons-arrow-down,
+.publishing-flow-requirements-status .dashicons-arrow-up {
+	float: right;
+}
+
+.publishing-flow-requirements-status .dashicons-arrow-up {
 	display: none;
 }
 
-.publishing-flow-requirements-status:hover .dashicons-arrow-down {
+.publishing-flow-requirements-status .dashicons-arrow-down {
 	display: inline-block;
+}
+
+.publishing-flow-requirements-wrap.active .publishing-flow-requirements-status .dashicons-arrow-up {
+	display: inline-block;
+}
+
+.publishing-flow-requirements-wrap.active .publishing-flow-requirements-status .dashicons-arrow-down {
+	display: none;
 }
 
 .publishing-flow-requirements-wrap .pf-section {
