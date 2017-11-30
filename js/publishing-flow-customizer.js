@@ -3,7 +3,6 @@
  */
 
 var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
-
 	'use strict';
 
 	/**
@@ -13,6 +12,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	var $header;
 	var $info;
 	var $footer;
+	var $previewWrap;
 
 	/**
 	 * Initialize.
@@ -20,10 +20,11 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	var init = function() {
 
 		// Store some key DOM references.
-		$controls = $( '#customize-theme-controls' );
-		$header   = $( '#customize-header-actions' );
-		$info     = $( '#customize-info' );
-		$footer   = $( '#customize-footer-actions' );
+		$controls    = $( '#customize-theme-controls' );
+		$header      = $( '#customize-header-actions' );
+		$info        = $( '#customize-info' );
+		$footer      = $( '#customize-footer-actions' );
+		$previewWrap = $( '#customize-preview' );
 
 		// Add initial classes for styling purposes.
 		addInitialClasses();
@@ -43,6 +44,9 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		// Inject our publish button.
 		injectButton();
 
+		// Initialize context preview events.
+		initContextPreview();
+
 		// Initialize device preview events.
 		initDevicePreview();
 	};
@@ -59,7 +63,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		if ( "1" === data.requirementsMet ) {
 			$controls.addClass( 'pf-requirements-met' );
 		}
-	}
+	};
 
 	/**
 	 * Set the default Customizer preview device.
@@ -69,7 +73,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		// Mark the device as having been clicked.
 		$footer.find( '.devices button[data-device="' + data.defaultDevice + '"]' ).addClass( 'pf-clicked' );
-	}
+	};
 
 	/**
 	 * Inject our welcome section.
@@ -86,7 +90,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				content: data.welcomeContent,
 			})
 		);
-	}
+	};
 
 	/**
 	 * Inject our notification sections.
@@ -111,7 +115,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				action:       data.deviceNotificationAction,
 			})
 		);
-	}
+	};
 
 	/**
 	 * Inject our custom controls.
@@ -140,29 +144,40 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		var postInfo = wp.template( 'pf-post-info' );
 
+		// Build initial template args for the Post Info section.
 		if ( "1" === data.scheduled ) {
 
 			var postInfoData = {
-				label:        data.publishDateLabel,
-				publishLabel: data.scheduledOnLabel,
-				dateLabel:    data.postDate,
+				publishDateLabel: data.publishDateLabel,
+				publishedOnLabel: data.publishedOnLabel,
+				dateLabel: data.postDate,
 			};
 
 		} else if ( "1" === data.postDatePast ) {
 
 			var postInfoData = {
-				label:        data.publishDateLabel,
-				publishLabel: data.publishPastLabel,
-				dateLabel:    data.postDate,
+				publishDateLabel: data.publishDateLabel,
+				publishedOnLabel: data.publishedOnLabel,
+				dateLabel: data.postDate,
 			};
 
 		} else {
 
 			var postInfoData = {
-				label:        data.publishDateLabel,
-				publishLabel: data.publishedOnLabel,
-				dateLabel:    data.publishNowLabel,
+				publishDateLabel: data.publishDateLabel,
+				publishedOnLabel: data.publishedOnLabel,
+				dateLabel: data.publishNowLabel,
 			};
+		}
+
+		// Add template args for the preview context select,
+		// if multiple preview contexts have been defined.
+		if ( hasMultiplePreviewContexts() ) {
+			$.extend( postInfoData, {
+				previewContextsLabel: data.previewContextsLabel,
+				previewContextsInfoLabel: data.previewContextsInfoLabel,
+				previewContexts: data.previewContexts,
+			} );
 		}
 
 		// Inject post info into our post info section.
@@ -301,7 +316,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		if ( $sectionOptional.children().length > 1 ) {
 			$controls.append( $sectionOptional );
 		}
-	}
+	};
 
 	/**
 	 * Inject our publish button and spinner.
@@ -347,7 +362,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			// Everything must be good, so publish the post.
 			ajaxPublishPost();
 		});
-	}
+	};
 
 	/**
 	 * Show the required field notification.
@@ -355,14 +370,130 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	var showReqNotification = function() {
 		$( '.pf-required-notifications' ).addClass( 'visible' );
 		$controls.addClass( 'pf-required-notifications-open' );
-	}
+	};
 
 	/**
 	 * Show the device notification.
 	 */
 	var showDeviceNotification = function() {
 		$( '.pf-device-notifications' ).addClass( 'visible' );
-	}
+	};
+
+	/**
+	 * Initialize our context preview events.
+	 */
+	var initContextPreview = function() {
+
+		// Bail if we don't have multiple preview contexts registered.
+		if ( ! hasMultiplePreviewContexts() ) {
+			return;
+		}
+
+		// Inject a container to render context preview iframes into.
+		$previewWrap.append( $( '<div />' ).attr( 'id', 'pf-context-preview-frames-wrap' ) );
+		var $iframesContainer = $( '#pf-context-preview-frames-wrap' );
+
+		injectContextPreviewFrames();
+
+		$( '.pf-post-info-section .pf-post-info-preview-contexts' ).on( 'change', function() {
+			var selected      = $( this ).attr( 'value' );
+			var $defaultFrame = $( '#customize-preview > iframe' );
+			var $iframes      = $iframesContainer.find( 'iframe' );
+
+			// Hide any open frames.
+			$iframes.removeClass( 'pf-visible' );
+
+			if ( 'default' === selected ) {
+
+				// Hide our iframes container.
+				$iframesContainer.removeClass( 'pf-visible' );
+
+				// Open the default frame.
+				$defaultFrame.removeClass( 'pf-hidden' );
+
+			} else {
+
+				var $iframe = $iframes.filter( '[data-context=' + selected + ']' );
+
+				// Close the default frame.
+				$defaultFrame.addClass( 'pf-hidden' );
+
+				// Open the matching frame.
+				$iframesContainer.addClass( 'pf-visible' );
+				$iframe.addClass( 'pf-visible' );
+			}
+		});
+	};
+
+	/**
+	 * Inject our extra context preview iframes.
+	 */
+	var injectContextPreviewFrames = function() {
+		var $frameWrap = $( '#pf-context-preview-frames-wrap' );
+
+		_.each( data.previewContexts, function( config, context, index ) {
+
+			// Skip the default context, as this is already provided.
+			if ( 'default' === context ) {
+				return;
+			}
+
+			var frameURL = config.url || data.post.guid;
+			var params   = getParamsFromURL( frameURL );
+
+			if ( config.query_params ) {
+				params = $.extend( params, config.query_params );
+			}
+
+			if ( Object.keys( params ).length ) {
+				var finalURL = frameURL.split( '?' )[0] + '?' + $.param( params );
+			} else {
+				var finalURL = frameURL.split( '?' )[0];
+			}
+
+			var iframeRequest = $.get( finalURL, {} );
+
+			iframeRequest.done( function( response ) {
+				var frameID = 'pf-preview-context-' + context;
+				var $iframe = $( '<iframe>' ).attr( {
+					'id': frameID,
+					'data-context': context,
+				} );
+
+				$frameWrap.append( $iframe );
+
+				var iframe = document.getElementById( frameID ).contentDocument;
+				iframe.open();
+				iframe.writeln( response );
+				iframe.close();
+			});
+
+			iframeRequest.fail( function() {
+				console.log( 'Ajax request for ' + finalURL + ' has failed.' );
+			});
+		});
+	};
+
+	/**
+	 * Given a URL that might have query params, parse the query params
+	 * into an object and return it.
+	 */
+	var getParamsFromURL = function( url ) {
+		var params = {};
+
+		if ( url.indexOf( '?' ) === -1 ) {
+			return params;
+		}
+
+		var urlParts = url.split( '?' )[1].split( '&' );
+
+		for ( var i = 0; i < urlParts.length; i++ ) {
+			var param = urlParts[i].split( '=' );
+			params[ param[0] ] = param[1];
+		}
+
+		return params;
+	};
 
 	/**
 	 * Initialize our device preview events.
@@ -381,7 +512,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				$header.find( '.pf-customizer-publish' ).removeClass( 'pf-disabled' );
 			}
 		});
-	}
+	};
 
 	/**
 	 * Make an Ajax call to publish the previewed post.
@@ -428,7 +559,14 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		publishPost.fail( function() {
 			$.featherlight( $( '.pf-publish-success' ), options );
 		});
-	}
+	};
+
+	/**
+	 * Determine whether multiple preview contexts are currently registered.
+	 */
+	var hasMultiplePreviewContexts = function() {
+		return ( Object.keys( data.previewContexts ).length > 1 );
+	};
 
 	return {
 		init: init,
