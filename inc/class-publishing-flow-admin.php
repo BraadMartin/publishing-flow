@@ -868,7 +868,7 @@ class Publishing_Flow_Admin {
 		$user = wp_get_current_user();
 
 		// Bail if the current user isn't allowed to publish posts.
-		if ( ! $user || ! user_can( $user, 'publish_posts' ) ) {
+		if ( ! $user || ! current_user_can( 'publish_post', $_POST['post_id'] ) ) {
 
 			$response = new stdClass();
 			$response->outcome = 'error';
