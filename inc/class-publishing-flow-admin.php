@@ -866,9 +866,10 @@ class Publishing_Flow_Admin {
 		check_ajax_referer( 'pf-publish', 'pf_publish_nonce', true );
 
 		$user = wp_get_current_user();
+		$post_id = (int) $_POST['post_id'];
 
 		// Bail if the current user isn't allowed to publish posts.
-		if ( ! $user || ! current_user_can( 'publish_post', $_POST['post_id'] ) ) {
+		if ( ! $user || empty( $post_id ) || ! current_user_can( 'publish_post', $post_id ) ) {
 
 			$response = new stdClass();
 			$response->outcome = 'error';
@@ -879,7 +880,7 @@ class Publishing_Flow_Admin {
 			wp_die();
 		}
 
-		$post = get_post( $_POST['post_id'] );
+		$post = get_post( $post_id );
 
 		// Bail if we don't have a post to publish.
 		if ( is_wp_error( $post ) ) {
