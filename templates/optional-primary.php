@@ -2,7 +2,7 @@
 	<div class="pf-optional-primary pf-field pf-key-{{ data.key }}" data-key="{{ data.key }}">
 		<div class="pf-label">
 			<h3>{{ data.label }}</h3>
-			<# if ( data.value ) { #>
+			<# if ( data.value.length ) { #>
 				<div class="pf-all-good pf-status">
 					<span class="dashicons dashicons-yes"></span>
 				</div>
@@ -12,11 +12,11 @@
 				</div>
 			<# } #>
 		</div>
-		<# if ( data.value && data.showValue ) { #>
+		<# if ( data.value.length && data.showValue ) { #>
 			<div class="pf-value pf-has-value">
 				<p>{{ data.value }}</p>
 			</div>
-		<# } else if ( data.value && data.hasValue ) { #>
+		<# } else if ( data.value.length && data.hasValue ) { #>
 			<div class="pf-value pf-has-value">
 				<p>{{ data.hasValue }}</p>
 			</div>
@@ -24,7 +24,7 @@
 			<div class="pf-value pf-no-value">
 				<p>{{ data.noValue }}</p>
 			</div>
-		<# } else if ( data.value ) { #>
+		<# } else if ( data.value.length ) { #>
 			<div class="pf-value">
 				<p>Value: {{ data.value }}</p>
 			</div>
