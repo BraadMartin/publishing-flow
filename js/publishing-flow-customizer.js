@@ -3,7 +3,6 @@
  */
 
 var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
-
 	'use strict';
 
 	/**
@@ -75,16 +74,15 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 * Inject our welcome section.
 	 */
 	var injectWelcome = function() {
-
 		$info.empty();
 
 		var welcome = wp.template( 'pf-welcome' );
 
 		$info.append(
-			welcome({
+			welcome( {
 				label:   data.welcomeLabel,
 				content: data.welcomeContent,
-			})
+			} )
 		);
 	}
 
@@ -92,24 +90,23 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 	 * Inject our notification sections.
 	 */
 	var injectNotifications = function() {
-
 		var reqNotifications = wp.template( 'pf-required-notifications' );
 
 		$controls.prepend(
-			reqNotifications({
+			reqNotifications( {
 				notification: data.reqNotification,
 				editLink:     data.editLink,
 				linkText:     data.reqNotificationLink,
-			})
+			} )
 		);
 
 		var deviceNotifications = wp.template( 'pf-device-notifications' );
 
 		$footer.before(
-			deviceNotifications({
+			deviceNotifications( {
 				notification: data.deviceNotification,
 				action:       data.deviceNotificationAction,
-			})
+			} )
 		);
 	}
 
@@ -173,37 +170,37 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		_.each( data.requiredPrimary, function( value, key, list ) {
 			$sectionRequired.append(
-				reqPrimary({
+				reqPrimary( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqMeta = wp.template( 'pf-required-meta' );
 
 		_.each( data.requiredMeta, function( value, key, list ) {
 			$sectionRequired.append(
-				reqMeta({
+				reqMeta( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqGroup = wp.template( 'pf-required-group' );
 
 		_.each( data.requiredGroup, function( value, key, list ) {
 			$sectionRequired.append(
-				reqGroup({
+				reqGroup( {
 					key:       key,
 					keys:      value.keys,
 					label:     value.label,
@@ -211,60 +208,60 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqTax = wp.template( 'pf-required-tax' );
 
 		_.each( data.requiredTax, function( value, key, list ) {
 			$sectionRequired.append(
-				reqTax({
+				reqTax( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optPrimary = wp.template( 'pf-optional-primary' );
 
 		_.each( data.optionalPrimary, function( value, key, list ) {
 			$sectionOptional.append(
-				optPrimary({
+				optPrimary( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optMeta = wp.template( 'pf-optional-meta' );
 
 		_.each( data.optionalMeta, function( value, key, list ) {
 			$sectionOptional.append(
-				optMeta({
+				optMeta( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optGroup = wp.template( 'pf-optional-group' );
 
 		_.each( data.optionalGroup, function( value, key, list ) {
 			$sectionOptional.append(
-				optPrimary({
+				optPrimary( {
 					key:       key,
 					keys:      value.keys,
 					label:     value.label,
@@ -272,24 +269,24 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optTax = wp.template( 'pf-optional-tax' );
 
 		_.each( data.optionalTax, function( value, key, list ) {
 			$sectionOptional.append(
-				optTax({
+				optTax( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		// Inject our sections.
 		$controls.append( $sectionInfo );
@@ -346,7 +343,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 			// Everything must be good, so publish the post.
 			ajaxPublishPost();
-		});
+		} );
 	}
 
 	/**
@@ -380,7 +377,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 				$( '.pf-device-notifications' ).removeClass( 'visible' );
 				$header.find( '.pf-customizer-publish' ).removeClass( 'pf-disabled' );
 			}
-		});
+		} );
 	}
 
 	/**
@@ -423,22 +420,22 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 			$( '.pf-view-post' ).attr( 'href', response.postLink );
 			$( '.pf-edit-post' ).attr( 'href', data.editLink );
-		});
+		} );
 
 		publishPost.fail( function() {
 			$.featherlight( $( '.pf-publish-success' ), options );
-		});
+		} );
 	}
 
 	return {
 		init: init,
 	};
 
-})( jQuery, _, wp, publishingFlowData );
+} )( jQuery, _, wp, publishingFlowData );
 
 /**
  * Start the party.
  */
 jQuery( document ).ready( function( $ ) {
 	PublishingFlowCustomizer.init();
-});
+} );
