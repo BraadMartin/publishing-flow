@@ -3,7 +3,6 @@
  */
 
 var PublishingFlow = ( function( $, data ) {
-
 	'use strict';
 
 	/**
@@ -87,16 +86,14 @@ var PublishingFlow = ( function( $, data ) {
 	 * Setup a mutation observer to detect when the publish button changes.
 	 */
 	var setupButtonObserver = function() {
-
-		var target = document.querySelector( '#publish' );
-
+		var target   = document.querySelector( '#publish' );
 		var observer = new MutationObserver( function( mutations ) {
 			mutations.forEach( function( mutation ) {
 				if ( 'attributes' === mutation.type && 'value' === mutation.attributeName ) {
 					updateButtonText( mutation.target.value );
 				}
-			});
-		});
+			} );
+		} );
 
 		var config = {
 			attributes: true
@@ -143,14 +140,13 @@ var PublishingFlow = ( function( $, data ) {
 			);
 
 			$( 'form#post' ).submit();
-		});
+		} );
 	}
 
 	/**
 	 * Inject the requirements section.
 	 */
 	var injectRequirementsSection = function() {
-
 		var $sectionWrap = $( '.publishing-flow-requirements-wrap' );
 
 		// Define our sections.
@@ -176,37 +172,37 @@ var PublishingFlow = ( function( $, data ) {
 
 		_.each( data.requiredPrimary, function( value, key, list ) {
 			$sectionRequired.append(
-				reqPrimary({
+				reqPrimary( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqMeta = wp.template( 'pf-required-meta' );
 
 		_.each( data.requiredMeta, function( value, key, list ) {
 			$sectionRequired.append(
-				reqMeta({
+				reqMeta( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqGroup = wp.template( 'pf-required-group' );
 
 		_.each( data.requiredGroup, function( value, key, list ) {
 			$sectionRequired.append(
-				reqGroup({
+				reqGroup( {
 					key:       key,
 					keys:      value.keys,
 					label:     value.label,
@@ -214,60 +210,60 @@ var PublishingFlow = ( function( $, data ) {
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var reqTax = wp.template( 'pf-required-tax' );
 
 		_.each( data.requiredTax, function( value, key, list ) {
 			$sectionRequired.append(
-				reqTax({
+				reqTax( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optPrimary = wp.template( 'pf-optional-primary' );
 
 		_.each( data.optionalPrimary, function( value, key, list ) {
 			$sectionOptional.append(
-				optPrimary({
+				optPrimary( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optMeta = wp.template( 'pf-optional-meta' );
 
 		_.each( data.optionalMeta, function( value, key, list ) {
 			$sectionOptional.append(
-				optMeta({
+				optMeta( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optGroup = wp.template( 'pf-optional-group' );
 
 		_.each( data.optionalGroup, function( value, key, list ) {
 			$sectionOptional.append(
-				optPrimary({
+				optPrimary( {
 					key:       key,
 					keys:      value.keys,
 					label:     value.label,
@@ -275,24 +271,24 @@ var PublishingFlow = ( function( $, data ) {
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		var optTax = wp.template( 'pf-optional-tax' );
 
 		_.each( data.optionalTax, function( value, key, list ) {
 			$sectionOptional.append(
-				optTax({
+				optTax( {
 					key:       key,
 					label:     value.label,
 					value:     value.value,
 					hasValue:  value.hasValue,
 					noValue:   value.noValue,
 					showValue: value.showValue,
-				})
+				} )
 			);
-		});
+		} );
 
 		// If any of our sections have output, output them.
 		if ( $sectionRequired.children().length > 1 ) {
@@ -307,21 +303,20 @@ var PublishingFlow = ( function( $, data ) {
 	 * Setup expand/contract on the requirements section.
 	 */
 	var setupRequirementsSection = function() {
-
 		$( '.publishing-flow-requirements-status' ).on( 'click', function() {
 			$( '.publishing-flow-requirements-wrap' ).toggleClass( 'active' );
-		});
+		} );
 	}
 
 	return {
 		init: init,
 	};
 
-})( jQuery, publishingFlowData );
+} )( jQuery, publishingFlowData );
 
 /**
  * Start the party.
  */
 jQuery( document ).ready( function() {
 	PublishingFlow.init();
-});
+} );
