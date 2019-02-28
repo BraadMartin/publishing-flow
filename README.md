@@ -4,7 +4,7 @@
 **Tags:** publishing, flow, required, fields, preview  
 **Requires at least:** 4.5  
 **Tested up to:** 4.6  
-**Stable tag:** 1.1.3  
+**Stable tag:** 1.1.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -172,8 +172,11 @@ There are many more hooks available throughout this plugin to customize all the 
 publishing_flow_customizer_url
 publishing_flow_data_array
 publishing_flow_js_templates
+publishing_flow_publish_success_message
 publishing_flow_publish_success_template
+publishing_flow_schedule_success_message
 publishing_flow_schedule_success_template
+publishing_flow_publish_fail_message
 publishing_flow_publish_fail_template
 publishing_flow_required_primary_fields
 publishing_flow_optional_primary_fields
@@ -222,6 +225,9 @@ function xxx_data_array( $data ) {
 
 ## Changelog ##
 
+### 1.1.4 ###
+* Add filters for customizing more of the post-publish messaging.
+
 ### 1.1.3 ###
 * Update user capability check to work correctly for custom post types.
 
@@ -240,6 +246,9 @@ function xxx_data_array( $data ) {
 * Initial release.
 
 ## Upgrade Notice ##
+
+### 1.1.4 ###
+* Add filters for customizing more of the post-publish messaging.
 
 ### 1.1.3 ###
 * Update user capability check to work correctly for custom post types.

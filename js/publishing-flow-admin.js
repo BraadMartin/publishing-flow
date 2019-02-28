@@ -3,7 +3,6 @@
  */
 
 var PublishingFlow = ( function( $, data ) {
-
 	'use strict';
 
 	/**
@@ -87,7 +86,6 @@ var PublishingFlow = ( function( $, data ) {
 	 * Setup a mutation observer to detect when the publish button changes.
 	 */
 	var setupButtonObserver = function() {
-
 		var target = document.querySelector( '#publish' );
 
 		var observer = new MutationObserver( function( mutations ) {
@@ -150,7 +148,6 @@ var PublishingFlow = ( function( $, data ) {
 	 * Inject the requirements section.
 	 */
 	var injectRequirementsSection = function() {
-
 		var $sectionWrap = $( '.publishing-flow-requirements-wrap' );
 
 		// Define our sections.
@@ -307,7 +304,6 @@ var PublishingFlow = ( function( $, data ) {
 	 * Setup expand/contract on the requirements section.
 	 */
 	var setupRequirementsSection = function() {
-
 		$( '.publishing-flow-requirements-status' ).on( 'click', function() {
 			$( '.publishing-flow-requirements-wrap' ).toggleClass( 'active' );
 		});
