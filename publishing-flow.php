@@ -19,7 +19,6 @@ add_action( 'plugins_loaded', 'publishing_flow_load_translation_files' );
  * Load translation files.
  */
 function publishing_flow_load_translation_files() {
-
 	load_plugin_textdomain(
 		'publishing-flow',
 		false,

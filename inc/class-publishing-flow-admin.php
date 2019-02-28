@@ -98,7 +98,6 @@ class Publishing_Flow_Admin {
 	 * Output our custom JS templates on post edit screens.
 	 */
 	function admin_print_footer_scripts() {
-
 		$screen = get_current_screen();
 
 		// Only on post edit screens.
@@ -169,7 +168,6 @@ class Publishing_Flow_Admin {
 	 * @return  string             The updated redirect URL.
 	 */
 	public function customizer_redirect( $location, $post_id ) {
-
 		if ( isset( $_POST['pf-action'] ) && 'enter-publishing-flow' === $_POST['pf-action'] ) {
 
 			$post = get_post( $post_id );
@@ -246,7 +244,6 @@ class Publishing_Flow_Admin {
 	 * @return  bool                Whether the post has a date in the future.
 	 */
 	public function if_scheduled_post( $post ) {
-
 		if ( is_numeric( $post ) ) {
 			$post = get_post( $post );
 		}
@@ -269,7 +266,6 @@ class Publishing_Flow_Admin {
 	 * @return  string         The URL.
 	 */
 	public function build_customizer_url( $post_id ) {
-
 		$url = admin_url( 'customize.php' );
 
 		// Open the Customizer to the post's preview URL.
@@ -457,7 +453,6 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $required_group as $key => $group ) {
-
 			$label      = $group['label'];
 			$show_value = ( $group['show_value'] );
 			$has_value  = $group['has_value'] ?: '';
@@ -482,7 +477,6 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $optional_group as $key => $group ) {
-
 			$label      = $group['label'];
 			$show_value = ( $group['show_value'] );
 			$has_value  = $group['has_value'] ?: '';
@@ -507,7 +501,6 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $required_tax as $tax => $arr ) {
-
 			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
 
 			if ( ! empty( $tax_value ) ) {
@@ -529,7 +522,6 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $optional_tax as $tax => $arr ) {
-
 			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
 
 			if ( ! empty( $tax_value ) ) {
@@ -574,7 +566,6 @@ class Publishing_Flow_Admin {
 
 			// The post has a date in the past.
 			$post_date_past = "1";
-
 		} else {
 
 			// The post will be published immediately.
@@ -641,7 +632,6 @@ class Publishing_Flow_Admin {
 	 * @return  int                  Whether or not all required fields have a value.
 	 */
 	public function check_requirements_met( $req_primary, $req_meta, $req_group, $req_tax ) {
-
 		$requirements_met = true;
 
 		foreach ( $req_primary as $key => $arr ) {
@@ -721,7 +711,6 @@ class Publishing_Flow_Admin {
 	 * Output our custom JS templates.
 	 */
 	public function customize_controls_print_footer_scripts() {
-
 		$post_id         = ( isset( $_GET['post-id'] ) ) ? (int)$_GET['post-id'] : 0;
 		$publishing_flow = ( isset( $_GET['publishing-flow'] ) && 'true' === $_GET['publishing-flow'] );
 
@@ -776,7 +765,6 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function publish_success_template( $post_id ) {
-
 		ob_start();
 
 		?>
@@ -804,7 +792,6 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function schedule_success_template( $post_id ) {
-
 		ob_start();
 
 		$scheduled_date = get_the_date( 'F j, Y \a\t g:ia', $post_id );
@@ -838,7 +825,6 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function publish_fail_template( $post_id ) {
-
 		ob_start();
 
 		?>
@@ -870,40 +856,31 @@ class Publishing_Flow_Admin {
 
 		// Bail if the current user isn't allowed to publish posts.
 		if ( ! $user || empty( $post_id ) || ! current_user_can( 'publish_post', $post_id ) ) {
-
 			$response = new stdClass();
 			$response->outcome = 'error';
 			$response->error   = __( 'Sorry, the current user is not allowed to publish posts', 'publishing-flow' );
 
 			wp_send_json( $response );
-
-			wp_die();
 		}
 
 		$post = get_post( $post_id );
 
 		// Bail if we don't have a post to publish.
 		if ( is_wp_error( $post ) ) {
-
 			$response = new stdClass();
 			$response->status = 'error';
 			$response->error  = __( 'Sorry, no post to publish was found.', 'publishing-flow' );
 
 			wp_send_json( $response );
-
-			wp_die();
 		}
 
 		// Bail if the post is already published or scheduled.
 		if ( 'publish' === $post->post_status || 'future' === $post->post_status ) {
-
 			$response = new stdClass();
 			$response->status = 'error';
 			$response->error  = __( 'Looks like this post has already been published or scheduled', 'publishing-flow' );
 
 			wp_send_json( $response );
-
-			wp_die();
 		}
 
 		/**
@@ -914,7 +891,6 @@ class Publishing_Flow_Admin {
 		$scheduled = $this->if_scheduled_post( $post );
 
 		if ( $scheduled ) {
-
 			$old_status        = $post->post_status;
 			$post->post_status = 'future';
 
@@ -923,7 +899,6 @@ class Publishing_Flow_Admin {
 			wp_transition_post_status( 'future', $old_status, $post );
 
 			$outcome = 'scheduled';
-
 		} else {
 
 			// If the post has a GMT time set, then at some point it was set to be
@@ -966,8 +941,6 @@ class Publishing_Flow_Admin {
 		do_action( 'publishing_flow_post_published', $post, $response->outcome );
 
 		wp_send_json( $response );
-
-		wp_die();
 	}
 
 	/**
@@ -978,7 +951,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of required primary fields.
 	 */
 	public static function get_required_primary_fields( $post_type ) {
-
 		$primary_fields = array(
 			'post_title' => array(
 				'label'      => __( 'Post Title', 'publishing-flow' ),
@@ -1005,7 +977,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of optional primary fields.
 	 */
 	public static function get_optional_primary_fields( $post_type ) {
-
 		$primary_fields = array();
 
 		return apply_filters( 'publishing_flow_optional_primary_fields', $primary_fields, $post_type );
@@ -1019,7 +990,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of required meta fields.
 	 */
 	public static function get_required_meta_fields( $post_type ) {
-
 		$meta_fields = array();
 
 		return apply_filters( 'publishing_flow_required_meta_fields', $meta_fields, $post_type );
@@ -1033,7 +1003,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of optional meta fields.
 	 */
 	public static function get_optional_meta_fields( $post_type ) {
-
 		$meta_fields = array();
 
 		return apply_filters( 'publishing_flow_optional_meta_fields', $meta_fields, $post_type );
@@ -1050,7 +1019,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of required meta field groups.
 	 */
 	public static function get_required_meta_field_groups( $post_type ) {
-
 		$meta_field_groups = array();
 
 		return apply_filters( 'publishing_flow_required_meta_field_groups', $meta_field_groups, $post_type );
@@ -1067,7 +1035,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of optional meta field groups.
 	 */
 	public static function get_optional_meta_field_groups( $post_type ) {
-
 		$meta_field_groups = array();
 
 		return apply_filters( 'publishing_flow_optional_meta_field_groups', $meta_field_groups, $post_type );
@@ -1081,7 +1048,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of required taxonomies.
 	 */
 	public static function get_required_taxonomies( $post_type ) {
-
 		$taxonomies = array();
 
 		return apply_filters( 'publishing_flow_required_taxonomies', $taxonomies, $post_type );
@@ -1095,7 +1061,6 @@ class Publishing_Flow_Admin {
 	 * @return  array               The array of optional taxonomies.
 	 */
 	public static function get_optional_taxonomies( $post_type ) {
-
 		$taxonomies = array();
 
 		return apply_filters( 'publishing_flow_optional_taxonomies', $taxonomies, $post_type );
