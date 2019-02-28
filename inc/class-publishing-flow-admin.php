@@ -765,6 +765,15 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function publish_success_template( $post_id ) {
+		$message = __( 'Your post has been published', 'publishing-flow' );
+		/**
+		 * Allow the success message to be filtered.
+		 *
+		 * @param  string  $message  Success message.
+		 * @param  int     $post_id  Post ID.
+		 */
+		$message = apply_filters( 'publishing_flow_publish_success_message', $message, $post_id );
+
 		ob_start();
 
 		?>
@@ -773,7 +782,7 @@ class Publishing_Flow_Admin {
 				<?php _e( 'Success!', 'publishing-flow' ); ?>
 			</h1>
 			<h2 class="pf-heading">
-				<?php _e( 'Your post has been published.', 'publishing-flow' ); ?>
+				<?php echo $message; ?>
 			</h2>
 			<p><?php _e( 'What do you want to do now?', 'publishing-flow' ); ?></p>
 			<a class="pf-button button pf-view-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'View Post', 'publishing-flow' ); ?></a>
@@ -781,7 +790,14 @@ class Publishing_Flow_Admin {
 		</div>
 		<?php
 
-		return apply_filters( 'publishing_flow_publish_success_template', ob_get_clean() );
+		$template = ob_get_clean();
+		/**
+		 * Allow the success template to be filtered.
+		 *
+		 * @param  string  $template  Template HTML.
+		 * @param  int     $post_id   Post ID.
+		 */
+		return apply_filters( 'publishing_flow_publish_success_template', $template, $post_id );
 	}
 
 	/**
@@ -792,9 +808,22 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function schedule_success_template( $post_id ) {
-		ob_start();
-
+		$message = sprintf(
+			'%s<br />%s',
+			__( 'Your post has been scheduled to publish on', 'publishing-flow' ),
+			$scheduled_date
+		);
 		$scheduled_date = get_the_date( 'F j, Y \a\t g:ia', $post_id );
+
+		/**
+		 * Allow the schedule success message to be filtered.
+		 *
+		 * @param  string  $message  Schedule success message.
+		 * @param  int     $post_id  Post ID.
+		 */
+		$message = apply_filters( 'publishing_flow_publish_schedule_success_message', $message, $post_id );
+
+		ob_start();
 
 		?>
 		<div class="pf-schedule-success pf-lightbox">
@@ -802,11 +831,7 @@ class Publishing_Flow_Admin {
 				<?php _e( 'Success!', 'publishing-flow' ); ?>
 			</h1>
 			<h2 class="pf-heading">
-				<?php printf(
-					'%s<br />%s',
-					__( 'Your post has been scheduled to publish on', 'publishing-flow' ),
-					$scheduled_date
-				); ?>
+				<?php echo $message; ?>
 			</h2>
 			<p><?php _e( 'What do you want to do now?', 'publishing-flow' ); ?></p>
 			<a class="pf-button button pf-view-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'View Post', 'publishing-flow' ); ?></a>
@@ -814,7 +839,14 @@ class Publishing_Flow_Admin {
 		</div>
 		<?php
 
-		return apply_filters( 'publishing_flow_schedule_success_template', ob_get_clean() );
+		$template = ob_get_clean();
+		/**
+		 * Allow the schedule success template to be filtered.
+		 *
+		 * @param  string  $template  Template HTML.
+		 * @param  int     $post_id   Post ID.
+		 */
+		return apply_filters( 'publishing_flow_schedule_success_template', $template, $post_id );
 	}
 
 	/**
@@ -825,6 +857,15 @@ class Publishing_Flow_Admin {
 	 * @return  string  The template.
 	 */
 	public static function publish_fail_template( $post_id ) {
+		$message = __( 'Your post could not be published or scheduled at this time.', 'publishing-flow' );
+		/**
+		 * Allow the fail message to be filtered.
+		 *
+		 * @param  string  $message  Fail message.
+		 * @param  int     $post_id  Post ID.
+		 */
+		$message = apply_filters( 'publishing_flow_publish_fail_message', $message, $post_id );
+
 		ob_start();
 
 		?>
@@ -833,14 +874,21 @@ class Publishing_Flow_Admin {
 				<?php _e( 'Whoops, something went wrong...', 'publishing-flow' ); ?>
 			</h1>
 			<h2 class="pf-heading">
-				<?php _e( 'Your post could not be published or scheduled at this time.', 'publishing-flow' ); ?>
+				<?php echo $message; ?>
 			</h2>
 			<p><?php _e( 'Please go back to the edit screen and try again.', 'publishing-flow' ); ?></p>
 			<a class="pf-button button pf-edit-post" href="<?php // This gets filled in by JS. ?>"><?php _e( 'Return to Edit Screen', 'publishing-flow' ); ?></a>
 		</div>
 		<?php
 
-		return apply_filters( 'publishing_flow_publish_fail_template', ob_get_clean() );
+		$template = ob_get_clean();
+		/**
+		 * Allow the fail template to be filtered.
+		 *
+		 * @param  string  $template  Template HTML.
+		 * @param  int     $post_id   Post ID.
+		 */
+		return apply_filters( 'publishing_flow_publish_fail_template', $template, $post_id );
 	}
 
 	/**

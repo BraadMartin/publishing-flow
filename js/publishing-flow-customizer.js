@@ -397,7 +397,6 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 			'post_id'          : data.post.ID,
 			'pf_publish_nonce' : data.publishNonce,
 		};
-		var options = {};
 
 		var publishPost = $.post( ajaxurl, pubData );
 
@@ -426,7 +425,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 		});
 
 		publishPost.fail( function() {
-			$.featherlight( $( '.pf-publish-success' ), options );
+			$.featherlight( $( '.pf-publish-fail' ) );
 		});
 	}
 
