@@ -426,6 +426,7 @@ var PublishingFlowCustomizer = ( function( $, _, wp, data ) {
 
 		publishPost.fail( function() {
 			$.featherlight( $( '.pf-publish-fail' ) );
+			$( '.pf-edit-post' ).attr( 'href', data.editLink );
 		});
 	}
 
