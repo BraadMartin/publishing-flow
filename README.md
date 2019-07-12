@@ -4,7 +4,7 @@
 **Tags:** publishing, flow, required, fields, preview  
 **Requires at least:** 4.5  
 **Tested up to:** 4.6  
-**Stable tag:** 1.1.5  
+**Stable tag:** 1.1.6  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -225,6 +225,9 @@ function xxx_data_array( $data ) {
 
 ## Changelog ##
 
+### 1.1.6 ###
+* Fix bug where stale Post object would get passed into wp_publish_post.
+
 ### 1.1.5 ###
 * Fix bug where the link back to the edit screen would be incorrect when the Ajax request to publish a Post would fail.
 
@@ -249,6 +252,9 @@ function xxx_data_array( $data ) {
 * Initial release.
 
 ## Upgrade Notice ##
+
+### 1.1.6 ###
+* Fix bug where stale Post object would get passed into wp_publish_post.
 
 ### 1.1.5 ###
 * Fix bug where the link back to the edit screen would be incorrect when the Ajax request to publish a Post would fail.

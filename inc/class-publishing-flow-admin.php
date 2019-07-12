@@ -968,9 +968,15 @@ class Publishing_Flow_Admin {
 				$_POST['aa'] = substr( $post->post_date, 0, 4 );
 
 				wp_update_post( $post );
+
+				// Refresh the post object, as the call to `wp_update_post` might have mutated it.
+				$post = get_post( $post->ID );
 			}
 
 			wp_publish_post( $post );
+
+			// Refresh the post object, as the call to `wp_publish_post` will have mutated it.
+			$post = get_post( $post->ID );
 
 			$outcome = 'published';
 		}
