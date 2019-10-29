@@ -3,8 +3,8 @@
 **Donate link:** http://braadmartin.com/  
 **Tags:** publishing, flow, required, fields, preview  
 **Requires at least:** 4.5  
-**Tested up to:** 4.6  
-**Stable tag:** 1.1.6  
+**Tested up to:** 4.9  
+**Stable tag:** 1.1.7  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -225,6 +225,9 @@ function xxx_data_array( $data ) {
 
 ## Changelog ##
 
+### 1.1.7 ###
+* Small CSS change to support WP 4.9
+
 ### 1.1.6 ###
 * Fix bug where stale Post object would get passed into wp_publish_post.
 
@@ -252,6 +255,9 @@ function xxx_data_array( $data ) {
 * Initial release.
 
 ## Upgrade Notice ##
+
+### 1.1.7 ###
+* Small CSS change to support WP 4.9
 
 ### 1.1.6 ###
 * Fix bug where stale Post object would get passed into wp_publish_post.
