@@ -1,14 +1,14 @@
-# Copyright (C) 2019 Braad Martin
+# Copyright (C) 2020 Braad Martin
 # This file is distributed under the same license as the Publishing Flow package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Publishing Flow 1.1.7\n"
+"Project-Id-Version: Publishing Flow 1.1.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/publishing-flow\n"
-"POT-Creation-Date: 2019-10-29 21:18:18+00:00\n"
+"POT-Creation-Date: 2020-08-21 21:34:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -160,27 +160,27 @@ msgstr ""
 msgid "Looks like this post has already been published or scheduled"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1010
+#: inc/class-publishing-flow-admin.php:1029
 msgid "Post Title"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1012
+#: inc/class-publishing-flow-admin.php:1031
 msgid "The post has a title"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1013
+#: inc/class-publishing-flow-admin.php:1032
 msgid "The post is missing a title"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1016
+#: inc/class-publishing-flow-admin.php:1035
 msgid "Post Content"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1018
+#: inc/class-publishing-flow-admin.php:1037
 msgid "The post has content"
 msgstr ""
 
-#: inc/class-publishing-flow-admin.php:1019
+#: inc/class-publishing-flow-admin.php:1038
 msgid "The post is missing content"
 msgstr ""
 

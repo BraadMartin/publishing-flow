@@ -899,7 +899,7 @@ class Publishing_Flow_Admin {
 		// Bail if our nonce is not valid.
 		check_ajax_referer( 'pf-publish', 'pf_publish_nonce', true );
 
-		$user = wp_get_current_user();
+		$user    = wp_get_current_user();
 		$post_id = (int) $_POST['post_id'];
 
 		// Bail if the current user isn't allowed to publish posts.
@@ -914,7 +914,7 @@ class Publishing_Flow_Admin {
 		$post = get_post( $post_id );
 
 		// Bail if we don't have a post to publish.
-		if ( is_wp_error( $post ) ) {
+		if ( ! $post instanceof \WP_Post ) {
 			$response = new stdClass();
 			$response->status = 'error';
 			$response->error  = __( 'Sorry, no post to publish was found.', 'publishing-flow' );
@@ -948,6 +948,7 @@ class Publishing_Flow_Admin {
 
 			$outcome = 'scheduled';
 		} else {
+			$post_object_requires_update = false;
 
 			// If the post has a GMT time set, then at some point it was set to be
 			// published at a specific time. If we're in this else clause then we know
@@ -955,6 +956,7 @@ class Publishing_Flow_Admin {
 			// between posts with a set date in the past (that have a GMT set) and posts
 			// that should be published immediately (and do not have GMT set).
 			if ( empty( $post->post_date_gmt ) || '0000-00-00 00:00:00' == $post->post_date_gmt ) {
+				$post_object_requires_update = true;
 
 				// The post should be published immediately, so update the post date to the
 				// current time before publishing. This logic was taken from wp_insert_post().
@@ -966,7 +968,24 @@ class Publishing_Flow_Admin {
 				$_POST['mm'] = substr( $post->post_date, 5, 2 );
 				$_POST['jj'] = substr( $post->post_date, 8, 2 );
 				$_POST['aa'] = substr( $post->post_date, 0, 4 );
+			}
 
+			// Here we're handling the scenario where a Post has an empty
+			// slug going into publishing. Normally Core would fill this
+			// in on `wp_insert_post` if the status was not set to draft,
+			// but since we're only calling the `wp_publish_post` function
+			// we need to do this step ourselves here.
+			if ( empty( $post->post_name ) ) {
+				$post_object_requires_update = true;
+
+				// We're using the `publish` status here because the
+				// `wp_unique_post_slug` function is a noop on drafts.
+				$post->post_name = wp_unique_post_slug( sanitize_title( $post->post_title ), $post->ID, 'publish', $post->post_type, $post->post_parent );
+			}
+
+			// If we ended up modifying the publish date or slug
+			// save the post one more time before we publish.
+			if ( $post_object_requires_update ) {
 				wp_update_post( $post );
 
 				// Refresh the post object, as the call to `wp_update_post` might have mutated it.
