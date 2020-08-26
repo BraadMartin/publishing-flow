@@ -4,7 +4,7 @@ Donate link: http://braadmartin.com/
 Tags: publishing, flow, required, fields, preview
 Requires at least: 4.5
 Tested up to: 4.9
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,10 +159,7 @@ add_filter( 'publishing_flow_dev_domain', 'xxx_dev_domain' );
  * @return  string           Our dev domain.
  */
 function xxx_dev_domain( $domain ) {
-
-	$domain = 'local.wordpress.dev';
-
-	return $domain;
+	return 'local.wordpress.dev';
 }
 ```
 
@@ -216,7 +213,6 @@ add_filter( 'publishing_flow_data_array', 'xxx_data_array' );
  * @return  array         The updated data array.
  */
 function xxx_data_array( $data ) {
-
 	$data['defaultDevice'] = 'tablet';
 
 	return $data;
@@ -224,6 +220,9 @@ function xxx_data_array( $data ) {
 ```
 
 == Changelog ==
+
+= 1.1.8 =
+* Bugfix to prevent it being possible to publish posts with an empty slug.
 
 = 1.1.7 =
 * Small CSS change to support WP 4.9.
@@ -255,6 +254,9 @@ function xxx_data_array( $data ) {
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.8 =
+* Bugfix to prevent it being possible to publish posts with an empty slug.
 
 = 1.1.7 =
 * Small CSS change to support WP 4.9.
