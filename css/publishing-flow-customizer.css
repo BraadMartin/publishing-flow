@@ -200,6 +200,23 @@
 	transform: rotateZ( -40deg );
 }
 
+#pf-context-preview-frames-wrap,
+#pf-context-preview-frames-wrap iframe {
+	display: none;
+}
+
+#pf-context-preview-frames-wrap.pf-visible,
+#pf-context-preview-frames-wrap iframe.pf-visible {
+	display: block;
+	visibility: visible;
+	width: 100%;
+	height: 100%;
+}
+
+#customize-preview > iframe.pf-hidden {
+	display: none;
+}
+
 /* iPhone 5 size */
 .preview-mobile .wp-full-overlay-main {
 	width: 335px;

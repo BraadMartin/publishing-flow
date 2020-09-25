@@ -608,8 +608,15 @@ class Publishing_Flow_Admin {
 			'welcomeContent'           => __( "Before you can publish you'll need to click through each of the device preview icons on the bottom of this panel", 'publishing-flow' ),
 			'reqNotification'          => __( "Woah there, looks like this post is still missing a required field!", 'publishing-flow' ),
 			'reqNotificationLink'      => __( 'Visit the edit screen to fix this.', 'publishing-flow' ),
-			'deviceNotification'       => __( "Woah there, looks like you haven't yet previewed this post on all screen sizes.", 'publishing-flow' ),
-			'deviceNotificationAction' => __( 'Click through each device', 'publishing-flow' ),
+			'deviceNotification'       => __( "Woah there, looks like you haven't yet previewed this post in all contexts.", 'publishing-flow' ),
+			'deviceNotificationAction' => __( 'Click through each preview', 'publishing-flow' ),
+			'previewContexts'          => array(
+				'default' => array(
+					'label' => __( 'Default', 'publishing-flow' ),
+				),
+			),
+			'previewContextsLabel'     => __( 'Preview Context', 'publishing-flow' ),
+			'previewContextsInfoLabel' => sprintf( __( 'Select the context in which you want to preview the current %s', 'publishing-flow' ), self::get_post_type_singular_label( $post->post_type ) ),
 		);
 
 		/**
@@ -1170,5 +1177,30 @@ class Publishing_Flow_Admin {
 		$post_types = apply_filters( 'publishing_flow_post_types', array( 'post', 'page' ) );
 
 		return in_array( $post_type, $post_types );
+	}
+
+	/**
+	 * Return the singular label from a post type.
+	 *
+	 * @param   string  $post_type  The post type to return the label for.
+	 *
+	 * @return  string              The post type singular label.
+	 */
+	public static function get_post_type_singular_label( $post_type ) {
+		if ( empty( $post_type ) ) {
+			return '';
+		}
+
+		$post_type_object = get_post_type_object( $post_type );
+
+		if ( empty( $post_type_object ) ) {
+			return '';
+		}
+
+		if ( ! empty( $post_type_object->labels->singular_name ) ) {
+			return $post_type_object->labels->singular_name;
+		} else {
+			return ucwords( $post_type_object->name );
+		}
 	}
 }
