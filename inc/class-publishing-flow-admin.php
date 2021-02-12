@@ -419,7 +419,7 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $required_meta as $key => $arr ) {
-			$meta_value = ( isset( $meta[ $key ] ) ) ? $meta[ $key ] : null;
+			$meta_value = ( isset( $meta[ $key ] ) && [] !== $meta[ $key ] ) ? $meta[ $key ] : null;
 
 			// Handle missing values.
 			$label      = $arr['label'] ?: $key;
@@ -436,7 +436,7 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $optional_meta as $key => $arr ) {
-			$meta_value = ( isset( $meta[ $key ] ) ) ? $meta[ $key ] : null;
+			$meta_value = ( isset( $meta[ $key ] ) && [] !== $meta[ $key ] ) ? $meta[ $key ] : null;
 
 			// Handle missing labels.
 			$label      = $arr['label'] ?: $key;
@@ -467,6 +467,11 @@ class Publishing_Flow_Admin {
 			}
 			$value = implode( ', ', $value );
 
+			// Force empty values to null to ensure downstream checks work.
+			if ( empty( $value ) ) {
+				$value = null;
+			}
+
 			$req_group[ $key ] = array(
 				'label'     => $label,
 				'keys'      => $meta_keys,
@@ -491,6 +496,11 @@ class Publishing_Flow_Admin {
 			}
 			$value = implode( ', ', $value );
 
+			// Force empty values to null to ensure downstream checks work.
+			if ( empty( $value ) ) {
+				$value = null;
+			}
+
 			$opt_group[ $key ] = array(
 				'label'     => $label,
 				'keys'      => $meta_keys,
@@ -501,7 +511,7 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $required_tax as $tax => $arr ) {
-			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
+			$tax_value = ( isset( $terms[ $tax ] ) && [] !== $terms[ $tax ] ) ? $terms[ $tax ] : null;
 
 			if ( ! empty( $tax_value ) ) {
 				$tax_value = implode( ', ', $tax_value );
@@ -522,7 +532,7 @@ class Publishing_Flow_Admin {
 			);
 		}
 		foreach ( $optional_tax as $tax => $arr ) {
-			$tax_value = ( isset( $terms[ $tax ] ) ) ? $terms[ $tax ] : array();
+			$tax_value = ( isset( $terms[ $tax ] ) && [] !== $terms[ $tax ] ) ? $terms[ $tax ] : null;
 
 			if ( ! empty( $tax_value ) ) {
 				$tax_value = implode( ', ', $tax_value );
