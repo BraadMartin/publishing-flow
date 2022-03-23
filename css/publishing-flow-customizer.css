@@ -19,6 +19,7 @@
 	margin-top: 0px !important;
 	display: block;
 	float: right;
+	line-height: 1;
 }
 
 .pf-customizer-publish.button-primary.pf-disabled {
@@ -91,6 +92,7 @@
 
 .pf-customizer.pf-required-notifications-open {
 	padding-top: 102px;
+	position: relative;
 }
 
 .pf-customizer div {
